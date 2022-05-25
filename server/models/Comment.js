@@ -1,21 +1,18 @@
 const { Schema, model } = require('mongoose');
 
-const commentSchema = require('./Comment');
-
-const postSchema = new Schema(
+const commentSchema = new Schema(
   {
     username: {
       type: String,
       required: true,
       ref: 'User',
     },
-    postText: {
+    commentText: {
       type: String,
       required: true,
       minLength: 1,
       maxLength: 500, // not sure what we want our max length to be?
     },
-    comments: [commentSchema],
   },
   {
     toJSON: {
@@ -24,11 +21,6 @@ const postSchema = new Schema(
   }
 );
 
-// comment count to be declared in typeDefs?
-postSchema.virtual('commentCount').get(function () {
-  return this.comments.length;
-});
+const Comment = model('Comment', commentSchema);
 
-const Post = model('Post', postSchema);
-
-module.exports = Post;
+module.exports = Comment;
