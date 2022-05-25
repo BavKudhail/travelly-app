@@ -35,6 +35,12 @@ const userSchema = new Schema(
         ref: 'User',
       },
     ],
+    posts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Post',
+      },
+    ],
     comments: [
       {
         type: Schema.Types.ObjectId,
@@ -72,12 +78,12 @@ const userSchema = new Schema(
   }
 );
 
-// function to return following count
+// function to return following count -- following to be declared in typeDefs?
 userSchema.virtual('following').get(function () {
   return this.following.length;
 });
 
-// function to return follower count
+// function to return follower count -- followers to be declared in typeDefs?
 userSchema.virtual('followerCount').get(function () {
   return this.followers.length;
 });
