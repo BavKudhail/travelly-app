@@ -91,6 +91,8 @@ userSchema.virtual('followerCount').get(function () {
   return this.followers.length;
 });
 
+// TODO: checkPassword func
+
 const User = model('User', userSchema);
 
 module.exports = User;
