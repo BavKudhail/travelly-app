@@ -58,6 +58,9 @@ const userSchema = new Schema(
         ref: 'Badge',
       },
     ],
+
+    // not sure with bucket lists
+
     countriesVisited: [
       {
         type: Schema.Types.ObjectId,
@@ -79,7 +82,7 @@ const userSchema = new Schema(
 );
 
 // function to return following count -- following to be declared in typeDefs?
-userSchema.virtual('following').get(function () {
+userSchema.virtual('followingCount').get(function () {
   return this.following.length;
 });
 
