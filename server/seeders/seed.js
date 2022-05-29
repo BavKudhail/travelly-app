@@ -11,12 +11,14 @@ db.once("open", async () => {
     await Country.deleteMany({});
     await CountryBadge.deleteMany({});
 
+    // Creating new seeds
     await User.create(userSeeds);
 
     await Country.create(countrySeeds);
 
     await CountryBadge.create(countryBadgeSeeds);
 
+    // Creating relationships between seed data
     // ? Believe this should return an array of all the seeded countries - LW
     const countries = await Country.find();
 
