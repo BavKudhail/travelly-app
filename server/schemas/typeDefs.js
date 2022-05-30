@@ -20,6 +20,7 @@ const typeDefs = gql`
       password: String!
       bio: String
     ): User
+    loginUser(email: String!, password: String!): User
   }
 `;
 

@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new Schema(
   {
@@ -83,6 +84,16 @@ const userSchema = new Schema(
   }
 );
 
+// hash user password
+userSchema.pre("save", async function (next) {
+  if (this.isNew || this.isModified("password")) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+
+  next();
+});
+
 // function to return following count -- following to be declared in typeDefs?
 userSchema.virtual("followingCount").get(function () {
   return this.following.length;
@@ -92,6 +103,11 @@ userSchema.virtual("followingCount").get(function () {
 userSchema.virtual("followerCount").get(function () {
   return this.followers.length;
 });
+
+// custom method to compare and validate password for logging in
+userSchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
 
 const User = model("User", userSchema);
 

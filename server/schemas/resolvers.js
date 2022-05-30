@@ -12,6 +12,21 @@ const resolvers = {
       // !Add token back
       return user;
     },
+    loginUser: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return console.log("No user found");
+      }
+
+      const correctPw = await user.isCorrectPassword(password);
+
+      if (!correctPw) {
+        return console.log("Wrong password");
+      }
+
+      console.log(user);
+      return user;
+    },
   },
 };
 
