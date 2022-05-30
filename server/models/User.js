@@ -18,7 +18,6 @@ const userSchema = new Schema(
     },
     bio: {
       type: String,
-      required: false, // ?
     },
     password: {
       type: String,
@@ -93,8 +92,6 @@ userSchema.virtual("followingCount").get(function () {
 userSchema.virtual("followerCount").get(function () {
   return this.followers.length;
 });
-
-// TODO: checkPassword func
 
 const User = model("User", userSchema);
 
