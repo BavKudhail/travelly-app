@@ -9,6 +9,14 @@ const typeDefs = gql`
     bio: String
   }
 
+  type Trip {
+    _id: ID!
+    tripName: String!
+    tripDescription: String!
+    startDate: String!
+    endDate: String!
+  }
+
   type Query {
     me: User
   }
@@ -20,7 +28,15 @@ const typeDefs = gql`
       password: String!
       bio: String
     ): User
+
     loginUser(email: String!, password: String!): User
+
+    addTrip(
+      tripName: String!
+      tripDescription: String!
+      startDate: String!
+      endDate: String
+    ): Trip
   }
 `;
 

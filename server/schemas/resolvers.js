@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Trip } = require("../models");
 
 const resolvers = {
   Query: {
@@ -17,7 +17,7 @@ const resolvers = {
       if (!user) {
         return console.log("No user found");
       }
-
+      // !add token back
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
@@ -26,6 +26,11 @@ const resolvers = {
 
       console.log(user);
       return user;
+    },
+    addTrip: async (parent, args) => {
+      const trip = await Trip.create(args);
+
+      return trip;
     },
   },
 };

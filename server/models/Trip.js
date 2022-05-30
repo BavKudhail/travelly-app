@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const tripSchema = new Schema(
   {
@@ -14,18 +14,18 @@ const tripSchema = new Schema(
     countries: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Country',
+        ref: "Country",
       },
     ],
     activities: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Activity',
+        ref: "Activity",
       },
     ],
     // image using s3?
     imageUrl: {
-      type: Image,
+      type: String,
     },
     startDate: {
       type: Date,
@@ -38,12 +38,9 @@ const tripSchema = new Schema(
     travellers: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Traveller',
+        ref: "Traveller",
       },
     ],
-    duration: {
-      type: String,
-    },
   },
   {
     toJSON: {
@@ -53,10 +50,12 @@ const tripSchema = new Schema(
 );
 
 // function to return travellers count -- travellers to be declared in typeDefs?
-tripSchema.virtual('travellersCount').get(function () {
+tripSchema.virtual("travellersCount").get(function () {
   return this.travellers.length;
 });
 
-const Trip = model('Trip', tripSchema);
+// !Add duration virtual
+
+const Trip = model("Trip", tripSchema);
 
 module.exports = Trip;
