@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const activityBadgeSchema = new Schema({
   badgeName: {
@@ -8,16 +8,17 @@ const activityBadgeSchema = new Schema({
   },
   badgeImage: {
     type: String,
-    unique: true,
+    // unique: true,
+    // ! removed just for testing purposes
   },
   activities: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Activity",
+      ref: 'Activity',
     },
   ],
 });
 
-const ActivityBadge = model("ActivityBadge", activityBadgeSchema);
+const ActivityBadge = model('ActivityBadge', activityBadgeSchema);
 
 module.exports = ActivityBadge;

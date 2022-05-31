@@ -1,4 +1,4 @@
-const { User, Trip, Activity } = require('../models');
+const { User, Trip, Activity, ActivityBadge } = require('../models');
 
 const resolvers = {
   Query: {
@@ -36,6 +36,11 @@ const resolvers = {
       const activity = await Activity.create(args);
 
       return activity;
+    },
+    addActivityBadge: async (parent, args) => {
+      const activityBadge = await ActivityBadge.create(args);
+
+      return activityBadge;
     },
   },
 };

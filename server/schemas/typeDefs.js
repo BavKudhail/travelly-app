@@ -22,6 +22,13 @@ const typeDefs = gql`
     activityName: String!
   }
 
+  type ActivityBadge {
+    _id: ID!
+    badgeName: String!
+    badgeImage: String
+    activities: [Activity]
+  }
+
   type Query {
     me: User
   }
@@ -34,7 +41,11 @@ const typeDefs = gql`
     addTrip(tripName: String!, tripDescription: String!, startDate: String!, endDate: String): Trip
 
     addActivity(activityName: String!): Activity
+
+    addActivityBadge(badgeName: String!, badgeImage: String, activities: String): ActivityBadge
   }
 `;
 
 module.exports = typeDefs;
+
+// ! addActivityBadge not sure about the activities array?
