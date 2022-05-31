@@ -1,9 +1,9 @@
-const { User, Trip } = require("../models");
+const { User, Trip, Activity } = require('../models');
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
-      console.log("hello");
+      console.log('hello');
     },
   },
   Mutation: {
@@ -15,13 +15,13 @@ const resolvers = {
     loginUser: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
-        return console.log("No user found");
+        return console.log('No user found');
       }
       // !add token back
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        return console.log("Wrong password");
+        return console.log('Wrong password');
       }
 
       console.log(user);
@@ -31,6 +31,11 @@ const resolvers = {
       const trip = await Trip.create(args);
 
       return trip;
+    },
+    addActivity: async (parent, args) => {
+      const activity = await Activity.create(args);
+
+      return activity;
     },
   },
 };
