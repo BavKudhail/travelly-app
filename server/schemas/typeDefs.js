@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type User {
@@ -34,15 +34,29 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addUser(username: String!, email: String!, password: String!, bio: String): User
+    addUser(
+      username: String!
+      email: String!
+      password: String!
+      bio: String
+    ): User
 
     loginUser(email: String!, password: String!): User
 
-    addTrip(tripName: String!, tripDescription: String!, startDate: String!, endDate: String): Trip
+    addTrip(
+      tripName: String!
+      tripDescription: String!
+      startDate: String!
+      endDate: String
+    ): Trip
 
     addActivity(activityName: String!): Activity
 
-    addActivityBadge(badgeName: String!, badgeImage: String, activities: String): ActivityBadge
+    addActivityBadge(
+      badgeName: String!
+      badgeImage: String
+      activities: [ID]
+    ): ActivityBadge
   }
 `;
 
