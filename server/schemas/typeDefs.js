@@ -9,6 +9,23 @@ const typeDefs = gql`
     bio: String
   }
 
+  type Company {
+    _id: ID!
+    companyUserName: String!
+    email: String!
+    password: String!
+    isCompanyAdmin: Boolean!
+    isAdmin: Boolean!
+  }
+
+  type Admin {
+    _id: ID!
+    email: String!
+    password: String!
+    isCompanyAdmin: Boolean!
+    isAdmin: Boolean!
+  }
+
   type Trip {
     _id: ID!
     tripName: String!
@@ -41,7 +58,17 @@ const typeDefs = gql`
       bio: String
     ): User
 
+    addCompany(
+      companyUserName: String!
+      email: String!
+      password: String!
+    ): Company
+
+    addAdmin(email: String!, password: String!): Admin
+
     loginUser(email: String!, password: String!): User
+    loginCompany(email: String!, password: String!): Company
+    loginAdmin(email: String!, password: String!): Admin
 
     addTrip(
       tripName: String!

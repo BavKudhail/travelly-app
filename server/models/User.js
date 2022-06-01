@@ -76,7 +76,16 @@ const userSchema = new Schema(
         ref: "Badge",
       },
     ],
+    isCompanyAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   {
     toJSON: {
       virtuals: true,
