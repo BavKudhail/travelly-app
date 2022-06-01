@@ -11,7 +11,7 @@ const DEFAULT_USER_INPUT = {
   password: "",
 };
 
-function SignUpForm() {
+const SignUpForm = () => {
   // connect user inputs to our mutation
   const [signUpUser, { loading, data, error, called }] = useMutation(ADD_USER);
 
@@ -38,7 +38,7 @@ function SignUpForm() {
     });
   };
 
-  console.log("data", data);
+  // console.log("data", data);
 
   return (
     <>
@@ -53,20 +53,20 @@ function SignUpForm() {
 
             try {
               // trigger mutation
-              await signUpUser({
+              const { data } = await signUpUser({
                 variables: {
-                  username,
-                  email,
-                  password,
+                  ...userInput,
                 },
+
+                // add authentication here
               });
+              console.log("user input added: ", userInput);
               // refresh user input after submission
               setUserInput(DEFAULT_USER_INPUT);
             } catch (error) {
               console.log(error);
             }
           }
-          console.log(userInput);
         }}
       >
         {/* username */}
@@ -99,6 +99,6 @@ function SignUpForm() {
       </form>
     </>
   );
-}
+};
 
 export default SignUpForm;

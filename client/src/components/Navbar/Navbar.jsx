@@ -2,6 +2,7 @@ import React from "react";
 import "./Navbar.css";
 import { navList } from "./Navlist";
 import SignUpForm from "../SignUpForm";
+import LoginForm from "../LoginForm";
 
 const Navbar = () => {
   return (
@@ -13,6 +14,7 @@ const Navbar = () => {
           })}
         </ul>
         <SignUpForm />
+        <LoginForm />
       </div>
     </>
   );

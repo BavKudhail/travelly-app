@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-// import gql from "graphql-tag";
+// TODO - add authentication token here
 
 // sign up user
 export const ADD_USER = gql`
@@ -13,4 +13,14 @@ export const ADD_USER = gql`
   }
 `;
 
-// What is the difference between named vs default export?? 
+// login user
+export const LOGIN_USER = gql`
+  mutation loginUser($email: String!, $password: String!) {
+    loginUser(email: $email, password: $password) {
+      _id
+      username
+    }
+  }
+`;
+
+// What is the difference between named vs default export??
