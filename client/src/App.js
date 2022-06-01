@@ -14,8 +14,6 @@ function App() {
       <div className="app-container">
         <Navbar />
       </div>
-
-      {/* <Home /> */}
     </div>
   );
 }

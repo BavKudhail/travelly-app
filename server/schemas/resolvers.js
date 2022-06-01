@@ -1,4 +1,5 @@
 const { User, Trip, Activity, ActivityBadge } = require('../models');
+const { AuthenticationError } = require("apollo-server-express");
 
 const resolvers = {
   Query: {
@@ -15,15 +16,15 @@ const resolvers = {
     loginUser: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
-        return console.log('No user found');
+        throw new AuthenticationError("Email not found!");
       }
       // !add token back
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        return console.log('Wrong password');
+        throw new AuthenticationError("Incorrect password!");
       }
-
+      // return {token, user } here
       console.log(user);
       return user;
     },
