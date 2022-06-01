@@ -18,17 +18,10 @@ import Home from "./pages/Home";
 // components
 import { Navbar } from "./components";
 
-// * @TODO * insert auth here *
-
-// graphql link
-const httpLink = createHttpLink({
-  uri: "/graphql",
-});
-
 // apollo client
 const client = new ApolloClient({
   // @TODO - insert auth here (link: authLink.concat(httpLink),)
-  link: httpLink,
+  uri: "/graphql",
   cache: new InMemoryCache(),
 });
 

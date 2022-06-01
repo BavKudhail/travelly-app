@@ -1,75 +1,98 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/react-hooks";
 // TODO - import auth here
 
 // mutations/queries
 import { ADD_USER } from "../utils/mutations";
 
+const DEFAULT_USER_INPUT = {
+  username: "",
+  email: "",
+  password: "",
+};
+
 function SignUpForm() {
-  // set the initial form state
-  const [userFormData, setUserFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-  // set state for form validation
-  const [validated] = useState(false);
+  // connect user inputs to our mutation
+  const [signUpUser, { loading, data, error, called }] = useMutation(ADD_USER);
 
-  //   add user mutation
-  const [addUser, { error }] = useMutation(ADD_USER);
+  // the initial values of name, email, pass = " "
+  const [userInput, setUserInput] = useState(DEFAULT_USER_INPUT);
 
-  //   handle input change
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setUserFormData({ ...userFormData, [name]: value });
-  };
-
-  //   handle form submit
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const { data } = await addUser({
-        variables: { ...userFormData },
-      });
-      //   add authentication here
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    // if the user has signed up and data has been changed?
+    if (called && data) {
+      alert("SEND USER SOMEWHERE");
     }
-    setUserFormData({
-      username: "",
-      email: "",
-      password: "",
+  }, [data, called]);
+
+  const handleUserInput = (e) => {
+    // field name = name attribute on input field
+    const fieldName = e.target.name;
+
+    // @NOTE - whatever is passed into this function, state will update to whatever that value is
+    setUserInput({
+      // spread all properties from old state into the new state
+      ...userInput,
+      // dynamically set the value of each field name
+      [fieldName]: e.target.value,
     });
-    console.log(userFormData);
   };
+
+  console.log("data", data);
 
   return (
     <>
+      <h1>SIGN UP FORM</h1>
       {/* creating a user */}
-      <form onSubmit={handleFormSubmit}>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          // prevenative measure against user triggering a network request whilst loading
+          if (!loading) {
+            const { username, email, password } = userInput;
+
+            try {
+              // trigger mutation
+              await signUpUser({
+                variables: {
+                  username,
+                  email,
+                  password,
+                },
+              });
+              // refresh user input after submission
+              setUserInput(DEFAULT_USER_INPUT);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+          console.log(userInput);
+        }}
+      >
         {/* username */}
         <input
-          value={userFormData.username}
+          onChange={handleUserInput}
           placeholder="username"
           name="username"
-          onChange={handleInputChange}
+          type="text"
           required
         ></input>
+
         {/* email */}
         <input
-          value={userFormData.email}
+          onChange={handleUserInput}
           placeholder="email"
           name="email"
-          onChange={handleInputChange}
+          type="email"
           required
         ></input>
+
         {/* password */}
         <input
+          onChange={handleUserInput}
           placeholder="password"
-          type="password"
           name="password"
-          onChange={handleInputChange}
+          type="password"
           required
         ></input>
         <button type="submit">SUBMIT</button>
