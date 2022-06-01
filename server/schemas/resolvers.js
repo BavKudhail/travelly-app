@@ -89,7 +89,6 @@ const resolvers = {
 
     addTrip: async (parent, args) => {
       //////////AUTH SECTION///////////////
-      // ? Auth:
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
 
       //////////PROCESSING/////////////////
@@ -100,7 +99,6 @@ const resolvers = {
     },
     addActivity: async (parent, args) => {
       //////////AUTH SECTION///////////////
-      // ? Auth:
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
 
       //////////PROCESSING/////////////////
@@ -112,7 +110,6 @@ const resolvers = {
     // Laura
     addActivityBadge: async (parent, { badgeName, badgeImage, activities }) => {
       //////////AUTH SECTION///////////////
-      // ? Auth:
       // TODO: add authorisation to check if current user isAdmin (maybe use context?)
 
       //////////PROCESSING/////////////////
