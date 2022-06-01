@@ -87,6 +87,10 @@ const resolvers = {
       return admin;
     },
 
+    //////////////////////////////////////
+    /////////COMPANY FUNCTIONS////////////
+    //////////////////////////////////////
+
     addTrip: async (parent, args) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
@@ -107,7 +111,11 @@ const resolvers = {
       //////////RETURN VALUE///////////////
       return activity;
     },
-    // Laura
+
+    //////////////////////////////////////
+    /////////ADMIN FUNCTIONS////////////
+    //////////////////////////////////////
+
     addActivityBadge: async (parent, { badgeName, badgeImage, activities }) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user isAdmin (maybe use context?)
@@ -118,6 +126,7 @@ const resolvers = {
         badgeImage,
       });
 
+      // ! Check is this can be refactored to use the activityBadge variable above rather than finding by _id again
       const updatedActivityBadge = await ActivityBadge.findByIdAndUpdate(
         { _id: activityBadge._id },
         {
