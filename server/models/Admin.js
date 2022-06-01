@@ -1,19 +1,30 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const adminSchema = new Schema({
   email: {
     type: String,
     required: true,
     unique: true,
-    match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, 'Must be a valid email address'],
+    match: [
+      /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+      "Must be a valid email address",
+    ],
   },
   password: {
     type: String,
     required: true,
     // match? maybe add a regex here to ensure password strength?
   },
+  isCompanyAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: true,
+  },
 });
 
-const Admin = model('Admin', adminSchema);
+const Admin = model("Admin", adminSchema);
 
 module.exports = Admin;

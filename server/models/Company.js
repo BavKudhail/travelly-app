@@ -1,4 +1,5 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const companySchema = new Schema(
   {
@@ -12,7 +13,10 @@ const companySchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, 'Must be a valid email address'],
+      match: [
+        /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+        "Must be a valid email address",
+      ],
     },
     password: {
       type: String,
@@ -22,9 +26,17 @@ const companySchema = new Schema(
     trips: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Trip',
+        ref: "Trip",
       },
     ],
+    isCompanyAdmin: {
+      type: Boolean,
+      default: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: {
@@ -33,8 +45,21 @@ const companySchema = new Schema(
   }
 );
 
-// TODO: checkPassword func
+// hash user password
+companySchema.pre("save", async function (next) {
+  if (this.isNew || this.isModified("password")) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
 
-const Company = model('Company', companySchema);
+  next();
+});
+
+// custom method to compare and validate password for logging in
+companySchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
+const Company = model("Company", companySchema);
 
 module.exports = Company;

@@ -29,6 +29,15 @@ const typeDefs = gql`
     activities: [Activity]
   }
 
+  type Company {
+    _id: ID!
+    companyUserName: String!
+    email: String!
+    password: String!
+    isCompanyAdmin: Boolean!
+    isAdmin: Boolean!
+  }
+
   type Query {
     me: User
   }
@@ -41,7 +50,14 @@ const typeDefs = gql`
       bio: String
     ): User
 
+    addCompany(
+      companyUserName: String!
+      email: String!
+      password: String!
+    ): Company
+
     loginUser(email: String!, password: String!): User
+    loginCompany(email: String!, password: String!): Company
 
     addTrip(
       tripName: String!
