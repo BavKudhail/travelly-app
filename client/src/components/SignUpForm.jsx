@@ -3,7 +3,12 @@ import React, { UseState } from "react";
 function SignUpForm() {
   return (
     <>
-      <h1>This is the sign up form</h1>
+    {/* creating a user */}
+      <form>
+        <input placeholder="username"></input>
+        <input placeholder="email"></input>
+        <input placeholder="password" type="password"></input>
+      </form>
     </>
   );
 }
