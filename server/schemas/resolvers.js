@@ -1,4 +1,11 @@
-const { User, Trip, Activity, ActivityBadge, Company } = require("../models");
+const {
+  User,
+  Trip,
+  Activity,
+  ActivityBadge,
+  Company,
+  Admin,
+} = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 
 const resolvers = {
@@ -21,6 +28,11 @@ const resolvers = {
       const company = await Company.create(args);
       // !Add token back
       return company;
+    },
+    addAdmin: async (parent, args) => {
+      const admin = await Admin.create(args);
+      // !Add token back
+      return admin;
     },
 
     //////////////////////////////////////
@@ -57,6 +69,22 @@ const resolvers = {
       // return {token, user } here
       console.log(company);
       return company;
+    },
+
+    loginAdmin: async (parent, { email, password }) => {
+      const admin = await Admin.findOne({ email });
+      if (!admin) {
+        throw new AuthenticationError("Email not found!");
+      }
+      // !add token back
+      const correctPw = await admin.isCorrectPassword(password);
+
+      if (!correctPw) {
+        throw new AuthenticationError("Incorrect password!");
+      }
+      // return {token, user } here
+      console.log(admin);
+      return admin;
     },
 
     addTrip: async (parent, args) => {

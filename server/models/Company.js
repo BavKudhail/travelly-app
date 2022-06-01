@@ -45,7 +45,7 @@ const companySchema = new Schema(
   }
 );
 
-// hash user password
+// hash company password
 companySchema.pre("save", async function (next) {
   if (this.isNew || this.isModified("password")) {
     const saltRounds = 10;
