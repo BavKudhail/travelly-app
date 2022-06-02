@@ -261,14 +261,61 @@ const resolvers = {
       return post;
     },
 
+    // ! Need to refactor to use context to get userId rather than passing it in in the args
     saveCountryBadge: async (parent, { badgeId, userId }, context) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if current user has access to the post (maybe use context?)
+
+      //////////PROCESSING/////////////////
       const user = await User.findByIdAndUpdate(
         { _id: userId },
         { $addToSet: { savedCountryBadges: badgeId } },
         { new: true, runValidators: true }
       );
 
+      //////////RETURN VALUE///////////////
       return user
+        .populate({
+          path: "savedCountryBadges",
+          model: "CountryBadge",
+          populate: {
+            path: "countries",
+            model: "Country",
+          },
+        })
+        .populate({
+          path: "savedActivityBadges",
+          model: "ActivityBadge",
+          populate: {
+            path: "activities",
+            model: "Activity",
+          },
+        })
+        .execPopulate();
+    },
+
+    // ! Need to refactor to use context to get userId rather than passing it in in the args
+    saveActivityBadge: async (parent, { badgeId, userId }, context) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if current user has access to the post (maybe use context?)
+
+      //////////PROCESSING/////////////////
+      const user = await User.findByIdAndUpdate(
+        { _id: userId },
+        { $addToSet: { savedActivityBadges: badgeId } },
+        { new: true, runValidators: true }
+      );
+
+      //////////RETURN VALUE///////////////
+      return user
+        .populate({
+          path: "savedActivityBadges",
+          model: "ActivityBadge",
+          populate: {
+            path: "activities",
+            model: "Activity",
+          },
+        })
         .populate({
           path: "savedCountryBadges",
           model: "CountryBadge",

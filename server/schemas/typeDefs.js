@@ -72,6 +72,7 @@ const typeDefs = gql`
     bio: String
     posts: [Post]
     savedCountryBadges: [CountryBadge]
+    savedActivityBadges: [ActivityBadge]
   }
 
   type UserAuth {
@@ -141,9 +142,9 @@ const typeDefs = gql`
     addComment(userId: ID!, commentText: String!, postId: ID!): Post
 
     saveCountryBadge(badgeId: ID!, userId: ID!): User
+
+    saveActivityBadge(badgeId: ID!, userId: ID!): User
   }
 `;
 
 module.exports = typeDefs;
-
-// ! how do we link the comments to the posts?
