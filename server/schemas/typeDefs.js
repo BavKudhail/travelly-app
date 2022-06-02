@@ -73,6 +73,21 @@ const typeDefs = gql`
     posts: [Post]
   }
 
+  type UserAuth {
+    token: ID!
+    user: User
+  }
+
+  type CompanyAuth {
+    token: ID!
+    Company: Company
+  }
+
+  type AdminAuth {
+    token: ID!
+    Admin: Admin
+  }
+
   type Query {
     me: User
   }
@@ -83,19 +98,19 @@ const typeDefs = gql`
       email: String!
       password: String!
       bio: String
-    ): User
+    ): UserAuth
 
     addCompany(
       companyUserName: String!
       email: String!
       password: String!
-    ): Company
+    ): CompanyAuth
 
-    addAdmin(email: String!, password: String!): Admin
+    addAdmin(email: String!, password: String!): AdminAuth
 
-    loginUser(email: String!, password: String!): User
-    loginCompany(email: String!, password: String!): Company
-    loginAdmin(email: String!, password: String!): Admin
+    loginUser(email: String!, password: String!): UserAuth
+    loginCompany(email: String!, password: String!): CompanyAuth
+    loginAdmin(email: String!, password: String!): AdminAuth
 
     addTrip(
       tripName: String!
