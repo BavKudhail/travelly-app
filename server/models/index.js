@@ -6,5 +6,7 @@ const Country = require('./Country');
 const CountryBadge = require('./CountryBadge');
 const Company = require('./Company');
 const Admin = require('./Admin');
+const Post = require('./Post');
+const Comment = require('./Comment');
 
-module.exports = { User, Trip, Activity, ActivityBadge, Country, CountryBadge, Company, Admin };
+module.exports = { User, Trip, Activity, ActivityBadge, Country, CountryBadge, Company, Admin, Post, Comment };

@@ -58,6 +58,19 @@ const typeDefs = gql`
     countries: [Country]
   }
 
+  type Post {
+    _id: ID!
+    username: String!
+    postText: String!
+    comments: [Comment]
+  }
+
+  type Comment {
+    _id: ID!
+    username: String!
+    commentText: String!
+  }
+
   type Query {
     me: User
   }
@@ -82,9 +95,13 @@ const typeDefs = gql`
     addCountry(countryName: String!): Country
 
     addCountryBadge(badgeName: String!, badgeImage: String, countries: [ID]): CountryBadge
+
+    addPost(username: String!, postText: String!): Post
+
+    addComment(username: String!, commentText: String!): Comment
   }
 `;
 
 module.exports = typeDefs;
 
-// ! addActivityBadge not sure about the activities array?
+// ! how do we link the comments to the posts?
