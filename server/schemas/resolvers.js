@@ -1,4 +1,4 @@
-const { User, Trip, Activity, ActivityBadge, Country, CountryBadge, Company, Admin } = require('../models');
+const { User, Trip, Activity, ActivityBadge, Country, CountryBadge, Company, Admin, Post, Comment } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
@@ -187,6 +187,20 @@ const resolvers = {
           model: 'Country',
         })
         .execPopulate();
+    },
+
+    //////////////////////////////////////
+    /////////USER FUNCTIONS///////////////
+    //////////////////////////////////////
+
+    addPost: async (parent, args) => {
+      const post = await Post.create(args);
+      return post;
+    },
+
+    addComment: async (parent, args) => {
+      const comment = await Comment.create(args);
+      return comment;
     },
   },
 };
