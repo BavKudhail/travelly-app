@@ -241,6 +241,7 @@ const resolvers = {
         { _id: postId },
         {
           $addToSet: {
+            // ? Could do with refactoring so that userId is actually a nested User as opposed to just the id
             comments: {
               userId,
               postId,
