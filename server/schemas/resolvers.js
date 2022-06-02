@@ -12,6 +12,8 @@ const {
 } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 
+const { signToken } = require("../utils/auth");
+
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
@@ -25,18 +27,20 @@ const resolvers = {
 
     addUser: async (parent, args) => {
       const user = await User.create(args);
-      // !Add token back
-      return user;
+      const token = signToken(user);
+      return { token, user };
     },
     addCompany: async (parent, args) => {
       const company = await Company.create(args);
-      // !Add token back
-      return company;
+
+      const token = signToken(company);
+      return { token, company };
     },
     addAdmin: async (parent, args) => {
       const admin = await Admin.create(args);
-      // !Add token back
-      return admin;
+
+      const token = signToken(admin);
+      return { token, admin };
     },
 
     //////////////////////////////////////
@@ -48,15 +52,15 @@ const resolvers = {
       if (!user) {
         throw new AuthenticationError("Email not found!");
       }
-      // !add token back
+
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
         throw new AuthenticationError("Incorrect password!");
       }
-      // return {token, user } here
+      const token = signToken(user);
       console.log(user);
-      return user;
+      return { token, user };
     },
 
     loginCompany: async (parent, { email, password }) => {
@@ -64,15 +68,15 @@ const resolvers = {
       if (!company) {
         throw new AuthenticationError("Email not found!");
       }
-      // !add token back
+
       const correctPw = await company.isCorrectPassword(password);
 
       if (!correctPw) {
         throw new AuthenticationError("Incorrect password!");
       }
-      // return {token, user } here
+      const token = signToken(company);
       console.log(company);
-      return company;
+      return { token, company };
     },
 
     loginAdmin: async (parent, { email, password }) => {
@@ -80,15 +84,15 @@ const resolvers = {
       if (!admin) {
         throw new AuthenticationError("Email not found!");
       }
-      // !add token back
+
       const correctPw = await admin.isCorrectPassword(password);
 
       if (!correctPw) {
         throw new AuthenticationError("Incorrect password!");
       }
-      // return {token, user } here
+      const token = signToken(admin);
       console.log(admin);
-      return admin;
+      return { token, admin };
     },
 
     //////////////////////////////////////
