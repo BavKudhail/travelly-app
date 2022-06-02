@@ -1,17 +1,10 @@
-const {
-  User,
-  Trip,
-  Activity,
-  ActivityBadge,
-  Company,
-  Admin,
-} = require("../models");
-const { AuthenticationError } = require("apollo-server-express");
+const { User, Trip, Activity, ActivityBadge, Country, CountryBadge, Company, Admin } = require('../models');
+const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
-      console.log("hello");
+      console.log('hello');
     },
   },
   Mutation: {
@@ -42,13 +35,13 @@ const resolvers = {
     loginUser: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
-        throw new AuthenticationError("Email not found!");
+        throw new AuthenticationError('Email not found!');
       }
       // !add token back
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect password!");
+        throw new AuthenticationError('Incorrect password!');
       }
       // return {token, user } here
       console.log(user);
@@ -58,13 +51,13 @@ const resolvers = {
     loginCompany: async (parent, { email, password }) => {
       const company = await Company.findOne({ email });
       if (!company) {
-        throw new AuthenticationError("Email not found!");
+        throw new AuthenticationError('Email not found!');
       }
       // !add token back
       const correctPw = await company.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect password!");
+        throw new AuthenticationError('Incorrect password!');
       }
       // return {token, user } here
       console.log(company);
@@ -74,13 +67,13 @@ const resolvers = {
     loginAdmin: async (parent, { email, password }) => {
       const admin = await Admin.findOne({ email });
       if (!admin) {
-        throw new AuthenticationError("Email not found!");
+        throw new AuthenticationError('Email not found!');
       }
       // !add token back
       const correctPw = await admin.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect password!");
+        throw new AuthenticationError('Incorrect password!');
       }
       // return {token, user } here
       console.log(admin);
@@ -110,6 +103,16 @@ const resolvers = {
 
       //////////RETURN VALUE///////////////
       return activity;
+    },
+    addCountry: async (parent, args) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
+
+      //////////PROCESSING/////////////////
+      const country = await Country.create(args);
+
+      //////////RETURN VALUE///////////////
+      return country;
     },
 
     //////////////////////////////////////
@@ -145,8 +148,43 @@ const resolvers = {
       // Returning the populated activityBadge
       return updatedActivityBadge
         .populate({
-          path: "activities",
-          model: "Activity",
+          path: 'activities',
+          model: 'Activity',
+        })
+        .execPopulate();
+    },
+
+    addCountryBadge: async (parent, { badgeName, badgeImage, countries }) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if current user isAdmin (maybe use context?)
+
+      //////////PROCESSING/////////////////
+      const countryBadge = await CountryBadge.create({
+        badgeName,
+        badgeImage,
+      });
+
+      // ! Check if this can be refactored to use the CountryBadge variable above rather than finding by _id again
+      const updatedCountryBadge = await CountryBadge.findByIdAndUpdate(
+        { _id: countryBadge._id },
+        {
+          $addToSet: {
+            countries: {
+              // Adding each Country id to the countries set on the badge
+              $each: countries.map((country) => {
+                return Country.findById(country)._conditions._id;
+              }),
+            },
+          },
+        },
+        { new: true, runValidators: true }
+      );
+      //////////RETURN VALUE///////////////
+      // Returning the populated CountryBadge
+      return updatedCountryBadge
+        .populate({
+          path: 'countries',
+          model: 'Country',
         })
         .execPopulate();
     },
