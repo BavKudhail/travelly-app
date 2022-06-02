@@ -47,7 +47,8 @@ const resolvers = {
     //////////////LOGIN///////////////////
     //////////////////////////////////////
 
-    loginUser: async (parent, { email, password }) => {
+    loginUser: async (parent, { email, password }, context) => {
+      console.log(context.user);
       const user = await User.findOne({ email });
       if (!user) {
         throw new AuthenticationError("Email not found!");
@@ -209,7 +210,7 @@ const resolvers = {
     //////////////////////////////////////
 
     // ! Need to refactor to use context to get userId rather than passing it in in the args
-    addPost: async (parent, { userId, postText }) => {
+    addPost: async (parent, { userId, postText }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user has access to the post (maybe use context?)
 
@@ -258,6 +259,25 @@ const resolvers = {
 
       //////////RETURN VALUE///////////////
       return post;
+    },
+
+    saveCountryBadge: async (parent, { badgeId, userId }, context) => {
+      const user = await User.findByIdAndUpdate(
+        { _id: userId },
+        { $addToSet: { savedCountryBadges: badgeId } },
+        { new: true, runValidators: true }
+      );
+
+      return user
+        .populate({
+          path: "savedCountryBadges",
+          model: "CountryBadge",
+          populate: {
+            path: "countries",
+            model: "Country",
+          },
+        })
+        .execPopulate();
     },
   },
 };
