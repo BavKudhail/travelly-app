@@ -212,7 +212,7 @@ const resolvers = {
     // ! Need to refactor to use context to get userId rather than passing it in in the args
     addPost: async (parent, { userId, postText }, context) => {
       //////////AUTH SECTION///////////////
-      // TODO: add authorisation to check if current user has access to the post (maybe use context?)
+      // TODO: add authorisation to check if current user can create posts (i.e not company or admin)
 
       //////////PROCESSING/////////////////
       const post = await Post.create({ userId, postText });
@@ -264,7 +264,7 @@ const resolvers = {
     // ! Need to refactor to use context to get userId rather than passing it in in the args
     saveCountryBadge: async (parent, { badgeId, userId }, context) => {
       //////////AUTH SECTION///////////////
-      // TODO: add authorisation to check if current user has access to the post (maybe use context?)
+      // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
 
       //////////PROCESSING/////////////////
       const user = await User.findByIdAndUpdate(
@@ -297,7 +297,7 @@ const resolvers = {
     // ! Need to refactor to use context to get userId rather than passing it in in the args
     saveActivityBadge: async (parent, { badgeId, userId }, context) => {
       //////////AUTH SECTION///////////////
-      // TODO: add authorisation to check if current user has access to the post (maybe use context?)
+      // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
 
       //////////PROCESSING/////////////////
       const user = await User.findByIdAndUpdate(
