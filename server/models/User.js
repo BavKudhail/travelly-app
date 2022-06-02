@@ -55,15 +55,23 @@ const userSchema = new Schema(
       type: String,
     },
     // might be easier to have just badges instead of seperating country and activities? so easier to reference below
-    savedBadges: [
+    savedCountryBadges: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Badge",
+        ref: "CountryBadge",
+      },
+    ],
+
+    savedActivityBadges: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "ActivityBadge",
       },
     ],
 
     // not sure with bucket lists
 
+    // ! We will need to have a function that compares the end date of users trips to current date and adds each country in the trip to the countries visited list when the end date has passed, call the function when user logs in?
     countriesVisited: [
       {
         type: Schema.Types.ObjectId,
@@ -111,6 +119,15 @@ userSchema.virtual("followingCount").get(function () {
 // function to return follower count -- followers to be declared in typeDefs?
 userSchema.virtual("followerCount").get(function () {
   return this.followers.length;
+});
+
+// function to create bucketList array made up of all of the countries included in the users savedCountryBadges array
+userSchema.virtual("bucketList").get(function () {
+  const bucketList = [];
+  this.savedCountryBadges.forEach((badge) => {
+    bucketList.push(...badge.countries);
+  });
+  return bucketList;
 });
 
 // custom method to compare and validate password for logging in

@@ -71,6 +71,7 @@ const typeDefs = gql`
     password: String!
     bio: String
     posts: [Post]
+    savedCountryBadges: [CountryBadge]
   }
 
   type UserAuth {
@@ -138,6 +139,8 @@ const typeDefs = gql`
     addPost(userId: ID!, postText: String!): User
 
     addComment(userId: ID!, commentText: String!, postId: ID!): Post
+
+    saveCountryBadge(badgeId: ID!, userId: ID!): User
   }
 `;
 
