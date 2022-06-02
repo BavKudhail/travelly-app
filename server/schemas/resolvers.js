@@ -1,10 +1,21 @@
-const { User, Trip, Activity, ActivityBadge, Country, CountryBadge, Company, Admin, Post, Comment } = require('../models');
-const { AuthenticationError } = require('apollo-server-express');
+const {
+  User,
+  Trip,
+  Activity,
+  ActivityBadge,
+  Country,
+  CountryBadge,
+  Company,
+  Admin,
+  Post,
+  Comment,
+} = require("../models");
+const { AuthenticationError } = require("apollo-server-express");
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
-      console.log('hello');
+      console.log("hello");
     },
   },
   Mutation: {
@@ -35,13 +46,13 @@ const resolvers = {
     loginUser: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
-        throw new AuthenticationError('Email not found!');
+        throw new AuthenticationError("Email not found!");
       }
       // !add token back
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect password!');
+        throw new AuthenticationError("Incorrect password!");
       }
       // return {token, user } here
       console.log(user);
@@ -51,13 +62,13 @@ const resolvers = {
     loginCompany: async (parent, { email, password }) => {
       const company = await Company.findOne({ email });
       if (!company) {
-        throw new AuthenticationError('Email not found!');
+        throw new AuthenticationError("Email not found!");
       }
       // !add token back
       const correctPw = await company.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect password!');
+        throw new AuthenticationError("Incorrect password!");
       }
       // return {token, user } here
       console.log(company);
@@ -67,13 +78,13 @@ const resolvers = {
     loginAdmin: async (parent, { email, password }) => {
       const admin = await Admin.findOne({ email });
       if (!admin) {
-        throw new AuthenticationError('Email not found!');
+        throw new AuthenticationError("Email not found!");
       }
       // !add token back
       const correctPw = await admin.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect password!');
+        throw new AuthenticationError("Incorrect password!");
       }
       // return {token, user } here
       console.log(admin);
@@ -129,7 +140,7 @@ const resolvers = {
         badgeImage,
       });
 
-      // ! Check is this can be refactored to use the activityBadge variable above rather than finding by _id again
+      // ! Check if this can be refactored to use the activityBadge variable above rather than finding by _id again
       const updatedActivityBadge = await ActivityBadge.findByIdAndUpdate(
         { _id: activityBadge._id },
         {
@@ -148,8 +159,8 @@ const resolvers = {
       // Returning the populated activityBadge
       return updatedActivityBadge
         .populate({
-          path: 'activities',
-          model: 'Activity',
+          path: "activities",
+          model: "Activity",
         })
         .execPopulate();
     },
@@ -183,8 +194,8 @@ const resolvers = {
       // Returning the populated CountryBadge
       return updatedCountryBadge
         .populate({
-          path: 'countries',
-          model: 'Country',
+          path: "countries",
+          model: "Country",
         })
         .execPopulate();
     },
@@ -193,14 +204,55 @@ const resolvers = {
     /////////USER FUNCTIONS///////////////
     //////////////////////////////////////
 
-    addPost: async (parent, args) => {
-      const post = await Post.create(args);
-      return post;
+    // ! Need to refactor to use context to get userId rather than passing it in in the args
+    addPost: async (parent, { userId, postText }) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if current user has access to the post (maybe use context?)
+
+      //////////PROCESSING/////////////////
+      const post = await Post.create({ userId, postText });
+      const user = await User.findByIdAndUpdate(
+        { _id: userId },
+        {
+          $addToSet: {
+            posts: post._id,
+          },
+        },
+        { new: true, runValidators: true }
+      );
+
+      //////////RETURN VALUE///////////////
+      return user
+        .populate({
+          path: "posts",
+          model: "Post",
+        })
+        .execPopulate();
     },
 
-    addComment: async (parent, args) => {
-      const comment = await Comment.create(args);
-      return comment;
+    // ! Need to refactor to use context to get userId rather than passing it in in the args
+    addComment: async (parent, { userId, postId, commentText }) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if current user has access to the post (maybe use context?)
+
+      //////////PROCESSING/////////////////
+      // Adding the new comment to the comment set on the post with the id of postId
+      const post = await Post.findByIdAndUpdate(
+        { _id: postId },
+        {
+          $addToSet: {
+            comments: {
+              userId,
+              postId,
+              commentText,
+            },
+          },
+        },
+        { new: true, runValidators: true }
+      );
+
+      //////////RETURN VALUE///////////////
+      return post;
     },
   },
 };

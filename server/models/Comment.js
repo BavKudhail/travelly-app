@@ -1,17 +1,22 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const commentSchema = new Schema(
   {
-    username: {
-      type: String,
+    userId: {
+      type: Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: "User",
     },
     commentText: {
       type: String,
       required: true,
       minLength: 1,
       maxLength: 500, // not sure what we want our max length to be?
+    },
+    postId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Post",
     },
   },
   {
