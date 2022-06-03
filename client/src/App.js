@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // pages
 import Home from "./pages/Home";
+import { Chat, Login } from "./pages";
 
 // components
 import { Navbar } from "./components";
@@ -28,11 +29,15 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <div className="app-container">
-          <Navbar />
+      <Router>
+        <div className="app">
+          {/* <Navbar /> */}
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/chat" element={<Chat />} />
+          </Routes>
         </div>
-      </div>
+      </Router>
     </ApolloProvider>
   );
 }
