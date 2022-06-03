@@ -43,6 +43,23 @@ const typeDefs = gql`
     countryName: String!
   }
 
+  type Message {
+    _id: ID!
+    sender: User!
+    content: String!
+    chat: Chat!
+  }
+
+  type Chat {
+    _id: ID!
+    chatName: String!
+    # an array of users
+    users: [User]
+    latestMessage: Message
+    # reference the user that created this
+    groupAdmin: User!
+  }
+
   type CountryBadge {
     _id: ID!
     badgeName: String!
@@ -76,6 +93,7 @@ const typeDefs = gql`
   }
 
   type UserAuth {
+    # should the token be an ID? or a string?
     token: ID!
     user: User
   }
@@ -92,9 +110,19 @@ const typeDefs = gql`
 
   type Query {
     me: User
+    # return an array of Chats
+    getGroupChats(userId: ID!): [Chat]
+    getAllMessages(chatId: ID!): [Message]
   }
 
   type Mutation {
+    # messages
+    sendMessage(content: String!, chatId: ID!, userId: ID!): Message
+    # chat
+    createGroupChat(chatName: String!, userId: ID!): Chat
+    # add user
+    addUserToGroupChat(chatId: ID!, userId: ID!): Chat
+
     addUser(
       username: String!
       email: String!
