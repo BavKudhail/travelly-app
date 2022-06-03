@@ -26,21 +26,33 @@ db.once("open", async () => {
     const countryBadges = await CountryBadge.find();
 
     // ? I believe this will add 5 random country _ids to each country badge - LW
-    countryBadges.forEach((badge) => {
-      await CountryBadge.findOneAndUpdate(
-            { _id: badge._id },
-            {
-              $addToSet: {
-                countries: countries[Math.floor((Math.random() * countries.length) + 1)]._id,
-                countries: countries[Math.floor((Math.random() * countries.length) + 1)]._id,
-                countries: countries[Math.floor((Math.random() * countries.length) + 1)]._id,
-                countries: countries[Math.floor((Math.random() * countries.length) + 1)]._id,
-                countries: countries[Math.floor((Math.random() * countries.length) + 1)]._id,
-              },
-            }
-          );
+    // ! Currently not working - don't think its awaiting here
+    await countryBadges.forEach((badge) => {
+      CountryBadge.findByIdAndUpdate(
+        { _id: badge._id },
+        {
+          $addToSet: {
+            // countries: [...countries][
+            //   Math.floor(Math.random() * ([...countries].length - 1))
+            // ]._id,
+            // countries: [...countries][
+            //   Math.floor(Math.random() * ([...countries].length - 1))
+            // ]._id,
+            // countries: [...countries][
+            //   Math.floor(Math.random() * ([...countries].length - 1))
+            // ]._id,
+            // countries: [...countries][
+            //   Math.floor(Math.random() * ([...countries].length - 1))
+            // ]._id,
+            // countries: [...countries][
+            //   Math.floor(Math.random() * ([...countries].length - 1))
+            // ]._id,
+            countries: "6299ea491a439e62170d24c6",
+          },
+        },
+        { new: true, runValidators: true }
+      );
     });
-
   } catch (err) {
     console.error(err);
     process.exit(1);
