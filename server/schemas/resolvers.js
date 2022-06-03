@@ -100,15 +100,51 @@ const resolvers = {
     /////////COMPANY FUNCTIONS////////////
     //////////////////////////////////////
 
-    addTrip: async (parent, args) => {
+    addTrip: async (
+      parent,
+      { tripName, tripDescription, startDate, endDate, companyId, countries }
+    ) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
 
       //////////PROCESSING/////////////////
-      const trip = await Trip.create(args);
+      const trip = await Trip.create({
+        tripName,
+        tripDescription,
+        startDate,
+        endDate,
+      });
 
+      const updatedTrip = await Trip.findByIdAndUpdate(
+        { _id: trip._id },
+        {
+          $addToSet: {
+            countries: {
+              // Adding each Country id to the countries set on the badge
+              $each: countries.map((country) => {
+                return Country.findById(country)._conditions._id;
+              }),
+            },
+          },
+        },
+        { new: true, runValidators: true }
+      );
+
+      const company = Company.findByIdAndUpdate(
+        { _id: companyId },
+        { $addToSet: { trips: trip._id } },
+        { new: true, runValidators: true }
+      );
       //////////RETURN VALUE///////////////
-      return trip;
+
+      return company.populate({
+        path: "trips",
+        model: "Trip",
+        populate: {
+          path: "countries",
+          model: "Country",
+        },
+      });
     },
     addActivity: async (parent, args) => {
       //////////AUTH SECTION///////////////

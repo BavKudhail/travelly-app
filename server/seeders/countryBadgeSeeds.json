@@ -1,26 +1,34 @@
 [
   {
-    "badgeName": "Western Europe Wanderer"
+    "badgeName": "Western Europe Wanderer",
+    "badgeImage": "abcde"
   },
   {
-    "badgeName": "South American Searcher"
+    "badgeName": "South American Searcher",
+    "badgeImage": "abcdf"
   },
   {
-    "badgeName": "North American Natural"
+    "badgeName": "North American Natural",
+    "badgeImage": "abcdg"
   },
   {
-    "badgeName": "Carribean Connoissuer"
+    "badgeName": "Carribean Connoissuer",
+    "badgeImage": "abcdh"
   },
   {
-    "badgeName": "Central American Pioneer"
+    "badgeName": "Central American Pioneer",
+    "badgeImage": "abcdi"
   },
   {
-    "badgeName": "Australasian Explorer"
+    "badgeName": "Australasian Explorer",
+    "badgeImage": "abcdj"
   },
   {
-    "badgeName": "Asia Adventurer"
+    "badgeName": "Asia Adventurer",
+    "badgeImage": "abcdk"
   },
   {
-    "badgeName": "Mediterranean Marvel"
+    "badgeName": "Mediterranean Marvel",
+    "badgeImage": "abcdl"
   }
 ]
