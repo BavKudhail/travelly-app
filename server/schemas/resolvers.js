@@ -25,6 +25,11 @@ const resolvers = {
     me: async (parent, args, context) => {
       console.log("hello");
     },
+    
+    //////////////////////////////////////
+    ////////////// CHAT //////////////////
+    //////////////////////////////////////
+
     // get all messages
     getAllMessages: async (parent, { chatId }, context) => {
       // get all messages based on the chat ID
@@ -50,6 +55,10 @@ const resolvers = {
     },
   },
   Mutation: {
+    //////////////////////////////////////
+    ////////////// CHAT //////////////////
+    //////////////////////////////////////
+
     // create new message
     sendMessage: async (parent, { content, chatId, userId }, context) => {
       const newMessage = await Message.create({

@@ -3,7 +3,6 @@ import { useMutation } from "@apollo/react-hooks";
 // TODO - import auth here
 
 // mutations/queries
-import Auth from "../utils/auth";
 import { ADD_USER } from "../utils/mutations";
 
 // default user input
@@ -59,7 +58,7 @@ const SignUpForm = () => {
                 variables: {
                   ...userInput,
                 },
-                
+
                 // add authentication here
               });
               console.log("user input added: ", userInput);
