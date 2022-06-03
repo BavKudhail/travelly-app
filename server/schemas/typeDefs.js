@@ -9,14 +9,6 @@ const typeDefs = gql`
     isAdmin: Boolean!
   }
 
-  type Trip {
-    _id: ID!
-    tripName: String!
-    tripDescription: String!
-    startDate: String!
-    endDate: String!
-  }
-
   type Company {
     _id: ID!
     companyUsername: String!
@@ -42,6 +34,15 @@ const typeDefs = gql`
   type Country {
     _id: ID!
     countryName: String!
+  }
+
+  type Trip {
+    _id: ID!
+    tripName: String!
+    tripDescription: String!
+    startDate: String!
+    endDate: String!
+    countries: [Country]
   }
 
   type CountryBadge {
@@ -121,6 +122,7 @@ const typeDefs = gql`
       startDate: String!
       endDate: String
       companyId: ID!
+      countries: [ID]
     ): Company
 
     addActivity(activityName: String!): Activity
