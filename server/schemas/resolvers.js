@@ -100,15 +100,32 @@ const resolvers = {
     /////////COMPANY FUNCTIONS////////////
     //////////////////////////////////////
 
-    addTrip: async (parent, args) => {
+    addTrip: async (
+      parent,
+      { tripName, tripDescription, startDate, endDate, companyId }
+    ) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
 
       //////////PROCESSING/////////////////
-      const trip = await Trip.create(args);
+      const trip = await Trip.create({
+        tripName,
+        tripDescription,
+        startDate,
+        endDate,
+      });
 
+      const company = Company.findByIdAndUpdate(
+        { _id: companyId },
+        { $addToSet: { trips: trip._id } },
+        { new: true, runValidators: true }
+      );
       //////////RETURN VALUE///////////////
-      return trip;
+      console.log(company);
+      return company.populate({
+        path: "trips",
+        model: "Trip",
+      });
     },
     addActivity: async (parent, args) => {
       //////////AUTH SECTION///////////////

@@ -1,15 +1,6 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-  type Company {
-    _id: ID!
-    companyUserName: String!
-    email: String!
-    password: String!
-    isCompanyAdmin: Boolean!
-    isAdmin: Boolean!
-  }
-
   type Admin {
     _id: ID!
     email: String!
@@ -24,6 +15,16 @@ const typeDefs = gql`
     tripDescription: String!
     startDate: String!
     endDate: String!
+  }
+
+  type Company {
+    _id: ID!
+    companyUsername: String!
+    email: String!
+    password: String!
+    isCompanyAdmin: Boolean!
+    isAdmin: Boolean!
+    trips: [Trip]
   }
 
   type Activity {
@@ -82,12 +83,12 @@ const typeDefs = gql`
 
   type CompanyAuth {
     token: ID!
-    Company: Company
+    company: Company!
   }
 
   type AdminAuth {
     token: ID!
-    Admin: Admin
+    admin: Admin
   }
 
   type Query {
@@ -103,7 +104,7 @@ const typeDefs = gql`
     ): UserAuth
 
     addCompany(
-      companyUserName: String!
+      companyUsername: String!
       email: String!
       password: String!
     ): CompanyAuth
@@ -119,7 +120,8 @@ const typeDefs = gql`
       tripDescription: String!
       startDate: String!
       endDate: String
-    ): Trip
+      companyId: ID!
+    ): Company
 
     addActivity(activityName: String!): Activity
 
