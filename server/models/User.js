@@ -122,10 +122,19 @@ userSchema.virtual("followerCount").get(function () {
 });
 
 // function to create bucketList array made up of all of the countries included in the users savedCountryBadges array
+// ! Need to workout how to populate the bucket list with all the countries included in users saved badges by mapping over badges
+// ? May have to do this kind of thing in resolver?
 userSchema.virtual("bucketList").get(function () {
   const bucketList = [];
-  this.savedCountryBadges.forEach((badge) => {
-    bucketList.push(...badge.countries);
+  this.populate({
+    path: "savedCountryBadges",
+    model: "CountryBadge",
+  }).savedCountryBadges.forEach((badge) => {
+    bucketList.push(
+      ...badge.countries.map((country) => {
+        return country._id;
+      })
+    );
   });
   return bucketList;
 });
