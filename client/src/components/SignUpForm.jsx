@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/react-hooks";
 // mutations/queries
 import { ADD_USER } from "../utils/mutations";
 
+// default user input
 const DEFAULT_USER_INPUT = {
   username: "",
   email: "",

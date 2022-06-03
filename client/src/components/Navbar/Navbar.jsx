@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="navbar">
         <ul className="navbar-items">
           {navList.map((item) => {
-            return <li>{item.title}</li>;
+            return <li key={item.title}>{item.title}</li>;
           })}
         </ul>
         <SignUpForm />

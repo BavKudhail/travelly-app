@@ -9,8 +9,14 @@ const {
   Admin,
   Post,
   Comment,
+  Chat,
+  Message,
 } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
+
+// Bav Kudhail ID - 6297844e0f3fb256b41ad4f2
+
+const chatData = require("../data/data");
 
 const { signToken } = require("../utils/auth");
 
@@ -19,14 +25,99 @@ const resolvers = {
     me: async (parent, args, context) => {
       console.log("hello");
     },
+    
+    //////////////////////////////////////
+    ////////////// CHAT //////////////////
+    //////////////////////////////////////
+
+    // get all messages
+    getAllMessages: async (parent, { chatId }, context) => {
+      // get all messages based on the chat ID
+      const messages = await Message.find({ chat: chatId })
+        .populate("sender")
+        .populate("chat");
+      return messages;
+    },
+    // get all group chats that the specific user is a part of
+    getGroupChats: async (parent, { userId }, context) => {
+      const loggedInUser = await User.findById({
+        _id: userId,
+      });
+      const chats = await Chat.find({
+        // find all chats that the logged in user is a part of
+        users: { $elemMatch: { $eq: loggedInUser } },
+      })
+        .populate("groupAdmin")
+        .populate("users")
+        .populate("latestMessage");
+      // how can I populate the users information?
+      return chats;
+    },
   },
   Mutation: {
+    //////////////////////////////////////
+    ////////////// CHAT //////////////////
+    //////////////////////////////////////
+
+    // create new message
+    sendMessage: async (parent, { content, chatId, userId }, context) => {
+      const newMessage = await Message.create({
+        // the sender of the message is the currently logged in user
+        sender: userId,
+        content,
+        chat: chatId,
+      });
+      // get the message
+      const updatedMessage = await Message.findById({
+        _id: newMessage._id,
+      })
+        .populate("sender")
+        .populate("chat");
+
+      // update the latest message with the sent message
+      const updateLatestMessage = await Chat.findByIdAndUpdate(
+        { _id: chatId },
+        { latestMessage: updatedMessage }
+      );
+
+      return updatedMessage;
+    },
+    // create group chat
+    createGroupChat: async (parent, { chatName, userId }, context) => {
+      // static user ID - change to logged in user
+      const loggedInUser = await User.findById({
+        _id: userId,
+      });
+      const chat = await Chat.create({
+        chatName,
+        groupAdmin: loggedInUser,
+      });
+
+      return chat;
+    },
+
+    // add a user to the group chat
+    addUserToGroupChat: async (parent, { chatId, userId }, context) => {
+      // get the logged in user (static for now)
+      const loggedInUser = await User.findById({
+        _id: userId,
+      });
+      // find the chat by its id
+      const updatedChat = await Chat.findByIdAndUpdate(
+        { _id: chatId },
+        // push the loggedInUser to the users array
+        { $push: { users: loggedInUser } }
+      ).populate("users");
+      return updatedChat;
+    },
+
     //////////////////////////////////////
     //////////////SIGNUP//////////////////
     //////////////////////////////////////
 
     addUser: async (parent, args) => {
       const user = await User.create(args);
+      // generate token
       const token = signToken(user);
       return { token, user };
     },
