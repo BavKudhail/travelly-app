@@ -74,6 +74,7 @@ export default function LoginForm() {
           ></input>
           <button type="submit">SUBMIT</button>
         </form>
+        {/* login form */}
       </>
     </>
   );
