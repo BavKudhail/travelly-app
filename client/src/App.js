@@ -8,21 +8,40 @@ import {
   ApolloProvider,
   createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
 // router
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // pages
 import Home from "./pages/Home";
-import { Chat, Login } from "./pages";
+import { Chat, Landing } from "./pages";
 
 // components
 import { Navbar } from "./components";
 
-// apollo client
-const client = new ApolloClient({
-  // @TODO - insert auth here (link: authLink.concat(httpLink),)
+// http link
+const httpLink = createHttpLink({
   uri: "/graphql",
+});
+
+// auth link
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem("id_token");
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      // we are setting the header on every network request that we make to have the auth token that is available
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+// new apollo client
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -33,7 +52,7 @@ function App() {
         <div className="app">
           {/* <Navbar /> */}
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/chat" element={<Chat />} />
           </Routes>
         </div>
