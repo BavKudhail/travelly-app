@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/react-hooks";
+import "./SignUpForm.css";
 // TODO - import auth here
+import {
+  VStack,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Button,
+} from "@chakra-ui/react";
 
+// import Auth from "../utils/auth";
 // mutations/queries
 import { ADD_USER } from "../utils/mutations";
 
@@ -21,7 +32,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     // if the user has signed up and data has been changed?
-    if (called && data) {
+    if (called && data?.token) {
       alert("SEND USER SOMEWHERE");
     }
   }, [data, called]);
@@ -39,65 +50,71 @@ const SignUpForm = () => {
     });
   };
 
-  // console.log("data", data);
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    // prevenative measure against user triggering a network request whilst loading
+    if (!loading) {
+      const { username, email, password } = userInput;
+
+      try {
+        // trigger mutation
+        const { data } = await signUpUser({
+          variables: {
+            ...userInput,
+          },
+
+          // add authentication here
+        });
+        console.log("user input added: ", userInput);
+        // refresh user input after submission
+        setUserInput(DEFAULT_USER_INPUT);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <>
-      <h1>SIGN UP FORM</h1>
-      {/* creating a user */}
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          // prevenative measure against user triggering a network request whilst loading
-          if (!loading) {
-            const { username, email, password } = userInput;
-
-            try {
-              // trigger mutation
-              const { data } = await signUpUser({
-                variables: {
-                  ...userInput,
-                },
-
-                // add authentication here
-              });
-              console.log("user input added: ", userInput);
-              // refresh user input after submission
-              setUserInput(DEFAULT_USER_INPUT);
-            } catch (error) {
-              console.log(error);
-            }
-          }
-        }}
-      >
-        {/* username */}
-        <input
-          onChange={handleUserInput}
-          placeholder="username"
-          name="username"
-          type="text"
-          required
-        ></input>
-
-        {/* email */}
-        <input
-          onChange={handleUserInput}
-          placeholder="email"
-          name="email"
-          type="email"
-          required
-        ></input>
-
-        {/* password */}
-        <input
-          onChange={handleUserInput}
-          placeholder="password"
-          name="password"
-          type="password"
-          required
-        ></input>
-        <button type="submit">SUBMIT</button>
-      </form>
+      <VStack spacing="5px" color="black">
+        <form onSubmit={handleFormSubmit} className="signup-form">
+          <FormControl my={"4"}>
+            <FormLabel>Username</FormLabel>
+            <Input
+              onChange={handleUserInput}
+              placeholder="username"
+              name="username"
+              type="text"
+              required
+            />
+          </FormControl>
+          <FormControl my={"4"}>
+            <FormLabel>Email</FormLabel>
+            <Input
+              onChange={handleUserInput}
+              placeholder="email"
+              name="email"
+              type="email"
+              required
+            />
+          </FormControl>
+          <FormControl my={"4"}>
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
+              <Input
+                onChange={handleUserInput}
+                placeholder="password"
+                name="password"
+                type="password"
+                required
+              />
+            </InputGroup>
+          </FormControl>
+          <Button width={"full"} mt="4" type="submit">
+            Submit
+          </Button>
+        </form>
+      </VStack>
     </>
   );
 };

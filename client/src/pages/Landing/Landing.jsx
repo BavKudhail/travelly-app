@@ -1,7 +1,6 @@
 import {
   Container,
   Box,
-  Text,
   Tabs,
   TabList,
   TabPanels,
@@ -15,22 +14,7 @@ import LoginForm from "../../components/LoginForm";
 function Login() {
   // containers help with responsiveness
   return (
-    <Container maxW="xl" centerContent>
-      <Box
-        textAlign="center"
-        d="flex"
-        justifyContent="center"
-        p="3"
-        w="100%"
-        bg="white"
-        m="40px 0 15px 0"
-        borderRadius="lg"
-        borderWidth="1px"
-      >
-        <Text fontSize="4xl" color="black">
-          Explorer
-        </Text>
-      </Box>
+    <Container h="full" maxW="xl" centerContent>
       <Box bg="white" w="100%" p="4" borderRadius="lg" borderWidth="1px">
         <Tabs variant="soft-rounded" colorScheme="purple">
           <TabList mb="1em">
