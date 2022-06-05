@@ -93,6 +93,7 @@ const typeDefs = gql`
     savedCountryBadges: [CountryBadge]
     savedActivityBadges: [ActivityBadge]
     bucketList: [ID]
+    upcomingTrips: [Trip]
   }
 
   type UserAuth {
@@ -177,6 +178,8 @@ const typeDefs = gql`
     saveCountryBadge(badgeId: ID!, userId: ID!): User
 
     saveActivityBadge(badgeId: ID!, userId: ID!): User
+
+    userGoing(userId: ID!, tripId: ID!): User
   }
 `;
 
