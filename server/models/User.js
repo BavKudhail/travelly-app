@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 
 const userSchema = new Schema(
   {
@@ -140,6 +141,14 @@ userSchema.virtual("bucketList").get(function () {
     );
   });
   return bucketList;
+});
+
+// Function to return array of trips whose endDate has passed
+userSchema.virtual("endDatePassed").get(function () {
+  const endDatePassed = this.upcomingTrips.filter((trip) => {
+    return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 < Date.now();
+  });
+  return endDatePassed.map((trip) => trip._id);
 });
 
 // custom method to compare and validate password for logging in

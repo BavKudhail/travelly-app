@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const moment = require("moment");
 
 const tripSchema = new Schema(
   {
@@ -28,11 +29,11 @@ const tripSchema = new Schema(
       type: String,
     },
     startDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     endDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     travellers: [

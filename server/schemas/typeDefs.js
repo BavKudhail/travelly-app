@@ -94,6 +94,7 @@ const typeDefs = gql`
     savedActivityBadges: [ActivityBadge]
     bucketList: [ID]
     upcomingTrips: [Trip]
+    endDatePassed: [ID]
   }
 
   type UserAuth {
