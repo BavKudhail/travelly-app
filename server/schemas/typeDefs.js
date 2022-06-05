@@ -51,7 +51,7 @@ const typeDefs = gql`
     latestMessage: Message
     # reference the user that created this
     groupAdmin: User!
-    }
+  }
 
   type Trip {
     _id: ID!
@@ -92,6 +92,7 @@ const typeDefs = gql`
     posts: [Post]
     savedCountryBadges: [CountryBadge]
     savedActivityBadges: [ActivityBadge]
+    bucketList: [ID]
   }
 
   type UserAuth {
