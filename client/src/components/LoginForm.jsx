@@ -35,6 +35,7 @@ export default function LoginForm() {
         variables: { ...userInput },
       });
       Auth.login(data.loginUser.token);
+      console.log('Logged in!');
     } catch (err) {
       console.error(err);
     }
