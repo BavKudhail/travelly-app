@@ -54,7 +54,7 @@ const userSchema = new Schema(
     profilePicture: {
       type: String,
     },
-    // might be easier to have just badges instead of seperating country and activities? so easier to reference below
+
     savedCountryBadges: [
       {
         type: Schema.Types.ObjectId,
@@ -126,12 +126,14 @@ userSchema.virtual("followerCount").get(function () {
   return this.followers.length;
 });
 
-// function to create bucketList array made up of all of the countries included in the users savedCountryBadges array
+// function to create bucketList array made up of all of the countryIds included in the users savedCountryBadges array
 // ! Bucket list virtual returns an array of country IDS which is all we really need but curious as to how we could populate it with country info as was unable to get that to work
 userSchema.virtual("bucketList").get(function () {
   const bucketList = [];
   this.savedCountryBadges.forEach((badge) => {
     bucketList.push(
+      // Mapping over the countries array of each badge and returning an array that contains each country _id
+      // Using the spread operator so that we are just pushing the individual values into bucket list and not the array as a whole
       ...badge.countries.map((country) => {
         return country._id;
       })

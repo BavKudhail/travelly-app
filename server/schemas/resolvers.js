@@ -389,6 +389,7 @@ const resolvers = {
     },
 
     // ! Need to refactor to use context to get userId rather than passing it in in the args
+    // Adds a country badge to users savedCountryBadges
     saveCountryBadge: async (parent, { badgeId, userId }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
@@ -422,6 +423,7 @@ const resolvers = {
     },
 
     // ! Need to refactor to use context to get userId rather than passing it in in the args
+    // Adds an activity badge to users savedActivityBadges
     saveActivityBadge: async (parent, { badgeId, userId }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
@@ -454,6 +456,8 @@ const resolvers = {
         .execPopulate();
     },
 
+    // ! Need to refactor to use context to get userId rather than passing it in in the args
+    // Adds a trip to users upcomingTrips array
     userGoing: async (parent, { userId, tripId }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
