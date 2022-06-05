@@ -453,6 +453,29 @@ const resolvers = {
         })
         .execPopulate();
     },
+
+    userGoing: async (parent, { userId, tripId }, context) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
+
+      //////////PROCESSING/////////////////
+      const user = await User.findByIdAndUpdate(
+        { _id: userId },
+        { $addToSet: { upcomingTrips: tripId } },
+        { new: true, runValidators: true }
+      );
+      //////////RETURN VALUE///////////////
+      return user
+        .populate({
+          path: "upcomingTrips",
+          model: "Trip",
+          populate: {
+            path: "countries",
+            model: "Country",
+          },
+        })
+        .execPopulate();
+    },
   },
 };
 

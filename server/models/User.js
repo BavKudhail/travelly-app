@@ -69,7 +69,12 @@ const userSchema = new Schema(
       },
     ],
 
-    // not sure with bucket lists
+    upcomingTrips: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Trip",
+      },
+    ],
 
     // ! We will need to have a function that compares the end date of users trips to current date and adds each country in the trip to the countries visited list when the end date has passed, call the function when user logs in?
     countriesVisited: [
