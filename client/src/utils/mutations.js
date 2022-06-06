@@ -21,4 +21,17 @@ export const LOGIN_USER = gql`
   }
 `;
 
+// send message - TODO - refactor userId to use context
+export const SEND_MESSAGE = gql`
+  mutation ($content: String!, $chatId: ID!, $userId: ID!) {
+    sendMessage(content: $content, chatId: $chatId, userId: $userId) {
+      _id
+      sender {
+        username
+      }
+      content
+    }
+  }
+`;
+
 // What is the difference between named vs default export??
