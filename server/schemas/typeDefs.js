@@ -99,6 +99,7 @@ const typeDefs = gql`
     followers: [User]
     following: [User]
     visitedCountries: [Country]
+    earnedBadges: [CountryBadge]
   }
 
   type UserAuth {
