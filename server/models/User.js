@@ -146,7 +146,6 @@ userSchema.virtual("bucketList").get(function () {
 // Function to return array of trips whose endDate has passed
 userSchema.virtual("pastTrips").get(function () {
   const endDatePassed = this.upcomingTrips.filter((trip) => {
-    console.log(trip);
     return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 < Date.now();
   });
   return endDatePassed.map((trip) => trip);
@@ -158,6 +157,21 @@ userSchema.virtual("futureTrips").get(function () {
     return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 > Date.now();
   });
   return futureTrips.map((trip) => trip);
+});
+
+userSchema.virtual("visitedCountries").get(function () {
+  // ! Would be interested to know why this reduce function wouldn't work
+  // const visitedCountries = this.pastTrips.reduce((total, curr, i) => {
+  //   console.log(total);
+  //   return total.push(...curr.countries);
+  // }, []);
+  // ? This works though :)
+  const visitedCountries = [];
+  this.pastTrips.forEach((trip) => {
+    visitedCountries.push(...trip.countries);
+  });
+
+  return visitedCountries;
 });
 
 // custom method to compare and validate password for logging in
