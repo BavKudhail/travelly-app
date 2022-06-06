@@ -30,6 +30,9 @@ export const SEND_MESSAGE = gql`
         username
       }
       content
+      chat {
+        chatName
+      }
     }
   }
 `;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ChatBox.css";
 import { FormControl, Input } from "@chakra-ui/react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 
 // mutations / queries
 import { GET_ALL_MESSAGES } from "../../utils/queries";
@@ -13,40 +13,48 @@ const staticChatId = "6299e6d855492e6d1c684c6a";
 const staticUserId = "629789320f3fb256b41ad4fc";
 
 function ChatBox() {
-  // fetching messages data
-  const { loading, data } = useQuery(GET_ALL_MESSAGES, {
-    variables: {
-      chatId: staticChatId,
-    },
-  });
-  // variable either returns data or an empty array
-  const messagesData = data?.getAllMessages || [];
+  // mutations/queries
   const [sendMessage] = useMutation(SEND_MESSAGE);
+  const [getAllMessages] = useLazyQuery(GET_ALL_MESSAGES);
 
-  //  defining state
+  //  defining states
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState();
+  const [newMessage, setNewMessage] = useState("");
 
-  // use effect will render upon component loading
-  useEffect(() => {
-    setMessages(messagesData);
-  }, []);
+  // get all message data
+  const getAllMessageData = async () => {
+    // get all messages network request
+    try {
+      const { data } = await getAllMessages({
+        variables: {
+          chatId: staticChatId,
+        },
+      });
+      // update message state
+      setMessages(data.getAllMessages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  console.log(messages);
-
-  // functions
+  // send message
   const sendMessageHandler = async (e) => {
     if (e.key === "Enter" && newMessage) {
       try {
-        const response = await sendMessage({
+        // make input empty
+        setNewMessage("");
+        // send message network request
+        const { data } = await sendMessage({
           variables: {
+            // make below dynamic
             chatId: staticChatId,
             userId: staticUserId,
             content: newMessage,
           },
         });
-        console.log(newMessage);
-        if (!response) {
+        // update state
+        setMessages([...messages, data.sendMessage]);
+        if (!data) {
           throw new Error("oops something went wrong!");
         }
       } catch (error) {
@@ -55,6 +63,12 @@ function ChatBox() {
     }
   };
 
+  // NOTE - understand what the use effect does exactly?
+  useEffect(() => {
+    getAllMessageData();
+  }, []);
+
+  // handing the user input
   const typingHandler = (e) => {
     // set the new message to the value of the user input
     setNewMessage(e.target.value);
@@ -64,15 +78,17 @@ function ChatBox() {
     <>
       <div>ChatBox</div>
       <div>Messages:</div>
-      {messages.map((message) => {
-        return (
-          <>
+      {/* SCROLLABLE CHAT - this can be another component */}
+      <div>
+        {messages.map((message, index) => (
+          <div key={message._id} className="message-box">
             <div>{message.content}</div>
-          </>
-        );
-      })}
+          </div>
+        ))}
+      </div>
+
       <FormControl onKeyDown={sendMessageHandler}>
-        <Input onChange={typingHandler} />
+        <Input value={newMessage} onChange={typingHandler} />
       </FormControl>
     </>
   );
