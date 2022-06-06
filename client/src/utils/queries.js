@@ -22,3 +22,19 @@ export const GET_GROUP_CHATS = gql`
     }
   }
 `;
+
+// get messages
+export const GET_ALL_MESSAGES = gql`
+  query getAllMessages($chatId: ID!) {
+    getAllMessages(chatId: $chatId) {
+      _id
+      sender {
+        username
+      }
+      content
+      chat {
+        chatName
+      }
+    }
+  }
+`; 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
+import "./Chat.css";
+import { ChatBox } from "../../components";
 
 // mutations/queries
 import { GET_GROUP_CHATS } from "../../utils/queries";
@@ -16,6 +18,7 @@ function Chat() {
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_GROUP_CHATS, {
     variables: {
+      // change this to the ID of the logged in user
       userId: staticUser,
     },
   });
@@ -26,11 +29,35 @@ function Chat() {
   console.log("chat data", chatData);
 
   return (
-    <div>
-      {chatData.map((chat) => {
-        return <div key={chat._id}>{chat.chatName}</div>;
-      })}
-    </div>
+    <>
+      <div>
+        <h1 className="head-text">CHAT DATA</h1>
+        {chatData.map((chat) => {
+          return (
+            <>
+              <div key={chat._id}>
+                <div>Chat Name: {chat.chatName}</div>
+                <div>Group Admin: {chat.groupAdmin.username}</div>
+                <div>Chat ID: {chat._id}</div>
+                {/* users */}
+                <div>Users:</div>
+                {chat.users.map((user) => {
+                  return (
+                    <>
+                      <div>{user.username}</div>
+                    </>
+                  );
+                })}
+              </div>
+              ;
+            </>
+          );
+        })}
+      </div>
+      <h1 className="head-text">MESSAGE DATA</h1>
+      {/* MESSAGE DATA */}
+      <ChatBox />
+    </>
   );
 }
 
