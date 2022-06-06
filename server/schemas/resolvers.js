@@ -19,6 +19,7 @@ const { AuthenticationError } = require("apollo-server-express");
 const chatData = require("../data/data");
 
 const { signToken } = require("../utils/auth");
+const { isConstValueNode } = require("graphql");
 
 const resolvers = {
   Query: {
@@ -469,6 +470,47 @@ const resolvers = {
         { new: true, runValidators: true }
       );
       //////////RETURN VALUE///////////////
+      return user
+        .populate({
+          path: "upcomingTrips",
+          model: "Trip",
+          populate: {
+            path: "countries",
+            model: "Country",
+          },
+        })
+        .execPopulate();
+    },
+
+    followUser: async (parent, { loggedId, userId2 }, context) => {
+      //////////AUTH SECTION///////////////
+      // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
+
+      //////////PROCESSING/////////////////
+      const userLoggedIn = await User.findByIdAndUpdate(
+        { _id: loggedId },
+        { $addToSet: { following: userId2 } },
+        { new: true, runValidators: true }
+      );
+
+      const user = await User.findByIdAndUpdate(
+        { _id: userId2 },
+        { $addToSet: { followers: loggedId } },
+        { new: true, runValidators: true }
+      );
+      //////////RETURN VALUE///////////////
+      return userLoggedIn
+        .populate({
+          path: "following",
+          model: "User",
+        })
+        .populate({ path: "followers", model: "User" })
+        .execPopulate();
+    },
+
+    migratePastTrips: async (parent, { userId }, context) => {
+      const user = await User.findById({ _id: userId });
+
       return user
         .populate({
           path: "upcomingTrips",
