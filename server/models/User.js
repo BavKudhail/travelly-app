@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
+const CountryBadge = require("./CountryBadge");
 
 const userSchema = new Schema(
   {
@@ -84,12 +85,6 @@ const userSchema = new Schema(
         ref: "Country",
       },
     ],
-    earnedBadges: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Badge",
-      },
-    ],
     isCompanyAdmin: {
       type: Boolean,
       default: false,
@@ -161,6 +156,7 @@ userSchema.virtual("futureTrips").get(function () {
 
 userSchema.virtual("visitedCountries").get(function () {
   // ! Would be interested to know why this reduce function wouldn't work
+  // ? Was returning the number 2
   // const visitedCountries = this.pastTrips.reduce((total, curr, i) => {
   //   console.log(total);
   //   return total.push(...curr.countries);
@@ -172,6 +168,20 @@ userSchema.virtual("visitedCountries").get(function () {
   });
 
   return visitedCountries;
+});
+
+// ! Psuedocode, believe this will return array of all earned badges based on users visited countries
+// ! Need to create a lot of seed data to test
+userSchema.virtual("earnedBadges").get(function () {
+  CountryBadge.find({}).then((allCountryBadges) => {
+    console.log(allCountryBadges);
+    const earnedBadges = allCountryBadges.filter((badge) => {
+      return badge.countries.every((country) => {
+        return this.visitedCountries.includes(country);
+      });
+    });
+    return earnedBadges;
+  });
 });
 
 // custom method to compare and validate password for logging in
