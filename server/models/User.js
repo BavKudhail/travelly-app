@@ -144,11 +144,20 @@ userSchema.virtual("bucketList").get(function () {
 });
 
 // Function to return array of trips whose endDate has passed
-userSchema.virtual("endDatePassed").get(function () {
+userSchema.virtual("pastTrips").get(function () {
   const endDatePassed = this.upcomingTrips.filter((trip) => {
+    console.log(trip);
     return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 < Date.now();
   });
-  return endDatePassed.map((trip) => trip._id);
+  return endDatePassed.map((trip) => trip);
+});
+
+// Function to return array of trips whose endDate has NOT passed
+userSchema.virtual("futureTrips").get(function () {
+  const futureTrips = this.upcomingTrips.filter((trip) => {
+    return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 > Date.now();
+  });
+  return futureTrips.map((trip) => trip);
 });
 
 // custom method to compare and validate password for logging in

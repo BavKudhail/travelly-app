@@ -94,7 +94,8 @@ const typeDefs = gql`
     savedActivityBadges: [ActivityBadge]
     bucketList: [ID]
     upcomingTrips: [Trip]
-    endDatePassed: [ID]
+    pastTrips: [Trip]
+    futureTrips: [Trip]
     followers: [User]
     following: [User]
   }
@@ -185,6 +186,8 @@ const typeDefs = gql`
     userGoing(userId: ID!, tripId: ID!): User
 
     followUser(loggedId: ID!, userId2: ID!): User
+
+    migratePastTrips(userId: ID!): User
   }
 `;
 

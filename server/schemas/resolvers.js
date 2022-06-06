@@ -507,6 +507,21 @@ const resolvers = {
         .populate({ path: "followers", model: "User" })
         .execPopulate();
     },
+
+    migratePastTrips: async (parent, { userId }, context) => {
+      const user = await User.findById({ _id: userId });
+
+      return user
+        .populate({
+          path: "upcomingTrips",
+          model: "Trip",
+          populate: {
+            path: "countries",
+            model: "Country",
+          },
+        })
+        .execPopulate();
+    },
   },
 };
 
