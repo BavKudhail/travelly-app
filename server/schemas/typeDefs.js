@@ -98,6 +98,7 @@ const typeDefs = gql`
     futureTrips: [Trip]
     followers: [User]
     following: [User]
+    visitedCountries: [Country]
   }
 
   type UserAuth {
