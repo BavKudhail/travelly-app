@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ChatBox.css";
 import { FormControl, Input } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@apollo/client";
@@ -21,20 +21,23 @@ function ChatBox() {
   });
   // variable either returns data or an empty array
   const messagesData = data?.getAllMessages || [];
-
   const [sendMessage] = useMutation(SEND_MESSAGE);
 
-  console.log(messagesData);
-
+  //  defining state
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState();
-  // defining queries/mutations
+
+  // use effect will render upon component loading
+  useEffect(() => {
+    setMessages(messagesData);
+  }, []);
+
+  console.log(messages);
 
   // functions
   const sendMessageHandler = async (e) => {
     if (e.key === "Enter" && newMessage) {
       try {
-        // send a request to add a new message
-        console.log(newMessage);
         const response = await sendMessage({
           variables: {
             chatId: staticChatId,
@@ -61,8 +64,12 @@ function ChatBox() {
     <>
       <div>ChatBox</div>
       <div>Messages:</div>
-      {messagesData.map((message) => {
-        return <div>{message.content}</div>;
+      {messages.map((message) => {
+        return (
+          <>
+            <div>{message.content}</div>
+          </>
+        );
       })}
       <FormControl onKeyDown={sendMessageHandler}>
         <Input onChange={typingHandler} />
