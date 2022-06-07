@@ -99,7 +99,7 @@ const typeDefs = gql`
     followers: [User]
     following: [User]
     visitedCountries: [Country]
-    earnedBadges: [ID]
+    earnedCountryBadges: [CountryBadge]
     followingCount: Int
     followerCount: Int
   }
