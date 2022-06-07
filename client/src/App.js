@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // pages
 import Home from "./pages/Home";
-import { Chat, Landing } from "./pages";
+import { Chat, Landing, Dashboard } from "./pages";
 
 // components
 import { Navbar } from "./components";
@@ -51,8 +51,11 @@ function App() {
       <Router>
         <div className="app">
           {/* <Navbar /> */}
+          {/* Main */}
+          {/* Right */}
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/chat" element={<Chat />} />
           </Routes>
         </div>
