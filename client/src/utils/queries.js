@@ -21,4 +21,71 @@ export const GET_GROUP_CHATS = gql`
       }
     }
   }
+  query dashboard($userId: ID!) {
+    me(userId: $userId) {
+      _id
+      username
+      savedCountryBadges {
+        _id
+        badgeName
+      }
+      savedActivityBadges {
+        _id
+        badgeName
+      }
+      upcomingTrips {
+        _id
+        tripName
+      }
+      followers {
+        _id
+        username
+      }
+      following {
+        _id
+        username
+      }
+      pastTrips {
+        _id
+        tripName
+        endDate
+      }
+      futureTrips {
+        _id
+        tripName
+        endDate
+      }
+      bucketList
+      visitedCountries {
+        _id
+      }
+      followingCount
+      followerCount
+      posts {
+        _id
+        userId
+        postText
+      }
+    }
+
+    getAllCountryBadges {
+      _id
+      badgeName
+      badgeImage
+      countries {
+        _id
+        countryName
+      }
+    }
+
+    getAllActivityBadges {
+      _id
+      badgeName
+      badgeImage
+      activities {
+        _id
+        activityName
+      }
+    }
+  }
 `;

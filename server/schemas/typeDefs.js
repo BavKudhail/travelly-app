@@ -99,7 +99,9 @@ const typeDefs = gql`
     followers: [User]
     following: [User]
     visitedCountries: [Country]
-    earnedBadges: [CountryBadge]
+    earnedBadges: [ID]
+    followingCount: Int
+    followerCount: Int
   }
 
   type UserAuth {
@@ -119,10 +121,12 @@ const typeDefs = gql`
   }
 
   type Query {
-    me: User
+    me(userId: ID!): User
     # return an array of Chats
     getGroupChats(userId: ID!): [Chat]
     getAllMessages(chatId: ID!): [Message]
+    getAllCountryBadges: [CountryBadge]
+    getAllActivityBadges: [ActivityBadge]
   }
 
   type Mutation {

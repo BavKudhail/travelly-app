@@ -71,6 +71,7 @@ const userSchema = new Schema(
       },
     ],
 
+    // ! Change name to just trips
     upcomingTrips: [
       {
         type: Schema.Types.ObjectId,
@@ -170,18 +171,43 @@ userSchema.virtual("visitedCountries").get(function () {
   return visitedCountries;
 });
 
-// ! Psuedocode, believe this will return array of all earned badges based on users visited countries
-// ! Need to create a lot of seed data to test
+// ! Not currently working :/
 userSchema.virtual("earnedBadges").get(function () {
-  CountryBadge.find({}).then((allCountryBadges) => {
-    console.log(allCountryBadges);
-    const earnedBadges = allCountryBadges.filter((badge) => {
-      return badge.countries.every((country) => {
-        return this.visitedCountries.includes(country);
+  CountryBadge.find({})
+    .then((allCountryBadges) => {
+      // Filtering through country badges
+      const earnedBadges = allCountryBadges.filter((badge) => {
+        if (badge.countries.length === 0) {
+          return false;
+        }
+
+        // Array of the ids of the users visitedCountries
+        const visitedCountryIds = this.visitedCountries.map((c) =>
+          c._id.toString()
+        );
+
+        // .every SHOULD return true, if visitedCountryIds contains every country on the badge, meaning the user has earned it
+
+        return badge.countries.every((country) => {
+          console.log("    ");
+          console.log("Array: visitedCountryIds");
+          console.log(typeof visitedCountryIds[0]);
+          console.log("    ");
+          console.log("Variable: country");
+          console.log(typeof country.toString());
+          console.log("    ");
+          console.log("visitedCountryIds.includes(country)");
+          console.log(visitedCountryIds.includes(country.toString()));
+          return visitedCountryIds.includes(country.toString());
+        });
       });
+
+      return earnedBadges.map((c) => c._id);
+    })
+    .then((earnedBadges) => {
+      console.log(earnedBadges);
+      return earnedBadges;
     });
-    return earnedBadges;
-  });
 });
 
 // custom method to compare and validate password for logging in

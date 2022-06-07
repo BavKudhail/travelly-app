@@ -23,8 +23,17 @@ const { isConstValueNode } = require("graphql");
 
 const resolvers = {
   Query: {
-    me: async (parent, args, context) => {
-      console.log("hello");
+    me: async (parent, { userId }, context) => {
+      const user = User.findById({ _id: userId });
+
+      return user
+        .populate("following")
+        .populate("followers")
+        .populate("posts")
+        .populate("savedCountryBadges")
+        .populate("savedActivityBadges")
+        .populate("upcomingTrips")
+        .populate("countries");
     },
 
     //////////////////////////////////////
@@ -53,6 +62,22 @@ const resolvers = {
         .populate("latestMessage");
       // how can I populate the users information?
       return chats;
+    },
+
+    getAllCountryBadges: async (parent, args, context) => {
+      const allCountryBadges = await CountryBadge.find({}).populate(
+        "countries"
+      );
+
+      return allCountryBadges;
+    },
+
+    getAllActivityBadges: async (parent, args, context) => {
+      const allActivityBadges = await ActivityBadge.find({}).populate(
+        "activities"
+      );
+
+      return allActivityBadges;
     },
   },
   Mutation: {
@@ -403,24 +428,26 @@ const resolvers = {
       );
 
       //////////RETURN VALUE///////////////
-      return user
-        .populate({
-          path: "savedCountryBadges",
-          model: "CountryBadge",
-          populate: {
-            path: "countries",
-            model: "Country",
-          },
-        })
-        .populate({
-          path: "savedActivityBadges",
-          model: "ActivityBadge",
-          populate: {
-            path: "activities",
-            model: "Activity",
-          },
-        })
-        .execPopulate();
+      return (
+        user
+          .populate({
+            path: "savedCountryBadges",
+            model: "CountryBadge",
+            populate: {
+              path: "countries",
+              model: "Country",
+            },
+          })
+          // .populate({
+          //   path: "savedActivityBadges",
+          //   model: "ActivityBadge",
+          //   populate: {
+          //     path: "activities",
+          //     model: "Activity",
+          //   },
+          // })
+          .execPopulate()
+      );
     },
 
     // ! Need to refactor to use context to get userId rather than passing it in in the args
@@ -520,6 +547,7 @@ const resolvers = {
             model: "Country",
           },
         })
+
         .execPopulate();
     },
   },
