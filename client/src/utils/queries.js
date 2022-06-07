@@ -21,6 +21,10 @@ export const GET_GROUP_CHATS = gql`
       }
     }
   }
+`;
+
+// dashboard queries
+export const GET_DASHBOARD = gql`
   query dashboard($userId: ID!) {
     me(userId: $userId) {
       _id
