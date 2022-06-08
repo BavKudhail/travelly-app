@@ -2,47 +2,35 @@ import React, { useState, useEffect } from "react";
 import "./ChatBox.css";
 import { FormControl, Input } from "@chakra-ui/react";
 import { useMutation, useLazyQuery } from "@apollo/client";
+import io from "socket.io-client";
 import { ChatState } from "../../context/ChatProvider";
 
 // mutations / queries
 import { GET_ALL_MESSAGES } from "../../utils/queries";
 import { SEND_MESSAGE } from "../../utils/mutations";
 
-import io from "socket.io-client";
-
-// static user for testing
-const staticUserId = "629789320f3fb256b41ad4fc";
-
 // refactor endpoint for heroku
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = "http://localhost:3000"; //"https://xxxxxxx.herokuapp.com";
 let socket;
 let selectedChatCompare;
 
 // static user for testing - this needs to come from the loggedin user
 const user = {
-  _id: "629789320f3fb256b41ad4fc",
-  username: "johndoe",
-  email: "johndoe@gmail.com",
+  _id: "6299eaa2b3b3eb625a753dd0",
+  username: "Max Kanat-Alexander",
+  email: "mkanatalexander@techfriends.dev",
 };
 
-function ChatBox() {
-  const { selectedChat, setSelectedChat } = ChatState();
-
+const ChatBox = () => {
   // mutations/queries
   const [sendMessage] = useMutation(SEND_MESSAGE);
   const [getAllMessages] = useLazyQuery(GET_ALL_MESSAGES);
   const [socketConnected, setSocketConnected] = useState(false);
 
   //  defining states
+  const { selectedChat, setSelectedChat } = ChatState();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    // when the user has connected set state to true
-    socket.on("connection", () => setSocketConnected(true));
-  }, []);
 
   // get all message data
   const getAllMessageData = async () => {
@@ -55,7 +43,7 @@ function ChatBox() {
       });
       // update message state
       setMessages(data.getAllMessages);
-      // socket.io - join chat based on ID
+      // socket.io - (room = selectedChatID)
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
       console.log(error);
@@ -73,11 +61,12 @@ function ChatBox() {
           variables: {
             // make below dynamic
             chatId: selectedChat._id,
-            userId: staticUserId,
+            // TODO - this must become dynamic
+            userId: user._id,
             content: newMessage,
           },
         });
-
+        // emit this message to all users within the chat
         socket.emit("new message", data.sendMessage);
         setMessages([...messages, data.sendMessage]);
         if (!data) {
@@ -89,8 +78,17 @@ function ChatBox() {
     }
   };
 
-  console.log("selected chat", selectedChat);
-  console.log("selected chat compare", selectedChatCompare);
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => setSocketConnected(true));
+  }, []);
+
+  useEffect(() => {
+    getAllMessageData();
+    // compare chats to make sure that we have selected the current chat we are on
+    selectedChatCompare = selectedChat;
+  }, [selectedChat]);
 
   // update everytime state updates
   useEffect(() => {
@@ -100,18 +98,13 @@ function ChatBox() {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
-        console.log("do not display message");
+        return;
       } else {
+        // TODO - THE PROBLEM IS HERE
         setMessages([...messages, newMessageRecieved]);
       }
     });
   });
-
-  useEffect(() => {
-    getAllMessageData();
-
-    selectedChatCompare = selectedChat;
-  }, [selectedChat]);
 
   // handing the user input
   const typingHandler = (e) => {
@@ -138,6 +131,6 @@ function ChatBox() {
       </FormControl>
     </>
   );
-}
+};
 
 export default ChatBox;

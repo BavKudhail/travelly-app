@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
     socket.emit("connected");
   });
 
-  //  USER JOINS CHAT
+  //  USER JOINS CHAT (room = chatId)
   socket.on("join chat", (room) => {
     socket.join(room);
     console.log("user joined room " + room);
@@ -67,14 +67,13 @@ io.on("connection", (socket) => {
   // USER SENDS MESSAGE
   socket.on("new message", (newMessageRecieved) => {
     let chat = newMessageRecieved.chat;
-    console.log("new message recieved: ", newMessageRecieved);
 
     if (!chat.users) return console.log("chat.users not defined");
 
     chat.users.forEach((user) => {
       //  if (user._id == newMessageRecieved.sender._id) return;
-      socket.to(user._id).emit("message recieved", newMessageRecieved);
-      console.log(newMessageRecieved.chat._id);
+      // emit this message to the front-end
+      socket.in(user._id).emit("message recieved", newMessageRecieved);
     });
   });
 
