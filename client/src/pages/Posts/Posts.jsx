@@ -32,7 +32,13 @@ const Posts = () => {
             {/* POSTS*/}
             <h1>POSTS</h1>
             {postData.getAllPosts.map((post) => {
-              return <div key={post._id}>{post.postText}</div>;
+              return (
+                <div key={post._id}>
+                  {post.postText}
+
+                  <div>Posted by user id: {post.userId}</div>
+                </div>
+              );
             })}
           </div>
         </div>
