@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ChatBox.css";
 import { FormControl, Input } from "@chakra-ui/react";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { useMutation, useLazyQuery } from "@apollo/client";
 
 // mutations / queries
 import { GET_ALL_MESSAGES } from "../../utils/queries";
@@ -11,6 +11,12 @@ import { SEND_MESSAGE } from "../../utils/mutations";
 const staticChatId = "6299e6d855492e6d1c684c6a";
 // static user for testing
 const staticUserId = "629789320f3fb256b41ad4fc";
+
+const ENDPOINT = "http://localhost:3000";
+let socket;
+let selectedChatCompare;
+
+console.log("chatbox page loaded");
 
 function ChatBox() {
   // mutations/queries
@@ -63,10 +69,16 @@ function ChatBox() {
     }
   };
 
-  // NOTE - understand what the use effect does exactly?
-  useEffect(() => {
-    getAllMessageData();
-  }, []);
+  // Use effect allows us to tap into lifecycle functions
+  // This is executed when the component loads as well as when state is changed
+  useEffect(
+    () => {
+      getAllMessageData();
+    },
+    [
+      // only run this when the component mounts
+    ]
+  );
 
   // handing the user input
   const typingHandler = (e) => {

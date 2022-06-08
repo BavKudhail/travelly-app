@@ -14,21 +14,17 @@ const Chat = () => {
   const [chats, setChats] = useState([]);
 
   // Execute the query on component load
-  const { loading, data, error } = useQuery(GET_GROUP_CHATS, {
+  const { loading, data } = useQuery(GET_GROUP_CHATS, {
     variables: {
       userId: staticUser,
     },
   });
   const chatData = data?.getGroupChats || [];
 
-  useEffect(() => {
-    setChats(chatData);
-  });
-
   return (
     <>
       <h1 className="head-text">Chat Data</h1>
-      {chats.map((chat) => {
+      {chatData.map((chat) => {
         return (
           <div key={chat._id}>
             <div>Chat Name: {chat.chatName}</div>
@@ -45,6 +41,6 @@ const Chat = () => {
       <ChatBox />
     </>
   );
-}
+};
 
 export default Chat;
