@@ -96,14 +96,16 @@ export const GET_DASHBOARD = gql`
 
 // post page queries
 export const GET_POSTS = gql`
-  query getAllPosts {
-    _id
-    userId
-    postText
-    comments {
+  query posts {
+    getAllPosts {
       _id
       userId
-      commentText
+      postText
+      comments {
+        _id
+        userId
+        commentText
+      }
     }
   }
 `;
