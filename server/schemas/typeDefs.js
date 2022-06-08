@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-express");
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Admin {
@@ -51,7 +51,7 @@ const typeDefs = gql`
     latestMessage: Message
     # reference the user that created this
     groupAdmin: User!
-    }
+  }
 
   type Trip {
     _id: ID!
@@ -92,6 +92,16 @@ const typeDefs = gql`
     posts: [Post]
     savedCountryBadges: [CountryBadge]
     savedActivityBadges: [ActivityBadge]
+    bucketList: [ID]
+    upcomingTrips: [Trip]
+    pastTrips: [Trip]
+    futureTrips: [Trip]
+    followers: [User]
+    following: [User]
+    visitedCountries: [Country]
+    earnedCountryBadges: [CountryBadge]
+    followingCount: Int
+    followerCount: Int
   }
 
   type UserAuth {
@@ -111,10 +121,14 @@ const typeDefs = gql`
   }
 
   type Query {
-    me: User
+    me(userId: ID!): User
+    # Get all posts for posts page
+    getAllPosts: [Post]
     # return an array of Chats
     getGroupChats(userId: ID!): [Chat]
     getAllMessages(chatId: ID!): [Message]
+    getAllCountryBadges: [CountryBadge]
+    getAllActivityBadges: [ActivityBadge]
   }
 
   type Mutation {
@@ -125,18 +139,9 @@ const typeDefs = gql`
     # add user
     addUserToGroupChat(chatId: ID!, userId: ID!): Chat
 
-    addUser(
-      username: String!
-      email: String!
-      password: String!
-      bio: String
-    ): UserAuth
+    addUser(username: String!, email: String!, password: String!, bio: String): UserAuth
 
-    addCompany(
-      companyUsername: String!
-      email: String!
-      password: String!
-    ): CompanyAuth
+    addCompany(companyUsername: String!, email: String!, password: String!): CompanyAuth
 
     addAdmin(email: String!, password: String!): AdminAuth
 
@@ -144,30 +149,15 @@ const typeDefs = gql`
     loginCompany(email: String!, password: String!): CompanyAuth
     loginAdmin(email: String!, password: String!): AdminAuth
 
-    addTrip(
-      tripName: String!
-      tripDescription: String!
-      startDate: String!
-      endDate: String
-      companyId: ID!
-      countries: [ID]
-    ): Company
+    addTrip(tripName: String!, tripDescription: String!, startDate: String!, endDate: String, companyId: ID!, countries: [ID]): Company
 
     addActivity(activityName: String!): Activity
 
-    addActivityBadge(
-      badgeName: String!
-      badgeImage: String
-      activities: [ID]
-    ): ActivityBadge
+    addActivityBadge(badgeName: String!, badgeImage: String, activities: [ID]): ActivityBadge
 
     addCountry(countryName: String!): Country
 
-    addCountryBadge(
-      badgeName: String!
-      badgeImage: String
-      countries: [ID]
-    ): CountryBadge
+    addCountryBadge(badgeName: String!, badgeImage: String, countries: [ID]): CountryBadge
 
     addPost(userId: ID!, postText: String!): User
 
@@ -176,6 +166,12 @@ const typeDefs = gql`
     saveCountryBadge(badgeId: ID!, userId: ID!): User
 
     saveActivityBadge(badgeId: ID!, userId: ID!): User
+
+    userGoing(userId: ID!, tripId: ID!): User
+
+    followUser(loggedId: ID!, userId2: ID!): User
+
+    migratePastTrips(userId: ID!): User
   }
 `;
 

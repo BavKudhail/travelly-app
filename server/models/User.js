@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
+const CountryBadge = require("./CountryBadge");
 
 const userSchema = new Schema(
   {
@@ -54,7 +56,7 @@ const userSchema = new Schema(
     profilePicture: {
       type: String,
     },
-    // might be easier to have just badges instead of seperating country and activities? so easier to reference below
+
     savedCountryBadges: [
       {
         type: Schema.Types.ObjectId,
@@ -69,19 +71,19 @@ const userSchema = new Schema(
       },
     ],
 
-    // not sure with bucket lists
+    // ! Change name to just trips
+    upcomingTrips: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Trip",
+      },
+    ],
 
     // ! We will need to have a function that compares the end date of users trips to current date and adds each country in the trip to the countries visited list when the end date has passed, call the function when user logs in?
     countriesVisited: [
       {
         type: Schema.Types.ObjectId,
         ref: "Country",
-      },
-    ],
-    earnedBadges: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Badge",
       },
     ],
     isCompanyAdmin: {
@@ -121,22 +123,85 @@ userSchema.virtual("followerCount").get(function () {
   return this.followers.length;
 });
 
-// function to create bucketList array made up of all of the countries included in the users savedCountryBadges array
-// ! Need to workout how to populate the bucket list with all the countries included in users saved badges by mapping over badges
-// ? May have to do this kind of thing in resolver?
+// function to create bucketList array made up of all of the countryIds included in the users savedCountryBadges array
+// ! Bucket list virtual returns an array of country IDS which is all we really need but curious as to how we could populate it with country info as was unable to get that to work
 userSchema.virtual("bucketList").get(function () {
   const bucketList = [];
-  this.populate({
-    path: "savedCountryBadges",
-    model: "CountryBadge",
-  }).savedCountryBadges.forEach((badge) => {
+  this.savedCountryBadges.forEach((badge) => {
     bucketList.push(
+      // Mapping over the countries array of each badge and returning an array that contains each country _id
+      // Using the spread operator so that we are just pushing the individual values into bucket list and not the array as a whole
       ...badge.countries.map((country) => {
         return country._id;
       })
     );
   });
   return bucketList;
+});
+
+// Function to return array of trips whose endDate has passed
+userSchema.virtual("pastTrips").get(function () {
+  const endDatePassed = this.upcomingTrips.filter((trip) => {
+    return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 < Date.now();
+  });
+  return endDatePassed.map((trip) => trip);
+});
+
+// Function to return array of trips whose endDate has NOT passed
+userSchema.virtual("futureTrips").get(function () {
+  const futureTrips = this.upcomingTrips.filter((trip) => {
+    return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 > Date.now();
+  });
+  return futureTrips.map((trip) => trip);
+});
+
+userSchema.virtual("visitedCountries").get(function () {
+  // ! Would be interested to know why this reduce function wouldn't work
+  // ? Was returning the number 2
+  // const visitedCountries = this.pastTrips.reduce((total, curr, i) => {
+  //   console.log(total);
+  //   return total.push(...curr.countries);
+  // }, []);
+  // ? This works though :)
+  const visitedCountries = [];
+  this.pastTrips.forEach((trip) => {
+    visitedCountries.push(...trip.countries);
+  });
+
+  return visitedCountries;
+});
+
+userSchema.virtual("earnedCountryBadges").get(function () {
+  return CountryBadge.find({}).then((allCountryBadges) => {
+    // Filtering through country badges
+    const earnedBadges = allCountryBadges.filter((badge) => {
+      if (badge.countries.length === 0) {
+        return false;
+      }
+
+      // Array of the ids of the users visitedCountries
+      const visitedCountryIds = this.visitedCountries.map((c) =>
+        c._id.toString()
+      );
+
+      // .every SHOULD return true, if visitedCountryIds contains every country on the badge, meaning the user has earned it
+
+      return badge.countries.every((country) => {
+        console.log("    ");
+        console.log("Array: visitedCountryIds");
+        console.log(typeof visitedCountryIds[0]);
+        console.log("    ");
+        console.log("Variable: country");
+        console.log(typeof country.toString());
+        console.log("    ");
+        console.log("visitedCountryIds.includes(country)");
+        console.log(visitedCountryIds.includes(country.toString()));
+        return visitedCountryIds.includes(country.toString());
+      });
+    });
+
+    return earnedBadges;
+  });
 });
 
 // custom method to compare and validate password for logging in

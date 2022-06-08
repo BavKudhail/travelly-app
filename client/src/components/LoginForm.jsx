@@ -1,50 +1,86 @@
-import React, { useState, useEffect } from "react";
-import { useMutation } from "@apollo/react-hooks";
+import React, { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 // TODO - import auth here
-
+import Auth from '../utils/auth';
 // mutations/queries
-import { LOGIN_USER } from "../utils/mutations";
+import { LOGIN_USER } from '../utils/mutations';
 
-const DEFAULT_USER_INPUT = {
-  email: "",
-  password: "",
-};
+// const DEFAULT_USER_INPUT = {
+//   email: '',
+//   password: '',
+// };
 
 export default function LoginForm() {
-  // connect user inputs to our mutation
-  const [loginUser, { loading, data, error }] = useMutation(LOGIN_USER);
+  const [userInput, setUserInput] = useState({ email: '', password: '' });
 
-  // the initial values of name, email, pass = " "
-  const [userInput, setUserInput] = useState(DEFAULT_USER_INPUT);
-
-  console.log(userInput);
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   const handleUserInput = (event) => {
-    // field name = name attribute on input field
     const { name, value } = event.target;
-    // @NOTE - whatever is passed into this function, state will update to whatever that value is
     setUserInput({ ...userInput, [name]: value });
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // if the data is not loading
-    if (!loading) {
-      try {
-        await loginUser({
-          variables: {
-            ...userInput,
-          },
-        });
-        console.log("user input added: ", userInput);
-        // add authentication here
-      } catch (error) {
-        console.log(error);
-      }
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    console.log("user input", userInput);
-    setUserInput(DEFAULT_USER_INPUT);
+
+    try {
+      const { data } = await loginUser({
+        variables: { ...userInput },
+      });
+      Auth.login(data.loginUser.token);
+      console.log('Logged in!');
+    } catch (err) {
+      console.error(err);
+    }
+
+    setUserInput({
+      username: '',
+      email: '',
+      password: '',
+    });
   };
+
+  // // connect user inputs to our mutation
+  // const [loginUser, { loading, data, error }] = useMutation(LOGIN_USER);
+
+  // // the initial values of name, email, pass = " "
+  // const [userInput, setUserInput] = useState(DEFAULT_USER_INPUT);
+
+  // console.log(userInput);
+
+  // const handleUserInput = (event) => {
+  //   // field name = name attribute on input field
+  //   const { name, value } = event.target;
+  //   // @NOTE - whatever is passed into this function, state will update to whatever that value is
+  //   setUserInput({ ...userInput, [name]: value });
+  // };
+
+  // const handleFormSubmit = async (event) => {
+  //   event.preventDefault();
+  //   // if the data is not loading
+  //   if (!loading) {
+  //     try {
+  //       await loginUser({
+  //         variables: {
+  //           ...userInput,
+  //         },
+  //       });
+  //       console.log('user input added: ', userInput);
+  //       // add authentication here
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   console.log('user input', userInput);
+  //   setUserInput(DEFAULT_USER_INPUT);
+  // };
 
   //   console.log("data", data);
 
@@ -54,24 +90,10 @@ export default function LoginForm() {
         <h1>LOGIN FORM</h1>
         <form onSubmit={handleFormSubmit}>
           {/* email */}
-          <input
-            value={userInput.email}
-            placeholder="email"
-            name="email"
-            type="email"
-            required
-            onChange={handleUserInput}
-          ></input>
+          <input value={userInput.email} placeholder="email" name="email" type="email" required onChange={handleUserInput}></input>
 
           {/* password */}
-          <input
-            value={userInput.password}
-            placeholder="password"
-            name="password"
-            type="password"
-            required
-            onChange={handleUserInput}
-          ></input>
+          <input value={userInput.password} placeholder="password" name="password" type="password" required onChange={handleUserInput}></input>
           <button type="submit">SUBMIT</button>
         </form>
         {/* login form */}
