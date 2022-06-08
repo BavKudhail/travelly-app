@@ -22,6 +22,10 @@ const io = require("socket.io")(server, {
   },
 });
 
+// dependencies for S3 & multer
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -32,6 +36,11 @@ if (process.env.NODE_ENV === "production") {
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
+
+app.post("/images", upload.single("image"), (req, res) => {
+  console.log(req.body.image);
+  res.send("image upload");
 });
 
 const startApolloServer = async (typeDefs, resolvers) => {
