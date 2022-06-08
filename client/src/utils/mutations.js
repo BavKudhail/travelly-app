@@ -31,6 +31,7 @@ export const SEND_MESSAGE = gql`
       }
       content
       chat {
+        _id
         chatName
         users {
           _id

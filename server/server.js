@@ -52,7 +52,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
 io.on("connection", (socket) => {
   console.log("connected to socket.io");
   // when a user joins the app, they should be connected to their own socket
-  
+
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");
@@ -74,6 +74,7 @@ io.on("connection", (socket) => {
     chat.users.forEach((user) => {
       //  if (user._id == newMessageRecieved.sender._id) return;
       socket.to(user._id).emit("message recieved", newMessageRecieved);
+      console.log(newMessageRecieved.chat._id);
     });
   });
 

@@ -14,7 +14,7 @@ const staticUser = "629789320f3fb256b41ad4fc";
 const Chat = () => {
   const { selectedChat, setSelectedChat } = ChatState();
 
-  selectedChat ? console.log(selectedChat) : console.log("no chat selected");
+  // selectedChat ? console.log(selectedChat) : console.log("no chat selected");
 
   // Execute the query on component load
   const { loading, data } = useQuery(GET_GROUP_CHATS, {
