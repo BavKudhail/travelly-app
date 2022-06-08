@@ -13,6 +13,9 @@ import { setContext } from "@apollo/client/link/context";
 // router
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+// provider
+import ChatProvider from "./context/ChatProvider";
+
 // pages
 import Home from "./pages/Home";
 import { Chat, Landing } from "./pages";
@@ -48,15 +51,17 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <div className="">
-          {/* <Navbar /> */}
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/chat" element={<Chat />} />
-          </Routes>
-        </div>
-      </Router>
+      <ChatProvider>
+        <Router>
+          <div className="">
+            {/* <Navbar /> */}
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/chat" element={<Chat />} />
+            </Routes>
+          </div>
+        </Router>
+      </ChatProvider>
     </ApolloProvider>
   );
 }

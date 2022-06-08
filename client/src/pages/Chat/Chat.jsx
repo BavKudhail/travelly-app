@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import "./Chat.css";
 import { ChatBox } from "../../components";
+import { Button, Text } from "@chakra-ui/react";
+import { ChatState } from "../../context/ChatProvider";
 
 // mutations/queries
 import { GET_GROUP_CHATS } from "../../utils/queries";
@@ -10,8 +12,9 @@ import { GET_GROUP_CHATS } from "../../utils/queries";
 const staticUser = "629789320f3fb256b41ad4fc";
 
 const Chat = () => {
-  // state for holding API data
-  const [chats, setChats] = useState([]);
+  const { selectedChat, setSelectedChat } = ChatState();
+
+  selectedChat ? console.log(selectedChat) : console.log("no chat selected");
 
   // Execute the query on component load
   const { loading, data } = useQuery(GET_GROUP_CHATS, {
@@ -23,22 +26,37 @@ const Chat = () => {
 
   return (
     <>
-      <h1 className="head-text">Chat Data</h1>
-      {chatData.map((chat) => {
-        return (
-          <div key={chat._id}>
-            <div>Chat Name: {chat.chatName}</div>
-            <div>Group Admin: {chat.groupAdmin.username}</div>
-            <div>Chat ID: {chat._id}</div>
-            <div>Users:</div>
-            {chat.users.map((user) => {
-              return <div key={user.username}>{user.username}</div>;
-            })}
-          </div>
-        );
-      })}
+      <h1 className="head-text">My Chats</h1>
+      {/* if loading  */}
+      {loading ? (
+        <span>loading</span>
+      ) : (
+        <div>
+          {/* else show chats */}
+          {chatData.map((chat) => {
+            return (
+              <div key={chat._id}>
+                <Button
+                  onClick={() => {
+                    setSelectedChat(chat);
+                  }}
+                >
+                  {chat.chatName}
+                </Button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       <h1 className="head-text">Messages</h1>
-      <ChatBox />
+      {selectedChat ? (
+        <div>
+          <ChatBox />
+        </div>
+      ) : (
+        <div>Please select a chat</div>
+      )}
     </>
   );
 };

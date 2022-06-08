@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./ChatBox.css";
 import { FormControl, Input } from "@chakra-ui/react";
 import { useMutation, useLazyQuery } from "@apollo/client";
+import { ChatState } from "../../context/ChatProvider";
 
 // mutations / queries
 import { GET_ALL_MESSAGES } from "../../utils/queries";
 import { SEND_MESSAGE } from "../../utils/mutations";
 
-// fetch all messages associated with a single chat ID
-const staticChatId = "6299e6d855492e6d1c684c6a";
+import io from "socket.io-client";
+
 // static user for testing
 const staticUserId = "629789320f3fb256b41ad4fc";
 
@@ -18,10 +19,19 @@ let selectedChatCompare;
 
 console.log("chatbox page loaded");
 
+// static user for testing
+const user = {
+  _id: "629789320f3fb256b41ad4fc",
+  username: "johndoe",
+  email: "johndoe@gmail.com",
+};
+
 function ChatBox() {
+  const { selectedChat, setSelectedChat } = ChatState();
   // mutations/queries
   const [sendMessage] = useMutation(SEND_MESSAGE);
   const [getAllMessages] = useLazyQuery(GET_ALL_MESSAGES);
+  const [socketConnected, setSocketConnected] = useState(false);
 
   //  defining states
   const [messages, setMessages] = useState([]);
@@ -33,11 +43,13 @@ function ChatBox() {
     try {
       const { data } = await getAllMessages({
         variables: {
-          chatId: staticChatId,
+          chatId: selectedChat._id,
         },
       });
       // update message state
       setMessages(data.getAllMessages);
+      // socket.io - join chat based on ID
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +65,7 @@ function ChatBox() {
         const { data } = await sendMessage({
           variables: {
             // make below dynamic
-            chatId: staticChatId,
+            chatId: selectedChat._id,
             userId: staticUserId,
             content: newMessage,
           },
@@ -71,14 +83,16 @@ function ChatBox() {
 
   // Use effect allows us to tap into lifecycle functions
   // This is executed when the component loads as well as when state is changed
-  useEffect(
-    () => {
-      getAllMessageData();
-    },
-    [
-      // only run this when the component mounts
-    ]
-  );
+  useEffect(() => {
+    getAllMessageData();
+  }, [selectedChat]);
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    // when the user has connected set state to true
+    socket.on("connection", () => setSocketConnected(true));
+  }, []);
 
   // handing the user input
   const typingHandler = (e) => {
