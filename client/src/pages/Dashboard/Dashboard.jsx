@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import DashboardRight from "../../components/Dashboard/DashboardRight";
+import UpcomingTrips from "../../components/Dashboard/UpcomingTrips";
 
 // mutations/queries
 import { GET_DASHBOARD } from "../../utils/queries";
@@ -27,7 +27,12 @@ import {
   Checkbox,
   CheckboxGroup,
   Stack,
+  useColorModeValue,
   useDisclosure,
+  Avatar,
+  AvatarBadge,
+  AvatarGroup,
+  WrapItem,
 } from "@chakra-ui/react";
 import { FiBell } from "react-icons/fi";
 
@@ -56,54 +61,54 @@ const Dashboard = () => {
       >
         {/* COLUMN 2 - MAIN SECTION */}
         <Flex justifyContent="center" flexDir="column">
-          <Heading fontWeight="normal" mb={4} letterSpacing="tight">
-            Welcome back,
-            <Text fontWeight="bold" display="inline-flex">
-              &#160; Johnny
+          <Flex justifyContent="space-between">
+            <WrapItem>
+              <Avatar
+                size="2xl"
+                name="Kola Tioluwani"
+                src="https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbc1dd99666153.5ef7dbf39ecee.jpg"
+              />{" "}
+            </WrapItem>
+            <Text>My Badges</Text>
+          </Flex>
+          <Box>
+            <Heading fontSize={"2xl"} fontFamily={"body"}>
+              Max Alexander
+            </Heading>
+            <Text fontWeight={600} color={"gray.500"} size="sm" mb={4}>
+              @mkanatalexander@techfriends.dev
             </Text>
-          </Heading>
+            <Text
+              textAlign={"center"}
+              color={useColorModeValue("gray.700", "gray.400")}
+              px={3}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusm.
+            </Text>
+          </Box>
           <Flex>
-            <Tabs variant="soft-rounded" colorScheme="green">
-              <TabList>
-                <Tab>Popular</Tab>
-                <Tab>Recommended for you!</Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  <p>one!</p>
-                </TabPanel>
-                <TabPanel>
-                  <p>two!</p>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-            <Box>
-              {loading ? (
-                <span>loading</span>
-              ) : (
-                <div>
-                  <div className="main-section">
-                    <h1>MAIN SECTION</h1>
-                    <div> USERNAME: {userData.username}</div>
-                    <div> FOLLOWER: {userData.followerCount}</div>
-                    <div> FOLLOWING: {userData.followingCount}</div>
-                  </div>
-                  <div>
-                    {/* UPCOMING TRIPS*/}
-                    <h1>UPCOMING TRIPS</h1>
-                    {userData.futureTrips.map((trip) => {
-                      return <div key={trip._id}>{trip.tripName}</div>;
-                    })}
-                  </div>
-                  {/* MY POSTS */}
-                  <h1>MY POSTS</h1>
-                  {userData.posts.map((post) => {
-                    return <div key={post._id}>{post.postText}</div>;
-                  })}
-                </div>
-              )}
+            <Box m="4">
+              <Text as="span">10</Text>Followers
+            </Box>
+            <Box m="4">
+              <Text as="span">10</Text>
+              Following
+            </Box>
+            <Box m="4">
+              <Text as="span">10</Text>Countries Visited
             </Box>
           </Flex>
+          <Box>
+            <Box>
+              <Text>Upcoming Trips</Text>
+              {/*  */}
+              <UpcomingTrips />
+            </Box>
+            <Box>
+              <Text>My Posts</Text>
+            </Box>
+          </Box>
         </Flex>
       </Flex>
       {/* RIGHT SECTION */}

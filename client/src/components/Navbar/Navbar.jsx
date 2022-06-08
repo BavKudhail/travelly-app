@@ -136,10 +136,13 @@ const NavBar = () => {
             {/* <Avatar
               my={2}
               src="https://pyxis.nymag.com/v1/imgs/339/ba5/343b5b41f14dbf283bee18ee957135a61b-21-johnny-depp.rsquare.w700.jpg"
-            /> */}
-            {/* <Box ml="3" color="#000">
+            />
+            <Box ml="3" color="#000">
               <Text fontWeight="bold">Johnny Depp</Text>
               <Text fontSize="sm">@JohnnyDepp</Text>
+              <Button mt={"4"} onClick={onOpen}>
+                Log Out
+              </Button>
             </Box> */}
             {/* modal */}
             <Button onClick={onOpen}>Log In</Button>
