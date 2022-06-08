@@ -12,8 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^3.8.1",
+    "aws-sdk": "^2.1150.0",
     "bcrypt": "^4.0.1",
+    "dotenv": "^16.0.1",
     "express": "^4.17.1",
+    "fs": "^0.0.1-security",
     "graphql": "^16.5.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.3",

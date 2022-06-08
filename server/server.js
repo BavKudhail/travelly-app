@@ -25,6 +25,7 @@ const io = require("socket.io")(server, {
 // dependencies for S3 & multer
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const { uploadFile, getFileStream } = require("./s3");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -38,9 +39,18 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
-app.post("/images", upload.single("image"), (req, res) => {
+app.get("/images/:key", (req, res) => {
+  const key = req.params.key;
+  const readStream = getFileStream(key);
+  readStream.pipe(res);
+});
+
+app.post("/images", upload.single("image"), async (req, res) => {
   console.log(req.body.image);
-  res.send("image upload");
+  const file = req.file;
+  const result = await uploadFile(file);
+  console.log(result);
+  res.send({ imagePath: `/images/${result.Key}` });
 });
 
 const startApolloServer = async (typeDefs, resolvers) => {

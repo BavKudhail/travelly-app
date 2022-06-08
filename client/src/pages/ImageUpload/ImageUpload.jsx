@@ -16,6 +16,8 @@ import {
           <input type="file" name="image"/>
           <button type="submit" className="">Submit</button>
           </form>
+
+          <img src="/images/4d305bb93ed958fb7147cf93f29309d7" alt="" />
         </Box>
       </Container>
     );
