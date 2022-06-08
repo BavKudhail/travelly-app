@@ -1,9 +1,13 @@
-import { React, useState } from "react";
+import { React, useState, useRef } from "react";
 import navList from "./NavList";
 import {
   BrowserRouter as Router,
   NavLink as RouterLink, // <-- import the NavLink component
 } from "react-router-dom";
+
+// import login/sign up form
+import SignUpForm from "../../components/SignUpForm";
+import LoginForm from "../../components/LoginForm";
 
 import "./NavBar.css";
 
@@ -21,12 +25,35 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  // Modal
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  FormControl,
+  FormLabel,
+  Input,
+  ModalFooter,
+  useDisclosure,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from "@chakra-ui/react";
 
 // images
 import logo from "../../assets/logo_icon.png";
 
 const NavBar = () => {
+  // set modal display state
+  const [showModal, setShowModal] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const initialRef = React.useRef(null);
+  // const finalRef = React.useRef(null);
+
   return (
     <>
       <Flex
@@ -105,36 +132,43 @@ const NavBar = () => {
           </Flex>
           {/* avatar */}
           <Flex flexDir="column" alignItems="center" mb={10} mt={5}>
-            <Avatar
+            {/* if the user is logged in - display the below */}
+            {/* <Avatar
               my={2}
               src="https://pyxis.nymag.com/v1/imgs/339/ba5/343b5b41f14dbf283bee18ee957135a61b-21-johnny-depp.rsquare.w700.jpg"
-            />
-            <Box ml="3" color="#000">
+            /> */}
+            {/* <Box ml="3" color="#000">
               <Text fontWeight="bold">Johnny Depp</Text>
               <Text fontSize="sm">@JohnnyDepp</Text>
-            </Box>
-            {/* menu */}
-            <Menu>
-              {({ isOpen }) => (
-                <>
-                  <MenuButton
-                    isActive={isOpen}
-                    as={Button}
-                    rightIcon={"..."}
-                    color="#000"
-                    width="fit-content"
-                  ></MenuButton>
-                  <MenuList color="#000">
-                    <MenuItem>Log Out</MenuItem>
-                    <MenuItem>View Profile</MenuItem>
-                    <MenuItem>Anything Else</MenuItem>
-                  </MenuList>
-                </>
-              )}
-            </Menu>
+            </Box> */}
+            {/* modal */}
+            <Button onClick={onOpen}>Log In</Button>
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Create your account</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody pb={1}>
+                  <Tabs variant="soft-rounded" colorScheme="purple">
+                    <TabList mb="1em">
+                      <Tab w="50%">Login</Tab>
+                      <Tab w="50%">Signup</Tab>
+                    </TabList>
+                    <TabPanels>
+                      <TabPanel>{<LoginForm />}</TabPanel>
+                      <TabPanel>{<SignUpForm />}</TabPanel>
+                    </TabPanels>
+                  </Tabs>
+                </ModalBody>
+                <ModalFooter>
+                  <Button onClick={onClose}>Cancel</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Flex>
         </Flex>
       </Flex>
+      {/* login/logout modal */}
     </>
   );
 };

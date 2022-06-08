@@ -16,8 +16,7 @@ import ChatProvider from "./context/ChatProvider";
 import { Flex } from "@chakra-ui/react";
 import backgroundimg from "./assets/background.png";
 // pages
-import Home from "./pages/Home";
-import { Chat, Landing, Dashboard, Posts } from "./pages";
+import { Chat, Landing, Dashboard, Posts, Home } from "./pages";
 // components
 import { NavBar } from "./components";
 
@@ -25,7 +24,6 @@ import { NavBar } from "./components";
 const httpLink = createHttpLink({
   uri: "/graphql",
 });
-
 
 // auth link
 const authLink = setContext((_, { headers }) => {
@@ -62,7 +60,8 @@ function App() {
           >
             <NavBar />
             <Routes>
-              <Route path="/" element={<Landing />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/landing" element={<Landing />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/chat" element={<Chat />} />
