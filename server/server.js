@@ -51,6 +51,17 @@ const startApolloServer = async (typeDefs, resolvers) => {
 // socket.io connection
 io.on("connection", (socket) => {
   console.log("connected to socket.io");
+  // when a user joins the app, they should be connected to their own socket
+  socket.on("setup", (userData) => {
+    socket.join(userData._id);
+    console.log(userData._id);
+    socket.emit("connected");
+  });
+  //
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log("user joined room" + room);
+  });
 });
 
 // Call the async function to start the server
