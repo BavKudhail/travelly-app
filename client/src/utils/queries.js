@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // get group chats
 export const GET_GROUP_CHATS = gql`
@@ -90,6 +90,20 @@ export const GET_DASHBOARD = gql`
         _id
         activityName
       }
+    }
+  }
+`;
+
+// post page queries
+export const GET_POSTS = gql`
+  query getAllPosts {
+    _id
+    userId
+    postText
+    comments {
+      _id
+      userId
+      commentText
     }
   }
 `;
