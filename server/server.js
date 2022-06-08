@@ -48,19 +48,39 @@ const startApolloServer = async (typeDefs, resolvers) => {
   });
 };
 
-// socket.io connection
+// SOCKET.IO CONNECTION
 io.on("connection", (socket) => {
   console.log("connected to socket.io");
   // when a user joins the app, they should be connected to their own socket
+  
   socket.on("setup", (userData) => {
     socket.join(userData._id);
-    console.log(userData._id);
     socket.emit("connected");
   });
-  //
+
+  //  USER JOINS CHAT
   socket.on("join chat", (room) => {
     socket.join(room);
-    console.log("user joined room" + room);
+    console.log("user joined room " + room);
+  });
+
+  // USER SENDS MESSAGE
+  socket.on("new message", (newMessageRecieved) => {
+    let chat = newMessageRecieved.chat;
+    console.log("new message recieved: ", newMessageRecieved);
+
+    if (!chat.users) return console.log("chat.users not defined");
+
+    chat.users.forEach((user) => {
+      //  if (user._id == newMessageRecieved.sender._id) return;
+      socket.to(user._id).emit("message recieved", newMessageRecieved);
+    });
+  });
+
+  // USER LEAVES CHAT
+  socket.off("setup", () => {
+    console.log("USER DISCONNECTED");
+    socket.leave(userData._id);
   });
 });
 
