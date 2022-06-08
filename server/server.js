@@ -50,6 +50,7 @@ app.post("/images", upload.single("image"), async (req, res) => {
   const file = req.file;
   const result = await uploadFile(file);
   console.log(result);
+  //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
   res.send({ imagePath: `/images/${result.Key}` });
 });
 
