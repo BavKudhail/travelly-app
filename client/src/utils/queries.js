@@ -94,6 +94,22 @@ export const GET_DASHBOARD = gql`
   }
 `;
 
+// get messages
+export const GET_ALL_MESSAGES = gql`
+  query getAllMessages($chatId: ID!) {
+    getAllMessages(chatId: $chatId) {
+      _id
+      sender {
+        username
+      }
+      content
+      chat {
+        chatName
+      }
+    }
+  }
+`; 
+
 // post page queries
 export const GET_POSTS = gql`
   query posts {
@@ -109,3 +125,4 @@ export const GET_POSTS = gql`
     }
   }
 `;
+

@@ -24,5 +24,8 @@
   "keywords": [],
   "devDependencies": {
     "concurrently": "^5.1.0"
+  },
+  "dependencies": {
+    "socket.io": "^4.5.1"
   }
 }
