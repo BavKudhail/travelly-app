@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import UpcomingTrips from "../../components/Dashboard/UpcomingTrips";
 import { FiPlus } from "react-icons/fi";
+import MobileModal from "../../components/MobileModal";
 
 import profileBadge from "../../assets/badge.png";
 
@@ -159,44 +160,11 @@ const Dashboard = () => {
         </Flex>
       </Flex>
       {/* RIGHT SECTION */}
+      <MobileModal>
+        <div>HELLOOOO</div>
+      </MobileModal>
       {/* Modal button */}
-      <Button
-        display={["inline-flex", "inline-flex", "none"]}
-        onClick={onOpen}
-        position={"absolute"}
-        h="70px"
-        w="70px"
-        borderRadius={"50%"}
-        backgroundColor="#5959BA"
-      >
-        <FiPlus fontSize={"50px"} color="#FFF" />
-      </Button>
-      {/* modal */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box>
-              <Heading>Level Up 💯</Heading>
-              <DashboardBadges />
-              <DashboardBadges />
-              <DashboardBadges />
-              <DashboardBadges />
-              <DashboardBadges />
-              <DashboardBadges />
-              <DashboardBadges />
-            </Box>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+
       <Flex
         display={["none", "none", "flex"]}
         //   responsive breakpooints

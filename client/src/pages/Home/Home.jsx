@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import TripCard from "../../components/Trip/TripCard";
 import landingMountain from "../../assets/landing-mountain.png";
 import "./Home.css";
+import MobileModal from "../../components/MobileModal";
 
 import {
   Image,
@@ -61,7 +62,6 @@ const Home = () => {
         flexDir="column"
         overflow="auto"
         minH="100vh"
-        className="section_main"
       >
         {/* COLUMN 2 - MAIN SECTION */}
         <Flex justifyContent="center" flexDir="column">
@@ -103,9 +103,12 @@ const Home = () => {
         </Flex>
       </Flex>
       {/* COLUMN 3 - RIGHT SECTION */}
+      <MobileModal />
+      {/* modal ends here */}
       <Flex
+        display={["none", "none", "flex"]}
         //   responsive breakpooints
-        w={["100%", "100%", "30%"]}
+        w={["100%", "100%", "25%", "30%"]}
         // bgColor="#F5F5F5"
         p="3%"
         flexDir="column"
