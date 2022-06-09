@@ -22,6 +22,11 @@ const io = require("socket.io")(server, {
   },
 });
 
+// dependencies for S3 & multer
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const { uploadFile, getFileStream } = require("./s3");
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -32,6 +37,21 @@ if (process.env.NODE_ENV === "production") {
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
+
+app.get("/images/:key", (req, res) => {
+  const key = req.params.key;
+  const readStream = getFileStream(key);
+  readStream.pipe(res);
+});
+
+app.post("/images", upload.single("image"), async (req, res) => {
+  console.log(req.body.image);
+  const file = req.file;
+  const result = await uploadFile(file);
+  console.log(result);
+  //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
+  res.send({ imagePath: `/images/${result.Key}` });
 });
 
 const startApolloServer = async (typeDefs, resolvers) => {

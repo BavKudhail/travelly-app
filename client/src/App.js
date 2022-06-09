@@ -9,8 +9,10 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+
 // router
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 // provider
 import ChatProvider from "./context/ChatProvider";
 // chakra/ui / styling
@@ -27,6 +29,7 @@ import {
   UserProfile,
   CompanyLogin,
   AdminLogin,
+  ImageUpload
 } from "./pages";
 
 // components
@@ -77,6 +80,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/chat" element={<Chat />} />
+              <Route path="/image-upload" element={<ImageUpload />} />
               <Route path="/companyLogin" element={<CompanyLogin />} />
               <Route path="/adminLogin" element={<AdminLogin />} />
             </Routes>
