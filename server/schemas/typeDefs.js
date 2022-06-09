@@ -78,7 +78,7 @@ const typeDefs = gql`
 
   type Post {
     _id: ID!
-    userId: ID!
+    postedBy: User!
     postText: String!
     comments: [Comment]
   }
@@ -159,7 +159,7 @@ const typeDefs = gql`
 
     addCountryBadge(badgeName: String!, badgeImage: String, countries: [ID]): CountryBadge
 
-    addPost(userId: ID!, postText: String!): User
+    addPost(userId: ID!, postText: String!): Post
 
     addComment(userId: ID!, commentText: String!, postId: ID!): Post
 
