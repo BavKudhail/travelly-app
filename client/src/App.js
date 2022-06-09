@@ -29,7 +29,7 @@ import {
   UserProfile,
   CompanyLogin,
   AdminLogin,
-  ImageUpload
+  ImageUpload,
 } from "./pages";
 
 // components
