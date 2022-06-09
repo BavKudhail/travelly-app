@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import UpcomingTrips from "../../components/Dashboard/UpcomingTrips";
+import { FiPlus } from "react-icons/fi";
 
 import profileBadge from "../../assets/badge.png";
 
@@ -35,12 +36,20 @@ import {
   AvatarBadge,
   AvatarGroup,
   WrapItem,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  ModalCloseButton,
+  ModalHeader,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { FiBell } from "react-icons/fi";
 import DashboardBadges from "../../components/Dashboard/DashboardBadges";
 import PostCard from "../../components/PostCard";
 
 const Dashboard = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const staticUserId = "6299eaa2b3b3eb625a753dd0";
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD, {
@@ -56,7 +65,7 @@ const Dashboard = () => {
     <>
       <Flex
         //   gain extra 5% from the first col shrinking into just icons
-        w={["100%", "100%", "60%", "60%", "60%"]}
+        w={["100%", "100%", "60%", "60%", "55%"]}
         p="3%"
         flexDir="column"
         overflow="auto"
@@ -150,9 +159,48 @@ const Dashboard = () => {
         </Flex>
       </Flex>
       {/* RIGHT SECTION */}
+      {/* Modal button */}
+      <Button
+        display={["inline-flex", "inline-flex", "none"]}
+        onClick={onOpen}
+        position={"absolute"}
+        h="70px"
+        w="70px"
+        borderRadius={"50%"}
+        backgroundColor="#5959BA"
+      >
+        <FiPlus fontSize={"50px"} color="#FFF" />
+      </Button>
+      {/* modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box>
+              <Heading>Level Up 💯</Heading>
+              <DashboardBadges />
+              <DashboardBadges />
+              <DashboardBadges />
+              <DashboardBadges />
+              <DashboardBadges />
+              <DashboardBadges />
+              <DashboardBadges />
+            </Box>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost">Secondary Action</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Flex
+        display={["none", "none", "flex"]}
         //   responsive breakpooints
-        w={["25%"]}
+        w={["100%", "100%", "25%", "30%"]}
         // bgColor="#F5F5F5"
         p="3%"
         flexDir="column"

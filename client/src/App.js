@@ -51,9 +51,9 @@ function App() {
       <ChatProvider>
         <Router>
           <Flex
-            h="100vh"
+            h={[null, null, "100vh", "100vh", "100vh"]}
             maxW="2000px"
-            flexDir="row"
+            flexDir={["column", "column", "row"]}
             overflow="hidden"
             backgroundImage={backgroundimg}
             className="app"

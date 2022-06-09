@@ -65,7 +65,7 @@ const NavBar = () => {
   return (
     <>
       <Flex
-        w={["100%", "10%", "10%", "10%", "15%"]}
+        w={["100%", "100%", "10%", "10%", "15%"]}
         flexDir={["column"]}
         alignItems="center"
         // backgroundColor="#F8F8F8"
@@ -74,7 +74,11 @@ const NavBar = () => {
         display={["flex", "flex", "flex", "flex", "flex"]}
       >
         {/* insert nav links here */}
-        <Flex flexDir="column" justifyContent="space-between" h="100vh">
+        <Flex
+          flexDir="column"
+          justifyContent="space-between"
+          h={[null, null, "100vh"]}
+        >
           <Flex justifyContent="center" alignItems="center" mt="10">
             <Heading
               fontSize="4xl"
@@ -87,13 +91,18 @@ const NavBar = () => {
             >
               Travelly
             </Heading>
-            <Image width="40px" height="40px" src={logo} />
+            <Image
+              display={["none", "none", "inline"]}
+              width="40px"
+              height="40px"
+              src={logo}
+            />
           </Flex>
           {/* Navlinks */}
           <Flex flexDir="column" as="nav">
             {/* this is the navigation */}
             <Flex
-              flexDir="column"
+              flexDir={["row", "row", "column"]}
               alignItems="flex-start"
               justifyContent="center"
             >
@@ -155,7 +164,9 @@ const NavBar = () => {
               </Button>
             </Box> */}
             {/* modal */}
-            <Button onClick={onOpen}>Log In</Button>
+            <Button display={["none", "inline"]} onClick={onOpen}>
+              Log In
+            </Button>
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
