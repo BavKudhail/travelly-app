@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 // dependencies
+
 import {
   ApolloClient,
   InMemoryCache,
@@ -16,6 +17,7 @@ import ChatProvider from "./context/ChatProvider";
 import { Flex } from "@chakra-ui/react";
 import backgroundimg from "./assets/background.png";
 // pages
+
 import {
   Chat,
   Landing,
@@ -26,6 +28,7 @@ import {
   CompanyLogin,
   AdminLogin,
 } from "./pages";
+
 // components
 import { NavBar } from "./components";
 
