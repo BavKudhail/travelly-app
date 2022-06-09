@@ -36,7 +36,7 @@ const Posts = () => {
                 <div key={post._id}>
                   {post.postText}
 
-                  <div>Posted by user id: {post.userId}</div>
+                  <div>Posted by user: {post.postedBy.username}</div>
                 </div>
               );
             })}
