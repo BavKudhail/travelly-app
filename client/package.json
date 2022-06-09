@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {
+    "-": "^0.0.1",
     "@apollo/client": "^3.6.6",
     "@apollo/react-hooks": "^4.0.0",
     "@chakra-ui/react": "^2.1.2",
@@ -14,7 +15,9 @@
     "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^6.3.6",
     "jwt-decode": "^3.1.2",
+    "npm": "^8.12.1",
     "react": "^18.1.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
