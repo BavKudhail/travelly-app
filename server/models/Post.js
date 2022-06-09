@@ -1,13 +1,12 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-const commentSchema = require("./Comment");
+const commentSchema = require('./Comment');
 
 const postSchema = new Schema(
   {
-    userId: {
+    postedBy: {
       type: Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
+      ref: 'User',
     },
     postText: {
       type: String,
@@ -25,10 +24,10 @@ const postSchema = new Schema(
 );
 
 // comment count to be declared in typeDefs?
-postSchema.virtual("commentCount").get(function () {
+postSchema.virtual('commentCount').get(function () {
   return this.comments.length;
 });
 
-const Post = model("Post", postSchema);
+const Post = model('Post', postSchema);
 
 module.exports = Post;

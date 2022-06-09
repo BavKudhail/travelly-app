@@ -63,7 +63,7 @@ const resolvers = {
     //////////////////////////////////////
 
     getAllPosts: async (parent, args, context) => {
-      const allPosts = await Post.find({}).populate('comments');
+      const allPosts = await Post.find({}).populate('postedBy').populate('comments');
 
       return allPosts;
     },
@@ -346,7 +346,16 @@ const resolvers = {
       // TODO: add authorisation to check if current user can create posts (i.e not company or admin)
 
       //////////PROCESSING/////////////////
-      const post = await Post.create({ userId, postText });
+      const post = await Post.create({
+        postedBy: userId,
+        postText,
+      });
+
+      const updatedPost = await Post.findById({
+        _id: post._id,
+      }).populate('postedBy');
+
+      // add to the users posts array
       const user = await User.findByIdAndUpdate(
         { _id: userId },
         {
@@ -355,15 +364,11 @@ const resolvers = {
           },
         },
         { new: true, runValidators: true }
-      );
+      ).populate('posts');
 
       //////////RETURN VALUE///////////////
-      return user
-        .populate({
-          path: 'posts',
-          model: 'Post',
-        })
-        .execPopulate();
+
+      return updatedPost;
     },
 
     // ! Need to refactor to use context to get userId rather than passing it in in the args
