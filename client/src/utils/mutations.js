@@ -49,4 +49,16 @@ export const SEND_MESSAGE = gql`
   }
 `;
 
+export const ADD_POST = gql`
+  mutation ($userId: ID!, $postText: String!) {
+    addPost(userId: $userId, postText: $postText) {
+      _id
+      postedBy {
+        username
+      }
+      postText
+    }
+  }
+`;
+
 // What is the difference between named vs default export??
