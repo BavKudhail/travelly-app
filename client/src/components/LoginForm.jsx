@@ -15,7 +15,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import "./SignUpForm.css";
+import "./SignUpForm.css"
 
 export default function LoginForm() {
   const [userInput, setUserInput] = useState({ email: "", password: "" });

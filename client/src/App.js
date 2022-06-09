@@ -16,7 +16,16 @@ import ChatProvider from "./context/ChatProvider";
 import { Flex } from "@chakra-ui/react";
 import backgroundimg from "./assets/background.png";
 // pages
-import { Chat, Landing, Dashboard, Posts, Home } from "./pages";
+import {
+  Chat,
+  Landing,
+  Dashboard,
+  Posts,
+  Home,
+  UserProfile,
+  CompanyLogin,
+  AdminLogin,
+} from "./pages";
 // components
 import { NavBar } from "./components";
 
@@ -61,10 +70,12 @@ function App() {
             <NavBar />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/landing" element={<Landing />} />
+              <Route path="/userprofile" element={<UserProfile />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/chat" element={<Chat />} />
+              <Route path="/companyLogin" element={<CompanyLogin />} />
+              <Route path="/adminLogin" element={<AdminLogin />} />
             </Routes>
           </Flex>
         </Router>
