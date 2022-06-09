@@ -109,42 +109,40 @@ const NavBar = () => {
               {/* nav items */}
               {navList.map((navLink, index) => {
                 return (
-                  <>
-                    <Link
-                      as={RouterLink}
-                      to={navLink.route}
-                      display="flex"
-                      width={["auto", null, null, null, "200px"]}
-                      key={navLink.route}
-                      color="#000"
-                      _activeLink={{
-                        backgroundColor: "#0093e9",
-                        backgroundImage:
-                          "linear-gradient(160deg, #5959ba 0%, #a19cdb 100%)",
-                        fontWeight: "bold",
-                        color: "white",
-                        borderRadius: "30px",
-                        boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
-                      }}
-                      className="sidebar-items"
+                  <Link
+                    as={RouterLink}
+                    to={navLink.route}
+                    display="flex"
+                    width={["auto", null, null, null, "200px"]}
+                    key={navLink.route}
+                    color="#000"
+                    _activeLink={{
+                      backgroundColor: "#0093e9",
+                      backgroundImage:
+                        "linear-gradient(160deg, #5959ba 0%, #a19cdb 100%)",
+                      fontWeight: "bold",
+                      color: "white",
+                      borderRadius: "30px",
+                      boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+                    }}
+                    className="sidebar-items"
+                  >
+                    {/* NavLink */}
+                    <Box display="flex-start">
+                      <Icon
+                        display="flex"
+                        as={navLink.icon}
+                        fontSize="2xl"
+                        className="active-icon"
+                      />
+                    </Box>
+                    <Box
+                      _hover={{ textDecor: "none" }}
+                      display={["none", "none", "none", "none", "flex"]}
                     >
-                      {/* NavLink */}
-                      <Box display="flex-start">
-                        <Icon
-                          display="flex"
-                          as={navLink.icon}
-                          fontSize="2xl"
-                          className="active-icon"
-                        />
-                      </Box>
-                      <Box
-                        _hover={{ textDecor: "none" }}
-                        display={["none", "none", "none", "none", "flex"]}
-                      >
-                        <Text>{navLink.title}</Text>
-                      </Box>
-                    </Link>
-                  </>
+                      <Text>{navLink.title}</Text>
+                    </Box>
+                  </Link>
                 );
               })}
             </Flex>

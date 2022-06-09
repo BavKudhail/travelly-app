@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 // dependencies
+
 import {
   ApolloClient,
   InMemoryCache,
@@ -18,7 +19,19 @@ import ChatProvider from "./context/ChatProvider";
 import { Flex } from "@chakra-ui/react";
 import backgroundimg from "./assets/background.png";
 // pages
-import { Chat, Landing, Dashboard, Posts, Home, ImageUpload } from "./pages";
+
+import {
+  Chat,
+  Landing,
+  Dashboard,
+  Posts,
+  Home,
+  UserProfile,
+  CompanyLogin,
+  AdminLogin,
+  ImageUpload
+} from "./pages";
+
 // components
 import { NavBar } from "./components";
 
@@ -63,10 +76,13 @@ function App() {
             <NavBar />
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/userprofile" element={<UserProfile />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/image-upload" element={<ImageUpload />} />
+              <Route path="/companyLogin" element={<CompanyLogin />} />
+              <Route path="/adminLogin" element={<AdminLogin />} />
             </Routes>
           </Flex>
         </Router>
