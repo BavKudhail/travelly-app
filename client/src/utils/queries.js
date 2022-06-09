@@ -108,14 +108,16 @@ export const GET_ALL_MESSAGES = gql`
       }
     }
   }
-`; 
+`;
 
 // post page queries
 export const GET_POSTS = gql`
   query posts {
     getAllPosts {
       _id
-      userId
+      postedBy {
+        username
+      }
       postText
       comments {
         _id
@@ -125,4 +127,3 @@ export const GET_POSTS = gql`
     }
   }
 `;
-
