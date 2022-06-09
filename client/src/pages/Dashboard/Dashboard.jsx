@@ -44,7 +44,9 @@ import {
   ModalCloseButton,
   ModalHeader,
   ModalFooter,
+  Spinner,
 } from "@chakra-ui/react";
+
 import { FiBell } from "react-icons/fi";
 import DashboardBadges from "../../components/Dashboard/DashboardBadges";
 import PostCard from "../../components/PostCard";
@@ -53,14 +55,15 @@ const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const staticUserId = "6299eaa2b3b3eb625a753dd0";
   // Execute the query on component load
-  const { loading, data, error } = useQuery(GET_DASHBOARD, {
-    variables: {
-      userId: staticUserId,
-    },
-  });
+  const { loading, data, error } = useQuery(GET_DASHBOARD);
   const userData = data?.me || [];
 
-  console.log(userData.followerCount);
+  console.log(userData);
+  console.log(userData.username);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -92,26 +95,26 @@ const Dashboard = () => {
           <Box p={6}>
             <Stack spacing={0} align={"center"} mb={5}>
               <Heading fontSize={"2xl"} fontFamily={"body"}>
-                Max Alexander
+                {userData.username}
               </Heading>
-              <Text color={"gray.500"}>Bio</Text>
+              <Text color={"gray.500"}>{userData.bio}</Text>
             </Stack>
             {/* socials count */}
             <Stack direction={"row"} justify={"center"} spacing={6}>
               <Stack spacing={0} align={"center"}>
-                <Text fontWeight={600}>23k</Text>
+                <Text fontWeight={600}>{userData.followingCount}</Text>
+                <Text fontSize={"sm"} color={"gray.500"}>
+                  Following
+                </Text>
+              </Stack>
+              <Stack spacing={0} align={"center"}>
+                <Text fontWeight={600}>{userData.followerCount}</Text>
                 <Text fontSize={"sm"} color={"gray.500"}>
                   Followers
                 </Text>
               </Stack>
               <Stack spacing={0} align={"center"}>
-                <Text fontWeight={600}>23k</Text>
-                <Text fontSize={"sm"} color={"gray.500"}>
-                  Followers
-                </Text>
-              </Stack>
-              <Stack spacing={0} align={"center"}>
-                <Text fontWeight={600}>23k</Text>
+                <Text fontWeight={600}>{userData.visitedCountries.length}</Text>
                 <Text fontSize={"sm"} color={"gray.500"}>
                   Countries Visited
                 </Text>
@@ -137,24 +140,50 @@ const Dashboard = () => {
                 <img src={profileBadge} />
               </Box>
             </Stack>
+            {/*  */}
+            {userData.earnedCountryBadges.map((badge) => {
+              console.log("badge", badge);
+            })}
           </Box>
           <Box>
-            {/* upcoming trips */}
-            <Box my="10">
-              <Heading color="#5a5aba" textAlign={"center"} fontSize={"2xl"}>
-                Upcoming Trips
-              </Heading>
-              <UpcomingTrips />
-              <UpcomingTrips />
-              <UpcomingTrips />
-              <UpcomingTrips />
-            </Box>
-            {/* my posts */}
-            <Box>
-              <Heading color="#5a5aba" textAlign={"center"} fontSize={"2xl"}>
-                My Posts
-              </Heading>
-              <PostCard />
+            {/*  */}
+            <Box mt="10">
+              <Tabs variant="soft-rounded" colorScheme="purple">
+                <TabList>
+                  <Tab>Upcoming Trips</Tab>
+                  <Tab>My Posts</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    {/* upcoming trips */}
+                    <Box my="10">
+                      {userData.futureTrips.map((trip) => {
+                        return (
+                          <UpcomingTrips
+                            tripName={trip.tripName}
+                            startDate={trip.startDate}
+                            endDate={trip.endDate}
+                            tripDescription={trip.tripDescription}
+                          />
+                        );
+                      })}
+                    </Box>
+                  </TabPanel>
+                  <TabPanel>
+                    {/* MY POSTS */}
+                    <Box>
+                      {userData.posts.map((post) => {
+                        return (
+                          <PostCard
+                            postText={post.postText}
+                            username={post.username}
+                          />
+                        );
+                      })}
+                    </Box>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             </Box>
           </Box>
         </Flex>

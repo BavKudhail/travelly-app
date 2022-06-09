@@ -14,7 +14,14 @@ import {
 
 import chatIcon from "../../assets/chat-box.png";
 
-function UpcomingTrips() {
+function UpcomingTrips({
+  tripName,
+  startDate,
+  endDate,
+  tripDescription,
+  countries,
+  tripImage,
+}) {
   return (
     <Center py={6}>
       <Stack
@@ -46,10 +53,11 @@ function UpcomingTrips() {
           pt={2}
         >
           <Heading fontSize={"2xl"} fontFamily={"body"}>
-            <span>📍</span> Trip Name
+            <span>📍</span> {tripName}
           </Heading>
           <Text fontWeight={600} color={"gray.500"} size="sm" mb={4}>
-            📅 Trip Date
+            📅 {startDate} <span>-</span>
+            {endDate}
           </Text>
           <AvatarGroup size="md" max={3}>
             <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
@@ -61,6 +69,9 @@ function UpcomingTrips() {
             />
             <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
           </AvatarGroup>
+          <Box>
+            <Text>{tripDescription}</Text>
+          </Box>
         </Stack>
         <Box border={"1px solid black"}>
           <Image w={"50px"} h={"50px"} src={chatIcon} />

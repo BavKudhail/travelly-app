@@ -39,7 +39,7 @@ const PostCard = ({ postText, username, avatar, date }) => {
           /> */}
         {/* </Box> */}
         <Heading>My trip to Paris</Heading>
-        <Text fontSize={"xl"}>{postText}</Text>
+        <Text fontSize={"2xl"}>{postText}</Text>
         <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
           <Avatar
             src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
