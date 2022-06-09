@@ -38,9 +38,11 @@ export default function LoginForm() {
     }
 
     try {
+      
       const { data } = await loginUser({
         variables: { ...userInput },
       });
+      console.log(data)
       Auth.login(data.loginUser.token);
       console.log("Logged in!");
     } catch (err) {
