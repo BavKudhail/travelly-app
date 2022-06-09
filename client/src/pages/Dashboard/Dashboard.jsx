@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import UpcomingTrips from "../../components/Dashboard/UpcomingTrips";
 
+import profileBadge from "../../assets/badge.png";
+
 // mutations/queries
 import { GET_DASHBOARD } from "../../utils/queries";
 
@@ -35,6 +37,8 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import { FiBell } from "react-icons/fi";
+import DashboardBadges from "../../components/Dashboard/DashboardBadges";
+import PostCard from "../../components/PostCard";
 
 const Dashboard = () => {
   const staticUserId = "6299eaa2b3b3eb625a753dd0";
@@ -46,13 +50,13 @@ const Dashboard = () => {
   });
   const userData = data?.me || [];
 
-  console.log(userData);
+  console.log(userData.followerCount);
 
   return (
     <>
       <Flex
         //   gain extra 5% from the first col shrinking into just icons
-        w={["100%", "100%", "60%", "60%", "55%"]}
+        w={["100%", "100%", "60%", "60%", "60%"]}
         p="3%"
         flexDir="column"
         overflow="auto"
@@ -61,52 +65,86 @@ const Dashboard = () => {
       >
         {/* COLUMN 2 - MAIN SECTION */}
         <Flex justifyContent="center" flexDir="column">
-          <Flex justifyContent="space-between">
-            <WrapItem>
-              <Avatar
-                size="2xl"
-                name="Kola Tioluwani"
-                src="https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbc1dd99666153.5ef7dbf39ecee.jpg"
-              />{" "}
-            </WrapItem>
-            <Text>My Badges</Text>
+          {/* user avatar */}
+          <Flex justify={"center"}>
+            <Avatar
+              size={"2xl"}
+              src={
+                "https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbc1dd99666153.5ef7dbf39ecee.jpg"
+              }
+              alt={"Author"}
+              css={{
+                border: "2px solid white",
+              }}
+            />
           </Flex>
-          <Box>
-            <Heading fontSize={"2xl"} fontFamily={"body"}>
-              Max Alexander
-            </Heading>
-            <Text fontWeight={600} color={"gray.500"} size="sm" mb={4}>
-              @mkanatalexander@techfriends.dev
-            </Text>
-            <Text
-              textAlign={"center"}
-              color={useColorModeValue("gray.700", "gray.400")}
-              px={3}
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusm.
-            </Text>
+          {/* social header */}
+          <Box p={6}>
+            <Stack spacing={0} align={"center"} mb={5}>
+              <Heading fontSize={"2xl"} fontFamily={"body"}>
+                Max Alexander
+              </Heading>
+              <Text color={"gray.500"}>Bio</Text>
+            </Stack>
+            {/* socials count */}
+            <Stack direction={"row"} justify={"center"} spacing={6}>
+              <Stack spacing={0} align={"center"}>
+                <Text fontWeight={600}>23k</Text>
+                <Text fontSize={"sm"} color={"gray.500"}>
+                  Followers
+                </Text>
+              </Stack>
+              <Stack spacing={0} align={"center"}>
+                <Text fontWeight={600}>23k</Text>
+                <Text fontSize={"sm"} color={"gray.500"}>
+                  Followers
+                </Text>
+              </Stack>
+              <Stack spacing={0} align={"center"}>
+                <Text fontWeight={600}>23k</Text>
+                <Text fontSize={"sm"} color={"gray.500"}>
+                  Countries Visited
+                </Text>
+              </Stack>
+            </Stack>
           </Box>
-          <Flex>
-            <Box m="4">
-              <Text as="span">10</Text>Followers
-            </Box>
-            <Box m="4">
-              <Text as="span">10</Text>
-              Following
-            </Box>
-            <Box m="4">
-              <Text as="span">10</Text>Countries Visited
-            </Box>
-          </Flex>
+          {/* badges */}
+          <Box alignSelf="center">
+            <Stack direction={"row"}>
+              <Box w="40px">
+                <img src={profileBadge} />
+              </Box>
+              <Box w="40px">
+                <img src={profileBadge} />
+              </Box>
+              <Box w="40px">
+                <img src={profileBadge} />
+              </Box>
+              <Box w="40px">
+                <img src={profileBadge} />
+              </Box>
+              <Box w="40px">
+                <img src={profileBadge} />
+              </Box>
+            </Stack>
+          </Box>
           <Box>
-            <Box>
-              <Text>Upcoming Trips</Text>
-              {/*  */}
+            {/* upcoming trips */}
+            <Box my="10">
+              <Heading color="#5a5aba" textAlign={"center"} fontSize={"2xl"}>
+                Upcoming Trips
+              </Heading>
+              <UpcomingTrips />
+              <UpcomingTrips />
+              <UpcomingTrips />
               <UpcomingTrips />
             </Box>
+            {/* my posts */}
             <Box>
-              <Text>My Posts</Text>
+              <Heading color="#5a5aba" textAlign={"center"} fontSize={"2xl"}>
+                My Posts
+              </Heading>
+              <PostCard />
             </Box>
           </Box>
         </Flex>
@@ -114,7 +152,7 @@ const Dashboard = () => {
       {/* RIGHT SECTION */}
       <Flex
         //   responsive breakpooints
-        w={["100%", "100%", "30%"]}
+        w={["25%"]}
         // bgColor="#F5F5F5"
         p="3%"
         flexDir="column"
@@ -173,48 +211,15 @@ const Dashboard = () => {
           </Flex>
         </Flex>
         <Box>
-          <Heading>Filter Trips</Heading>
-          {/* select location */}
-          <Select placeholder="Select option">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </Select>
-          {/* price range */}
-          <RangeSlider
-            aria-label={["min", "max"]}
-            colorScheme="pink"
-            defaultValue={[10, 30]}
-          >
-            <RangeSliderTrack>
-              <RangeSliderFilledTrack />
-            </RangeSliderTrack>
-            <RangeSliderThumb index={0} />
-            <RangeSliderThumb index={1} />
-          </RangeSlider>
-          {/* trip providers */}
-          <CheckboxGroup
-            colorScheme="green"
-            defaultValue={["naruto", "kakashi"]}
-          >
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
-              <Checkbox value="naruto">Naruto</Checkbox>
-              <Checkbox value="sasuke">Sasuke</Checkbox>
-              <Checkbox value="kakashi">kakashi</Checkbox>
-            </Stack>
-          </CheckboxGroup>
-          {/* apply filters */}
-          <Button
-            mt={4}
-            bgColor="blackAlpha.900"
-            color="#fff"
-            p={7}
-            borderRadius={15}
-          >
-            Apply Filters
-          </Button>
+          <Heading>Level Up 💯</Heading>
+          <DashboardBadges />
+          <DashboardBadges />
+          <DashboardBadges />
+          <DashboardBadges />
+          <DashboardBadges />
+          <DashboardBadges />
+          <DashboardBadges />
         </Box>
-        <Box></Box>
       </Flex>
     </>
   );
