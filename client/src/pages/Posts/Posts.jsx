@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import React, { useState, useEffect } from "react";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { GET_POSTS } from "../../utils/queries";
 import { ADD_POST } from "../../utils/mutations";
 // charka ui components
@@ -47,15 +47,30 @@ const user = {
 const Posts = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Execute the query on component load
-  const { loading, data, error } = useQuery(GET_POSTS, {});
+  // const { loading, data, error } = useQuery(GET_POSTS, {});
 
-  const postData = data || [];
+  const [latestPosts, setLatestPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [getPosts] = useLazyQuery(GET_POSTS);
+
+  const getLatestPosts = async () => {
+    const response = await getPosts();
+    const { data, loading } = response;
+    setLatestPosts(data.getAllPosts);
+  };
+
+  useEffect(() => {
+    getLatestPosts();
+  }, []);
+
+  console.log(latestPosts);
+
+  // const postData = data || [];
 
   const [addPost] = useMutation(ADD_POST);
 
   const [postText, setPostText] = useState("");
-
-  console.log(postData);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -65,9 +80,9 @@ const Posts = () => {
         postText: postText,
       },
     });
+    console.log("check this:", data);
+    setLatestPosts([...latestPosts, data.addPost]);
   };
-
-  //
 
   return (
     <>
@@ -167,9 +182,10 @@ const Posts = () => {
                     size="xl"
                   />
                 ) : (
-                  postData.getAllPosts.map((post) => {
+                  latestPosts.map((post) => {
                     return (
                       <PostCard
+                        key={post._id}
                         postText={post.postText}
                         username={post.postedBy.username}
                       />
