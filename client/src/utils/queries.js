@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 // get group chats
 export const GET_GROUP_CHATS = gql`
@@ -25,8 +25,8 @@ export const GET_GROUP_CHATS = gql`
 
 // dashboard queries
 export const GET_DASHBOARD = gql`
-  query dashboard($userId: ID!) {
-    me(userId: $userId) {
+  query dashboard {
+    me {
       _id
       username
       savedCountryBadges {
@@ -57,7 +57,17 @@ export const GET_DASHBOARD = gql`
       futureTrips {
         _id
         tripName
+        tripDescription
+        startDate
         endDate
+        countries {
+          _id
+        }
+      }
+      earnedCountryBadges {
+        _id
+        badgeImage
+        badgeName
       }
       bucketList
       visitedCountries {
@@ -67,7 +77,6 @@ export const GET_DASHBOARD = gql`
       followerCount
       posts {
         _id
-        userId
         postText
       }
     }
