@@ -44,6 +44,14 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 
+// const breakpoints = {
+//   sm: "30em",
+//   md: "48em",
+//   lg: "62em",
+//   xl: "80em",
+//   "2xl": "96em",
+// };
+
 // images
 import logo from "../../assets/logo_icon.png";
 
@@ -57,12 +65,13 @@ const NavBar = () => {
   return (
     <>
       <Flex
-        w={["10%", "10%", "10%", "15%", "15%"]}
-        flexDir="column"
+        w={["100%", "10%", "10%", "10%", "15%"]}
+        flexDir={["column"]}
         alignItems="center"
         // backgroundColor="#F8F8F8"
         // color="#fff"
         className="glassmorphism"
+        display={["flex", "flex", "flex", "flex", "flex"]}
       >
         {/* insert nav links here */}
         <Flex flexDir="column" justifyContent="space-between" h="100vh">
@@ -74,6 +83,7 @@ const NavBar = () => {
               color="#5959BA"
               marginRight="10px"
               fontFamily={"'Pacifico', cursive;"}
+              display={["none", "none", "none", "none", "inline"]}
             >
               Travelly
             </Heading>
@@ -95,7 +105,7 @@ const NavBar = () => {
                       as={RouterLink}
                       to={navLink.route}
                       display="flex"
-                      width="200px"
+                      width={["auto", null, null, null, "200px"]}
                       key={navLink.route}
                       color="#000"
                       _activeLink={{
@@ -107,7 +117,7 @@ const NavBar = () => {
                         borderRadius: "30px",
                         boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
                       }}
-                      className="sidebar-items "
+                      className="sidebar-items"
                     >
                       {/* NavLink */}
                       <Box display="flex-start">
@@ -120,7 +130,7 @@ const NavBar = () => {
                       </Box>
                       <Box
                         _hover={{ textDecor: "none" }}
-                        display={["none", "none", "none", "flex", "flex"]}
+                        display={["none", "none", "none", "none", "flex"]}
                       >
                         <Text>{navLink.title}</Text>
                       </Box>

@@ -8,10 +8,7 @@ import {
   Flex,
   Text,
   Stack,
-  Button,
   useColorModeValue,
-  Badge,
-  Link,
   AvatarGroup,
 } from "@chakra-ui/react";
 
@@ -55,9 +52,6 @@ function UpcomingTrips() {
             📅 Trip Date
           </Text>
           <AvatarGroup size="md" max={3}>
-            <Text fontWeight={600} color={"gray.500"} size="sm" mb={4}>
-              People Travelling
-            </Text>
             <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
             <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
             <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
