@@ -6,8 +6,8 @@ import {
 } from "react-router-dom";
 
 // import login/sign up form
-import SignUpForm from "../../components/SignUpForm";
-import LoginForm from "../../components/LoginForm";
+import SignUpForm from "../SignUpForm";
+import LoginForm from "../LoginForm";
 
 import "./NavBar.css";
 
