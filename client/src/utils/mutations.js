@@ -62,4 +62,29 @@ export const ADD_POST = gql`
   }
 `;
 
+// company
+export const ADD_COMPANY = gql`
+  mutation addCompany(
+    $companyUsername: String!
+    $email: String!
+    $password: String!
+  ) {
+    addCompany(
+      companyUsername: $companyUsername
+      email: $email
+      password: $password
+    ) {
+      token
+    }
+  }
+`;
+
+export const LOGIN_COMPANY = gql`
+  mutation LoginCompany($email: String!, $password: String!) {
+    loginCompany(email: $email, password: $password) {
+      token
+    }
+  }
+`;
+
 // What is the difference between named vs default export??
