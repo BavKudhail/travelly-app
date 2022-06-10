@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // TODO - add authentication token here
 
@@ -64,16 +64,8 @@ export const ADD_POST = gql`
 
 // company
 export const ADD_COMPANY = gql`
-  mutation addCompany(
-    $companyUsername: String!
-    $email: String!
-    $password: String!
-  ) {
-    addCompany(
-      companyUsername: $companyUsername
-      email: $email
-      password: $password
-    ) {
+  mutation addCompany($companyUsername: String!, $email: String!, $password: String!) {
+    addCompany(companyUsername: $companyUsername, email: $email, password: $password) {
       token
     }
   }
@@ -82,6 +74,23 @@ export const ADD_COMPANY = gql`
 export const LOGIN_COMPANY = gql`
   mutation LoginCompany($email: String!, $password: String!) {
     loginCompany(email: $email, password: $password) {
+      token
+    }
+  }
+`;
+
+// admin
+export const ADD_ADMIN = gql`
+  mutation addAdmin($email: String!, $password: String!) {
+    addAdmin(email: $email, password: $password) {
+      token
+    }
+  }
+`;
+
+export const LOGIN_ADMIN = gql`
+  mutation LoginAdmin($email: String!, $password: String!) {
+    loginAdmin(email: $email, password: $password) {
       token
     }
   }
