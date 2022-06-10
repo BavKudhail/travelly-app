@@ -108,6 +108,8 @@ export const GET_DASHBOARD = gql`
       posts {
         _id
         postText
+        postTitle
+        createdAt
       }
     }
 
@@ -152,16 +154,34 @@ export const GET_ALL_MESSAGES = gql`
 // post page queries
 export const GET_POSTS = gql`
   query posts {
+    # get all posts
     getAllPosts {
       _id
       postedBy {
         username
       }
+      createdAt
+      postTitle
       postText
       comments {
         _id
         userId
         commentText
+      }
+    }
+    # get posts of all users you are following
+    getFollowingPosts {
+      _id
+      username
+      following {
+        _id
+        username
+        posts {
+          _id
+          createdAt
+          postTitle
+          postText
+        }
       }
     }
   }

@@ -176,7 +176,8 @@ const Dashboard = () => {
                         return (
                           <PostCard
                             postText={post.postText}
-                            username={post.username}
+                            postTitle={post.postTitle}
+                            date={post.createdAt}
                           />
                         );
                       })}
