@@ -8,6 +8,7 @@ const chatData = require('../data/data');
 const { signToken } = require('../utils/auth');
 const { isConstValueNode } = require('graphql');
 
+
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
@@ -34,9 +35,6 @@ const resolvers = {
         });
       }
     },
-
-    // path: "trips",
-    // model: "Trip",
 
     getAllTrips: async (parent, args, context) => {
       const trips = await Trip.find().populate("countries");
@@ -73,6 +71,7 @@ const resolvers = {
     ////////////// BADGES ////////////////
     //////////////////////////////////////
 
+    // ******
     getAllCountryBadges: async (parent, args, context) => {
       const allCountryBadges = await CountryBadge.find({}).populate('countries');
 
@@ -95,6 +94,7 @@ const resolvers = {
       return allPosts;
     },
   },
+  // ****
   Mutation: {
     //////////////////////////////////////
     ////////////// CHAT //////////////////
@@ -159,6 +159,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    // ***
     addCompany: async (parent, args) => {
       const company = await Company.create(args);
 
