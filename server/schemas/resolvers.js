@@ -17,6 +17,27 @@ const resolvers = {
         return user.populate('following').populate('followers').populate('posts').populate('savedCountryBadges').populate('savedActivityBadges').populate('upcomingTrips').populate('countries');
       }
     },
+
+    getFollowingPosts: async (me, args, context) => {
+      // get the currently logged in user
+      if (context.user) {
+        const user = User.findOne({ _id: context.user._id }).select(
+          "-__v -password"
+        );
+        return user.populate({
+          path: "following",
+          model: "User",
+          populate: {
+            path: "posts",
+            model: "Post",
+          },
+        });
+      }
+    },
+
+    // path: "trips",
+    // model: "Trip",
+
     getAllTrips: async (parent, args, context) => {
       const trips = await Trip.find().populate("countries");
       return trips;
