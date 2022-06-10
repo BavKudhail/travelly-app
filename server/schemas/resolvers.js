@@ -17,6 +17,10 @@ const resolvers = {
         return user.populate('following').populate('followers').populate('posts').populate('savedCountryBadges').populate('savedActivityBadges').populate('upcomingTrips').populate('countries');
       }
     },
+    getAllTrips: async (parent, args, context) => {
+      const trips = await Trip.find().populate("countries");
+      return trips;
+    },
 
     //////////////////////////////////////
     ////////////// CHAT //////////////////

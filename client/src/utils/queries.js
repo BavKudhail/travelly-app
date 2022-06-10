@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ME = gql`
   query getLoggedInUser {
@@ -31,6 +31,23 @@ export const GET_GROUP_CHATS = gql`
       }
       groupAdmin {
         username
+      }
+    }
+  }
+`;
+
+// home / trip section queries
+export const GET_HOME = gql`
+  query home {
+    getAllTrips {
+      _id
+      endDate
+      startDate
+      tripDescription
+      tripName
+      countries {
+        _id
+        countryName
       }
     }
   }

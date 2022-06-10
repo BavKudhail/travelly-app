@@ -131,6 +131,7 @@ const typeDefs = gql`
     getAllMessages(chatId: ID!): [Message]
     getAllCountryBadges: [CountryBadge]
     getAllActivityBadges: [ActivityBadge]
+    getAllTrips: [Trip]
   }
 
   type Mutation {
