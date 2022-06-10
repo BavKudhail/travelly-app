@@ -5,6 +5,10 @@ export const GET_ME = gql`
     me {
       _id
       username
+      following {
+        username
+        _id
+      }
     }
   }
 `;
