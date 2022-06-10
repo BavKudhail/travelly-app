@@ -1,4 +1,13 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
+
+export const GET_ME = gql`
+  query getLoggedInUser {
+    me {
+      _id
+      username
+    }
+  }
+`;
 
 // get group chats
 export const GET_GROUP_CHATS = gql`
