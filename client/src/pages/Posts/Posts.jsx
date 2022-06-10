@@ -256,6 +256,12 @@ const Posts = () => {
             </Flex>
           </Flex>
         </Flex>
+        {/* following users here */}
+        <div>
+          {userData.following.map((userFollowing) => {
+            return <div key={userFollowing._id}> {userFollowing.username}</div>;
+          })}
+        </div>
         <Box>
           <Heading>Level Up 💯</Heading>
         </Box>
