@@ -61,6 +61,7 @@ const typeDefs = gql`
     endDate: String!
     countries: [Country]
     activities: [Activity]
+    travellers: [User]
   }
 
   type CountryBadge {

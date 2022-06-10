@@ -571,13 +571,20 @@ const resolvers = {
     userGoing: async (parent, { tripId }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
-      console.log(context);
+
       //////////PROCESSING/////////////////
       const user = await User.findByIdAndUpdate(
         { _id: context.user._id },
         { $addToSet: { upcomingTrips: tripId } },
         { new: true, runValidators: true }
       );
+
+      const trip = await Trip.findByIdAndUpdate(
+        { _id: tripId },
+        { $addToSet: { travellers: context.user._id } },
+        { new: true, runValidators: true }
+      );
+
       //////////RETURN VALUE///////////////
       return user
         .populate({

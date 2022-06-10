@@ -220,12 +220,6 @@ userSchema.virtual("earnedActivityBadges").get(function () {
       // .every returns true, if completedActivityIds contains every activity on the badge, meaning the user has earned it
 
       return badge.activities.every((activity) => {
-        console.log("activity array:");
-        console.log(badge.activities);
-        console.log(typeof badge.activities[0].toString());
-        console.log(typeof activity.toString());
-        console.log("activity:");
-        console.log(activity);
         return completedActivityIds.includes(activity.toString());
       });
     });
