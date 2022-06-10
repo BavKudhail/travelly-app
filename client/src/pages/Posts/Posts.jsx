@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
-import { GET_POSTS } from "../../utils/queries";
-import { ADD_POST } from "../../utils/mutations";
+import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
+import { GET_POSTS } from '../../utils/queries';
+import { GET_ME } from '../../utils/queries';
+import { ADD_POST } from '../../utils/mutations';
 // charka ui components
 import {
   Image,
@@ -33,21 +34,27 @@ import {
   FormLabel,
   InputGroup,
   Textarea,
-} from "@chakra-ui/react";
-import PostCard from "../../components/PostCard";
-import plusIcon from "../../assets/plus.png";
-import { FiBell } from "react-icons/fi";
+} from '@chakra-ui/react';
+import PostCard from '../../components/PostCard';
+import plusIcon from '../../assets/plus.png';
+import { FiBell } from 'react-icons/fi';
 
-const user = {
-  _id: "6299eaa2b3b3eb625a753dd0",
-  username: "Max Kanat-Alexander",
-  email: "mkanatalexander@techfriends.dev",
-};
+// const user = {
+//   _id: "6299eaa2b3b3eb625a753dd0",
+//   username: "Max Kanat-Alexander",
+//   email: "mkanatalexander@techfriends.dev",
+// };
 
 const Posts = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Execute the query on component load
-  // const { loading, data, error } = useQuery(GET_POSTS, {});
+
+  // Get the logged in user
+  // const { data } = useLazyQuery(GET_ME);
+  // const userData = data?.me || [];
+  const { data, error } = useQuery(GET_ME);
+  const userData = data?.me || [];
+  console.log('user data:', userData);
 
   const [latestPosts, setLatestPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -70,45 +77,27 @@ const Posts = () => {
 
   const [addPost] = useMutation(ADD_POST);
 
-  const [postText, setPostText] = useState("");
+  const [postText, setPostText] = useState('');
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const { data } = await addPost({
       variables: {
-        userId: user._id,
+        userId: userData._id,
         postText: postText,
       },
     });
-    console.log("check this:", data);
+    console.log('check this:', data);
     setLatestPosts([...latestPosts, data.addPost]);
   };
 
   return (
     <>
-      <Flex
-        w={["100%", "100%", "60%", "60%", "55%"]}
-        p="3%"
-        flexDir="column"
-        overflow="auto"
-        minH="100vh"
-        className="section_main"
-      >
+      <Flex w={['100%', '100%', '60%', '60%', '55%']} p="3%" flexDir="column" overflow="auto" minH="100vh" className="section_main">
         <Flex justifyContent="center" flexDir="column">
-          <Flex
-            justifyContent={"space-between"}
-            p="4"
-            backgroundColor="#FFF"
-            borderRadius={"30px"}
-            boxShadow={"lg"}
-          >
-            <Image
-              cursor={"pointer"}
-              onClick={onOpen}
-              w="50px"
-              src={plusIcon}
-            />
-            <Text fontSize={"2xl"} fontFamily={"body"} fontWeight={700}>
+          <Flex justifyContent={'space-between'} p="4" backgroundColor="#FFF" borderRadius={'30px'} boxShadow={'lg'}>
+            <Image cursor={'pointer'} onClick={onOpen} w="50px" src={plusIcon} />
+            <Text fontSize={'2xl'} fontFamily={'body'} fontWeight={700}>
               Create a new post
             </Text>
             {/*  */}
@@ -122,28 +111,18 @@ const Posts = () => {
                   <VStack spacing="5px" color="black">
                     <form onSubmit={handleFormSubmit} className="signup-form">
                       {/* email */}
-                      <FormControl my={"4"}>
+                      <FormControl my={'4'}>
                         <FormLabel>Title</FormLabel>
                         <Input />
                       </FormControl>
-                      <FormControl my={"4"}>
+                      <FormControl my={'4'}>
                         <FormLabel>Text</FormLabel>
                         <InputGroup>
-                          <Textarea
-                            name="postTextArea"
-                            type="text"
-                            value={postText}
-                            onChange={(e) => setPostText(e.target.value)}
-                          />
+                          <Textarea name="postTextArea" type="text" value={postText} onChange={(e) => setPostText(e.target.value)} />
                           {console.log(postText)}
                         </InputGroup>
                       </FormControl>
-                      <Button
-                        width={"full"}
-                        mt="4"
-                        type="submit"
-                        onClick={(handleFormSubmit, onClose)}
-                      >
+                      <Button width={'full'} mt="4" type="submit" onClick={(handleFormSubmit, onClose)}>
                         Submit
                       </Button>
                     </form>
@@ -154,11 +133,7 @@ const Posts = () => {
             </Modal>
             {/*  */}
             <WrapItem>
-              <Avatar
-                size="md"
-                name="Kola Tioluwani"
-                src="https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbc1dd99666153.5ef7dbf39ecee.jpg"
-              />{" "}
+              <Avatar size="md" name="Kola Tioluwani" src="https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbc1dd99666153.5ef7dbf39ecee.jpg" />{' '}
             </WrapItem>
           </Flex>
           {/* tabs */}
@@ -174,22 +149,10 @@ const Posts = () => {
               </TabPanel>
               <TabPanel>
                 {loading ? (
-                  <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="xl"
-                  />
+                  <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
                 ) : (
                   latestPosts.map((post) => {
-                    return (
-                      <PostCard
-                        key={post._id}
-                        postText={post.postText}
-                        username={post.postedBy.username}
-                      />
-                    );
+                    return <PostCard key={post._id} postText={post.postText} username={post.postedBy.username} />;
                   })
                 )}
               </TabPanel>
@@ -202,60 +165,26 @@ const Posts = () => {
       </Flex>
       <Flex
         //   responsive breakpooints
-        w={["100%", "100%", "30%"]}
+        w={['100%', '100%', '30%']}
         // bgColor="#F5F5F5"
         p="3%"
         flexDir="column"
         overflow="auto"
-        minW={[null, null, "300px", "300px", "400px"]}
+        minW={[null, null, '300px', '300px', '400px']}
         justifyContent="space-between"
         className="right_section"
       >
         <Flex alignContent="center">
           <Flex>
-            <IconButton
-              icon={<FiBell />}
-              fontSize="sm"
-              bgColor="#fff"
-              borderRadius="50%"
-              p="10px"
-            />
-            <Flex
-              w="30px"
-              h="25px"
-              bgColor="#b57296"
-              borderRadius="50%"
-              color="#fff"
-              align="center"
-              justify="center"
-              ml="-3"
-              mt="-2"
-              zIndex="100"
-            >
+            <IconButton icon={<FiBell />} fontSize="sm" bgColor="#fff" borderRadius="50%" p="10px" />
+            <Flex w="30px" h="25px" bgColor="#b57296" borderRadius="50%" color="#fff" align="center" justify="center" ml="-3" mt="-2" zIndex="100">
               2
             </Flex>
           </Flex>
           {/*  */}
           <Flex>
-            <IconButton
-              icon={<FiBell />}
-              fontSize="sm"
-              bgColor="#fff"
-              borderRadius="50%"
-              p="10px"
-            />
-            <Flex
-              w="30px"
-              h="25px"
-              bgColor="#b57296"
-              borderRadius="50%"
-              color="#fff"
-              align="center"
-              justify="center"
-              ml="-3"
-              mt="-2"
-              zIndex="100"
-            >
+            <IconButton icon={<FiBell />} fontSize="sm" bgColor="#fff" borderRadius="50%" p="10px" />
+            <Flex w="30px" h="25px" bgColor="#b57296" borderRadius="50%" color="#fff" align="center" justify="center" ml="-3" mt="-2" zIndex="100">
               2
             </Flex>
           </Flex>
