@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { motion } from "framer-motion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -34,6 +34,9 @@ import { FiBell } from "react-icons/fi";
 import logo from "../../assets/logo_icon.png";
 
 const Home = () => {
+  // state
+  const [loggedIn, setLoggedIn] = useState(false);
+
   const WavingHand = () => (
     <motion.div
       style={{
@@ -62,44 +65,47 @@ const Home = () => {
         flexDir="column"
         overflow="auto"
         minH="100vh"
+        className="section_main"
       >
         {/* COLUMN 2 - MAIN SECTION */}
         <Flex justifyContent="center" flexDir="column">
-          <Heading fontWeight="normal" mb={4} letterSpacing="tight">
-            Welcome back,
-            <Text fontWeight="bold" display="inline-flex">
-              &#160; Johnny
-            </Text>
-            <WavingHand />
-          </Heading>
-          <Flex>
-            <Tabs variant="soft-rounded" colorScheme="green">
+          <Box mt="10" textAlign={"center"}>
+            <Heading fontWeight="normal" mb={4} letterSpacing="tight">
+              Welcome back,
+              <Text fontWeight="bold" display="inline-flex">
+                &#160; Johnny
+              </Text>
+              <WavingHand />
+            </Heading>
+          </Box>
+
+          <Box my="10" textAlign="center" alignSelf={"center"}>
+            <Tabs variant="soft-rounded" colorScheme="purple">
               <TabList>
-                <Tab>Popular</Tab>
-                <Tab>Recommended for you!</Tab>
+                <Tab fontSize={"lg"}>Latest Trips</Tab>
+                <Tab fontSize={"lg"}>Recommended for you!</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <p>one!</p>
+                  <Box>
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                    <TripCard />
+                  </Box>
                 </TabPanel>
                 <TabPanel>
-                  <p>two!</p>
+                  <Box></Box>
                 </TabPanel>
               </TabPanels>
             </Tabs>
-            <Box>
-              <TripCard />
-              <TripCard />
-              <TripCard />
-              <TripCard />
-              <TripCard />
-              <TripCard />
-              <TripCard />
-              <TripCard />
-              <TripCard />
-              <TripCard />
-            </Box>
-          </Flex>
+          </Box>
         </Flex>
       </Flex>
       {/* COLUMN 3 - RIGHT SECTION */}
