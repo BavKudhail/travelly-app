@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const commentSchema = require('./Comment');
-const moment = require('moment')
+const moment = require('moment');
 
 const postSchema = new Schema(
   {
@@ -9,8 +9,8 @@ const postSchema = new Schema(
       ref: 'User',
     },
     postTitle: {
-      type: String
-    }
+      type: String,
+    },
     postText: {
       type: String,
       required: true,
