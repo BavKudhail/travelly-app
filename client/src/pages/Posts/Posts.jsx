@@ -50,9 +50,7 @@ const Posts = () => {
   // Execute the query on component load
 
   // Get the logged in user
-  // const { data } = useLazyQuery(GET_ME);
-  // const userData = data?.me || [];
-  const { data, error } = useQuery(GET_ME);
+  const { data, error, loading } = useQuery(GET_ME);
   const userData = data?.me || [];
 
   const [latestPosts, setLatestPosts] = useState([]);
@@ -63,6 +61,7 @@ const Posts = () => {
   const getLatestPosts = async () => {
     const response = await getPosts();
     const { data, loading } = response;
+    console.log("data:", data);
     setLatestPosts(data.getAllPosts);
   };
 
@@ -70,8 +69,11 @@ const Posts = () => {
   const getFollowingPosts = async () => {
     const response = await getPosts();
     const { data, loading } = response;
-    setFollowingPosts(data.getFollowingPosts);
+    console.log("data", data.getFollowingPosts.following);
+    setFollowingPosts(data.getFollowingPosts.following);
   };
+
+  console.log("following posts:", followingPosts);
 
   // get all posts of users I am following
 
@@ -164,7 +166,6 @@ const Posts = () => {
                 <ModalFooter></ModalFooter>
               </ModalContent>
             </Modal>
-            {/*  */}
             <WrapItem>
               <Avatar
                 size="md"
@@ -180,7 +181,21 @@ const Posts = () => {
               <Tab>View Latest Posts</Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>{console.log(followingPosts.following)}</TabPanel>
+              <TabPanel>
+                {followingPosts.map((user) => {
+                  return user.posts.map((post) => {
+                    console.log(user.username);
+                    console.log(post);
+                    return (
+                      <PostCard
+                        key={post._id}
+                        postText={post.postText}
+                        username={user.username}
+                      />
+                    );
+                  });
+                })}
+              </TabPanel>
               <TabPanel>
                 {latestPosts.map((post) => {
                   return (
@@ -258,9 +273,15 @@ const Posts = () => {
         </Flex>
         {/* following users here */}
         <div>
-          {userData.following.map((userFollowing) => {
-            return <div key={userFollowing._id}> {userFollowing.username}</div>;
-          })}
+          {/* {loading ? (
+            <Spinner />
+          ) : (
+            userData.following.map((userFollowing) => {
+              return (
+                <div key={userFollowing._id}> {userFollowing.username}</div>
+              );
+            })
+          )} */}
         </div>
         <Box>
           <Heading>Level Up 💯</Heading>
