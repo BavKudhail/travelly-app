@@ -8,11 +8,19 @@ const postSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    postTitle: {
+      type: String
+    }
     postText: {
       type: String,
       required: true,
       minLength: 1,
       maxLength: 500, // not sure what we want our max length to be?
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (createdAt) => moment(createdAt).format('MMM DD, YYYY [at] hh:mm a'),
     },
     comments: [commentSchema],
   },
@@ -23,7 +31,7 @@ const postSchema = new Schema(
   }
 );
 
-// comment count to be declared in typeDefs?
+// comment count
 postSchema.virtual('commentCount').get(function () {
   return this.comments.length;
 });

@@ -1,7 +1,7 @@
-const { Schema, model } = require("mongoose");
-const bcrypt = require("bcrypt");
-const moment = require("moment");
-const CountryBadge = require("./CountryBadge");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
+const moment = require('moment');
+const CountryBadge = require('./CountryBadge');
 
 const userSchema = new Schema(
   {
@@ -14,10 +14,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: [
-        /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
-        "Must be a valid email address",
-      ],
+      match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, 'Must be a valid email address'],
     },
     bio: {
       type: String,
@@ -31,25 +28,25 @@ const userSchema = new Schema(
     following: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
       },
     ],
     followers: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
       },
     ],
     posts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Post",
+        ref: 'Post',
       },
     ],
     comments: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: 'Comment',
       },
     ],
     // profile picture using s3?
@@ -60,14 +57,14 @@ const userSchema = new Schema(
     savedCountryBadges: [
       {
         type: Schema.Types.ObjectId,
-        ref: "CountryBadge",
+        ref: 'CountryBadge',
       },
     ],
 
     savedActivityBadges: [
       {
         type: Schema.Types.ObjectId,
-        ref: "ActivityBadge",
+        ref: 'ActivityBadge',
       },
     ],
 
@@ -75,7 +72,7 @@ const userSchema = new Schema(
     upcomingTrips: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Trip",
+        ref: 'Trip',
       },
     ],
 
@@ -83,7 +80,7 @@ const userSchema = new Schema(
     countriesVisited: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Country",
+        ref: 'Country',
       },
     ],
     isCompanyAdmin: {
@@ -104,8 +101,8 @@ const userSchema = new Schema(
 );
 
 // hash user password
-userSchema.pre("save", async function (next) {
-  if (this.isNew || this.isModified("password")) {
+userSchema.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
@@ -113,19 +110,19 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// function to return following count -- following to be declared in typeDefs?
-userSchema.virtual("followingCount").get(function () {
+// function to return following count
+userSchema.virtual('followingCount').get(function () {
   return this.following.length;
 });
 
-// function to return follower count -- followers to be declared in typeDefs?
-userSchema.virtual("followerCount").get(function () {
+// function to return follower count
+userSchema.virtual('followerCount').get(function () {
   return this.followers.length;
 });
 
 // function to create bucketList array made up of all of the countryIds included in the users savedCountryBadges array
 // ! Bucket list virtual returns an array of country IDS which is all we really need but curious as to how we could populate it with country info as was unable to get that to work
-userSchema.virtual("bucketList").get(function () {
+userSchema.virtual('bucketList').get(function () {
   const bucketList = [];
   this.savedCountryBadges.forEach((badge) => {
     bucketList.push(
@@ -140,22 +137,22 @@ userSchema.virtual("bucketList").get(function () {
 });
 
 // Function to return array of trips whose endDate has passed
-userSchema.virtual("pastTrips").get(function () {
+userSchema.virtual('pastTrips').get(function () {
   const endDatePassed = this.upcomingTrips.filter((trip) => {
-    return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 < Date.now();
+    return moment(trip.endDate, 'DD/MM/YYYY').unix() * 1000 < Date.now();
   });
   return endDatePassed.map((trip) => trip);
 });
 
 // Function to return array of trips whose endDate has NOT passed
-userSchema.virtual("futureTrips").get(function () {
+userSchema.virtual('futureTrips').get(function () {
   const futureTrips = this.upcomingTrips.filter((trip) => {
-    return moment(trip.endDate, "DD/MM/YYYY").unix() * 1000 > Date.now();
+    return moment(trip.endDate, 'DD/MM/YYYY').unix() * 1000 > Date.now();
   });
   return futureTrips.map((trip) => trip);
 });
 
-userSchema.virtual("visitedCountries").get(function () {
+userSchema.virtual('visitedCountries').get(function () {
   // ! Would be interested to know why this reduce function wouldn't work
   // ? Was returning the number 2
   // const visitedCountries = this.pastTrips.reduce((total, curr, i) => {
@@ -171,7 +168,7 @@ userSchema.virtual("visitedCountries").get(function () {
   return visitedCountries;
 });
 
-userSchema.virtual("earnedCountryBadges").get(function () {
+userSchema.virtual('earnedCountryBadges').get(function () {
   return CountryBadge.find({}).then((allCountryBadges) => {
     // Filtering through country badges
     const earnedBadges = allCountryBadges.filter((badge) => {
@@ -180,21 +177,19 @@ userSchema.virtual("earnedCountryBadges").get(function () {
       }
 
       // Array of the ids of the users visitedCountries
-      const visitedCountryIds = this.visitedCountries.map((c) =>
-        c._id.toString()
-      );
+      const visitedCountryIds = this.visitedCountries.map((c) => c._id.toString());
 
       // .every SHOULD return true, if visitedCountryIds contains every country on the badge, meaning the user has earned it
 
       return badge.countries.every((country) => {
-        console.log("    ");
-        console.log("Array: visitedCountryIds");
+        console.log('    ');
+        console.log('Array: visitedCountryIds');
         console.log(typeof visitedCountryIds[0]);
-        console.log("    ");
-        console.log("Variable: country");
+        console.log('    ');
+        console.log('Variable: country');
         console.log(typeof country.toString());
-        console.log("    ");
-        console.log("visitedCountryIds.includes(country)");
+        console.log('    ');
+        console.log('visitedCountryIds.includes(country)');
         console.log(visitedCountryIds.includes(country.toString()));
         return visitedCountryIds.includes(country.toString());
       });
@@ -209,6 +204,6 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-const User = model("User", userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;
