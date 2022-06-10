@@ -1,11 +1,13 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import DatePicker from "react-datepicker";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import "react-datepicker/dist/react-datepicker.css";
 import TripCard from "../../components/Trip/TripCard";
 import landingMountain from "../../assets/landing-mountain.png";
 import "./Home.css";
 import MobileModal from "../../components/MobileModal";
+import { GET_HOME } from "../../utils/queries";
 
 import {
   Image,
@@ -35,11 +37,20 @@ import logo from "../../assets/logo_icon.png";
 
 const Home = () => {
   // queries and mutations
-  
-
-
-  // state
   const [loggedIn, setLoggedIn] = useState(false);
+  const [latestTrips, setLatestTrips] = useState([]);
+
+  const [getLatestTrips] = useLazyQuery(GET_HOME);
+
+  const getLatestTripsFunc = async () => {
+    const response = await getLatestTrips();
+    const { data, loading, error } = response;
+    setLatestTrips(data.getAllTrips);
+  };
+
+  useEffect(() => {
+    getLatestTripsFunc();
+  }, []);
 
   const WavingHand = () => (
     <motion.div
@@ -92,16 +103,17 @@ const Home = () => {
               <TabPanels>
                 <TabPanel>
                   <Box>
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
-                    <TripCard />
+                    {latestTrips.map((trip) => {
+                      return (
+                        <TripCard
+                          key={trip._id}
+                          tripName={trip.tripName}
+                          tripDescription={trip.tripDescription}
+                          startDate={trip.startDate}
+                          endDate={trip.endDate}
+                        />
+                      );
+                    })}
                   </Box>
                 </TabPanel>
                 <TabPanel>
