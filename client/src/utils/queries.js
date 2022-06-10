@@ -108,6 +108,8 @@ export const GET_DASHBOARD = gql`
       posts {
         _id
         postText
+        postTitle
+        createdAt
       }
     }
 
@@ -158,6 +160,8 @@ export const GET_POSTS = gql`
       postedBy {
         username
       }
+      createdAt
+      postTitle
       postText
       comments {
         _id
@@ -174,6 +178,8 @@ export const GET_POSTS = gql`
         username
         posts {
           _id
+          createdAt
+          postTitle
           postText
         }
       }

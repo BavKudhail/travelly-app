@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 // TODO - add authentication token here
 
@@ -50,13 +50,14 @@ export const SEND_MESSAGE = gql`
 `;
 
 export const ADD_POST = gql`
-  mutation ($postText: String!) {
-    addPost(postText: $postText) {
-      _id
+  mutation ($postText: String!, $postTitle: String) {
+    addPost(postText: $postText, postTitle: $postTitle) {
+      postTitle
       postedBy {
         username
       }
       postText
+      createdAt
     }
   }
 `;

@@ -84,6 +84,7 @@ const Posts = () => {
 
   const [addPost] = useMutation(ADD_POST);
 
+  const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
 
   const handleFormSubmit = async (event) => {
@@ -91,6 +92,7 @@ const Posts = () => {
     const { data } = await addPost({
       variables: {
         userId: userData._id,
+        postTitle: postTitle,
         postText: postText,
       },
     });
@@ -138,7 +140,12 @@ const Posts = () => {
                       {/* email */}
                       <FormControl my={"4"}>
                         <FormLabel>Title</FormLabel>
-                        <Input />
+                        <Input
+                          name="postTitle"
+                          type="text"
+                          value={postTitle}
+                          onChange={(e) => setPostTitle(e.target.value)}
+                        />
                       </FormControl>
                       <FormControl my={"4"}>
                         <FormLabel>Text</FormLabel>
@@ -189,6 +196,8 @@ const Posts = () => {
                     return (
                       <PostCard
                         key={post._id}
+                        date={post.createdAt}
+                        postTitle={post.postTitle}
                         postText={post.postText}
                         username={user.username}
                       />
@@ -201,6 +210,8 @@ const Posts = () => {
                   return (
                     <PostCard
                       key={post._id}
+                      date={post.createdAt}
+                      postTitle={post.postTitle}
                       postText={post.postText}
                       username={post.postedBy.username}
                     />

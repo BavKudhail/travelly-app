@@ -11,7 +11,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-const PostCard = ({ postText, username, avatar, date }) => {
+const PostCard = ({ postText, username, avatar, date, postTitle }) => {
   return (
     <Center py={6}>
       <Box
@@ -38,7 +38,7 @@ const PostCard = ({ postText, username, avatar, date }) => {
             layout={"fill"}
           /> */}
         {/* </Box> */}
-        <Heading>My trip to Paris</Heading>
+        <Heading>{postTitle}</Heading>
         <Text fontSize={"2xl"}>{postText}</Text>
         <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
           <Avatar
@@ -47,7 +47,7 @@ const PostCard = ({ postText, username, avatar, date }) => {
           />
           <Stack direction={"column"} spacing={0} fontSize={"sm"}>
             <Text fontWeight={600}>Posted by:{username}</Text>
-            <Text color={"gray.500"}>Feb 08, 2021 · 6min read</Text>
+            <Text color={"gray.500"}>{date}</Text>
           </Stack>
         </Stack>
       </Box>
