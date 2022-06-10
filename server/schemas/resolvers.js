@@ -343,7 +343,7 @@ const resolvers = {
     //////////////////////////////////////
 
     // ! Need to refactor to use context to get userId rather than passing it in in the args
-    addPost: async (parent, { postText }, context) => {
+    addPost: async (parent, { postText, postTitle }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user can create posts (i.e not company or admin)
 
@@ -351,6 +351,7 @@ const resolvers = {
       const post = await Post.create({
         postedBy: context.user._id,
         postText,
+        postTitle,
       });
 
       const updatedPost = await Post.findById({

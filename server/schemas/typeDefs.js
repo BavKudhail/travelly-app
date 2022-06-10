@@ -161,7 +161,7 @@ const typeDefs = gql`
 
     addCountryBadge(badgeName: String!, badgeImage: String, countries: [ID]): CountryBadge
 
-    addPost(postText: String!): Post
+    addPost(postText: String!, postTitle: String): Post
 
     addComment(commentText: String!, postId: ID!): Post
 
