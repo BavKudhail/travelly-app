@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type Admin {
@@ -60,6 +60,7 @@ const typeDefs = gql`
     startDate: String!
     endDate: String!
     countries: [Country]
+    activities: [Activity]
   }
 
   type CountryBadge {
@@ -102,6 +103,7 @@ const typeDefs = gql`
     following: [User]
     visitedCountries: [Country]
     earnedCountryBadges: [CountryBadge]
+    earnedActivityBadges: [ActivityBadge]
     followingCount: Int
     followerCount: Int
   }
@@ -143,9 +145,18 @@ const typeDefs = gql`
     # add user
     addUserToGroupChat(chatId: ID!, userId: ID!): Chat
 
-    addUser(username: String!, email: String!, password: String!, bio: String): UserAuth
+    addUser(
+      username: String!
+      email: String!
+      password: String!
+      bio: String
+    ): UserAuth
 
-    addCompany(companyUsername: String!, email: String!, password: String!): CompanyAuth
+    addCompany(
+      companyUsername: String!
+      email: String!
+      password: String!
+    ): CompanyAuth
 
     addAdmin(email: String!, password: String!): AdminAuth
 
@@ -153,15 +164,31 @@ const typeDefs = gql`
     loginCompany(email: String!, password: String!): CompanyAuth
     loginAdmin(email: String!, password: String!): AdminAuth
 
-    addTrip(tripName: String!, tripDescription: String!, startDate: String!, endDate: String, companyId: ID!, countries: [ID]): Company
+    addTrip(
+      tripName: String!
+      tripDescription: String!
+      startDate: String!
+      endDate: String
+      companyId: ID!
+      countries: [ID]
+      activities: [ID]
+    ): Company
 
     addActivity(activityName: String!): Activity
 
-    addActivityBadge(badgeName: String!, badgeImage: String, activities: [ID]): ActivityBadge
+    addActivityBadge(
+      badgeName: String!
+      badgeImage: String
+      activities: [ID]
+    ): ActivityBadge
 
     addCountry(countryName: String!): Country
 
-    addCountryBadge(badgeName: String!, badgeImage: String, countries: [ID]): CountryBadge
+    addCountryBadge(
+      badgeName: String!
+      badgeImage: String
+      countries: [ID]
+    ): CountryBadge
 
     addPost(postText: String!, postTitle: String): Post
 
