@@ -34,6 +34,10 @@ import { FiBell } from "react-icons/fi";
 import logo from "../../assets/logo_icon.png";
 
 const Home = () => {
+  // queries and mutations
+  
+
+
   // state
   const [loggedIn, setLoggedIn] = useState(false);
 

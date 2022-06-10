@@ -1,27 +1,40 @@
 import React from "react";
+import { motion } from "framer-motion";
 
-import { Box, Image, Badge } from "@chakra-ui/react";
+import { Box, Image, Badge, Button } from "@chakra-ui/react";
+import { MotionConfig } from "framer-motion";
 
 const TripCard = () => {
   const property = {
-    imageUrl: "https://bit.ly/2Z4KKcF",
+    imageUrl:
+      "https://static.seeker.io/media/img/1/9f2de8cd-b9b1-4165-a23d-39353fb68f93-1400.jpg?placeid=6342&name=Lavender%20Field,%20Valensole&lat=43.833843&lng=6.026507",
     imageAlt: "Rear view of modern home with pool",
-    beds: 3,
-    baths: 2,
-    title: "Modern home in city center in the heart of historic Los Angeles",
-    formattedPrice: "$1,900.00",
-    reviewCount: 34,
-    rating: 4,
   };
 
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-      <Image src={property.imageUrl} alt={property.imageAlt} />
+    <Box
+      as={motion.div}
+      maxW="lg"
+      borderWidth="1px"
+      borderRadius="30px"
+      overflow="hidden"
+      boxShadow={"2xl"}
+      my="10"
+      whileHover={{
+        scale: 1.05,
+        transition: { duration: 0.5 },
+      }}
+    >
+      <Image
+        src={property.imageUrl}
+        alt={property.imageAlt}
+        borderRadius="30px"
+      />
 
       <Box p="6">
         <Box display="flex" alignItems="baseline">
           <Badge borderRadius="full" px="2" colorScheme="teal">
-            New
+            New Trip!
           </Badge>
           <Box
             color="gray.500"
@@ -31,10 +44,9 @@ const TripCard = () => {
             textTransform="uppercase"
             ml="2"
           >
-            {property.beds} beds &bull; {property.baths} baths
+            Here is some data about the specific trip!
           </Box>
         </Box>
-
         <Box
           mt="1"
           fontWeight="semibold"
@@ -42,21 +54,17 @@ const TripCard = () => {
           lineHeight="tight"
           noOfLines={1}
         >
-          {property.title}
+          The Trip Name!
         </Box>
-
-        <Box>
-          {property.formattedPrice}
-          <Box as="span" color="gray.600" fontSize="sm">
-            / wk
-          </Box>
-        </Box>
+        <Box>Some other trip data!</Box>
 
         <Box display="flex" mt="2" alignItems="center">
           <Box as="span" ml="2" color="gray.600" fontSize="sm">
-            {property.reviewCount} reviews
+            Some other data
           </Box>
         </Box>
+        {/* button to join trip */}
+        <Button>Join Trip</Button>
       </Box>
     </Box>
   );
