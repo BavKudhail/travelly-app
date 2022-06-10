@@ -1,13 +1,15 @@
 import { React, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import DatePicker from "react-datepicker";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
-import "react-datepicker/dist/react-datepicker.css";
 import TripCard from "../../components/Trip/TripCard";
 import landingMountain from "../../assets/landing-mountain.png";
 import "./Home.css";
 import MobileModal from "../../components/MobileModal";
 import { GET_HOME } from "../../utils/queries";
+
+// date picker
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import {
   Image,
@@ -39,8 +41,20 @@ const Home = () => {
   // queries and mutations
   const [loggedIn, setLoggedIn] = useState(false);
   const [latestTrips, setLatestTrips] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [getLatestTrips] = useLazyQuery(GET_HOME);
+
+  const randomDates = [
+    "10/06/2022",
+    "10/01/2022",
+    "10/12/2022",
+    "12/12/2023",
+    "1/1/2023",
+    "10/06/2024",
+    "10/01/2024",
+    "10/12/2024",
+  ];
 
   const getLatestTripsFunc = async () => {
     const response = await getLatestTrips();
@@ -48,9 +62,14 @@ const Home = () => {
     setLatestTrips(data.getAllTrips);
   };
 
+  function filterTrips() {
+    console.log(latestTrips[0]);
+  }
   useEffect(() => {
     getLatestTripsFunc();
   }, []);
+
+  // filter trips based on the date - or company?
 
   const WavingHand = () => (
     <motion.div
@@ -60,9 +79,8 @@ const Home = () => {
       }}
       animate={{ rotate: 20 }}
       transition={{
-        yoyo: Infinity,
         from: 0,
-        duration: 0.3,
+        duration: 0.5,
         ease: "easeInOut",
       }}
     >
@@ -190,38 +208,18 @@ const Home = () => {
         </Flex>
         <Box>
           <Heading>Filter Trips</Heading>
-          <DatePicker />
-          {/* select location */}
-          <Select placeholder="Select option">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </Select>
-          {/* price range */}
-          <RangeSlider
-            aria-label={["min", "max"]}
-            colorScheme="pink"
-            defaultValue={[10, 30]}
-          >
-            <RangeSliderTrack>
-              <RangeSliderFilledTrack />
-            </RangeSliderTrack>
-            <RangeSliderThumb index={0} />
-            <RangeSliderThumb index={1} />
-          </RangeSlider>
-          {/* trip providers */}
-          <CheckboxGroup
-            colorScheme="green"
-            defaultValue={["naruto", "kakashi"]}
-          >
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
-              <Checkbox value="naruto">Naruto</Checkbox>
-              <Checkbox value="sasuke">Sasuke</Checkbox>
-              <Checkbox value="kakashi">kakashi</Checkbox>
-            </Stack>
-          </CheckboxGroup>
+          <DatePicker
+            selected={selectedDate}
+            dateFormat="dd/MM/yyyy"
+            isClearable
+            onChange={(date) => {
+              setSelectedDate(date);
+              console.log("date", date);
+            }}
+          />
           {/* apply filters */}
           <Button
+            onClick={filterTrips}
             mt={4}
             bgColor="blackAlpha.900"
             color="#fff"
