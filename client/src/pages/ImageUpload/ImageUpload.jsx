@@ -13,11 +13,12 @@ import {
         <Box bg="white" w="100%" p="4" borderRadius="lg" borderWidth="1px">
           <h1>Image Upload</h1>
           <form action="/images" method="POST" enctype="multipart/form-data">
+            <input type="text" hidden value="62a4bd71443b387cf120c194" name="tripId" />
           <input type="file" name="image"/>
           <button type="submit" className="">Submit</button>
           </form>
 
-          <img src="/images/be3b617a9512dbd1326936c41bd231cc" alt="" />
+          <img src="/" alt="" />
         </Box>
       </Container>
     );

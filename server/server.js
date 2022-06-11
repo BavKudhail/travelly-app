@@ -26,6 +26,7 @@ const io = require("socket.io")(server, {
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const { uploadFile, getFileStream } = require("./s3");
+const { Trip } = require("./models");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -46,11 +47,18 @@ app.get("/images/:key", (req, res) => {
 });
 
 app.post("/images", upload.single("image"), async (req, res) => {
-  console.log(req.body.image);
   const file = req.file;
   const result = await uploadFile(file);
   console.log(result);
+  console.log(req.body.tripId);
+  const trip = await Trip.findByIdAndUpdate(
+    { _id: req.body.tripId },
+    { imageUrl: `/images/${result.Key}` },
+    { new: true, runValidators: true }
+  );
   //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
+
+  console.log(trip.imageUrl);
   res.send({ imagePath: `/images/${result.Key}` });
 });
 
