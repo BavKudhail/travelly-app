@@ -62,6 +62,13 @@ const resolvers = {
       return trips;
     },
 
+    getCompanyTrips: async (parent, args, context) => {
+      const trips = Trip.find({ companyId: context.user._id });
+
+      console.log(trips);
+      return trips;
+    },
+
     getUserBucketList: async (parent, args, context) => {
       console.log(context.user);
       const user = await User.findById({ _id: context.user._id });
@@ -81,7 +88,7 @@ const resolvers = {
 
     getAllActivities: async (parent, args, context) => {
       const activities = await Activity.find();
-      return activities
+      return activities;
     },
 
     //////////////////////////////////////
@@ -286,15 +293,8 @@ const resolvers = {
 
     addTrip: async (
       parent,
-      {
-        tripName,
-        tripDescription,
-        startDate,
-        endDate,
-        companyId,
-        countries,
-        activities,
-      }
+      { tripName, tripDescription, startDate, endDate, countries, activities },
+      context
     ) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
@@ -305,6 +305,7 @@ const resolvers = {
         tripDescription,
         startDate,
         endDate,
+        companyId: context.user._id,
       });
 
       const updatedTrip = await Trip.findByIdAndUpdate(
@@ -340,7 +341,7 @@ const resolvers = {
       );
 
       const company = await Company.findByIdAndUpdate(
-        { _id: companyId },
+        { _id: context.user._id },
         { $addToSet: { trips: trip._id } },
         { new: true, runValidators: true }
       );

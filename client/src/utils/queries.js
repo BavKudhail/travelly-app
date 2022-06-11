@@ -168,6 +168,19 @@ export const GET_ALL_MESSAGES = gql`
   }
 `;
 
+export const COMPANY_DASHBOARD = gql`
+  query GetCompanyTrips {
+    getCompanyTrips {
+      _id
+      tripName
+      tripDescription
+      startDate
+      endDate
+      imageUrl
+    }
+  }
+`;
+
 // post page queries
 export const GET_POSTS = gql`
   query posts {

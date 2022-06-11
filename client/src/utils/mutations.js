@@ -109,7 +109,6 @@ export const ADD_TRIP = gql`
     $tripName: String!
     $tripDescription: String!
     $startDate: String!
-    $companyId: ID!
     $endDate: String
     $countries: [ID]
     $activities: [ID]
@@ -118,7 +117,7 @@ export const ADD_TRIP = gql`
       tripName: $tripName
       tripDescription: $tripDescription
       startDate: $startDate
-      companyId: $companyId
+
       endDate: $endDate
       countries: $countries
       activities: $activities

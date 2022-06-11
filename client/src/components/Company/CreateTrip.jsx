@@ -38,8 +38,22 @@ function CreateTrip() {
   const [selectedCountry, setSelectedCountry] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState([]);
 
+  // reformat date
+
+  const reformatDate = (date)=>{
+    const dateArr = date.split('-')
+    const reformattedArr = dateArr.reverse()
+
+    const reformattedDate = reformattedArr.join('/')
+    return reformattedDate
+  }
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    
+
+
 
     // handle country data
     const countriesData = selectedCountry.map((country) => {
@@ -49,16 +63,17 @@ function CreateTrip() {
     const activitiesData = selectedActivity.map((activity) => {
       return activity.value;
     });
+   
 
     // network request
     const { data } = await addTrip({
       variables: {
         tripName: tripName,
         tripDescription: tripDescription,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: reformatDate(startDate),
+        endDate: reformatDate(endDate),
         // TODO - make id dynamic
-        companyId: "629a17598e81c16bf7beaf9a",
+        // companyId: "629a17598e81c16bf7beaf9a",
         countries: countriesData,
         activities: activitiesData,
       },
