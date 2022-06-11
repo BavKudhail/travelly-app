@@ -36,6 +36,10 @@ const tripSchema = new Schema(
       type: String,
       required: true,
     },
+    companyId: {
+      type: Schema.Types.ObjectId,
+      ref: "Company",
+    },
     travellers: [
       {
         type: Schema.Types.ObjectId,

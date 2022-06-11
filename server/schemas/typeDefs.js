@@ -62,6 +62,7 @@ const typeDefs = gql`
     countries: [Country]
     activities: [Activity]
     travellers: [User]
+    companyId: [ID]
   }
 
   type CountryBadge {
@@ -173,7 +174,6 @@ const typeDefs = gql`
       tripDescription: String!
       startDate: String!
       endDate: String
-      companyId: ID!
       countries: [ID]
       activities: [ID]
     ): Company

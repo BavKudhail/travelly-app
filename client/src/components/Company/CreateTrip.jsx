@@ -73,7 +73,7 @@ function CreateTrip() {
         startDate: reformatDate(startDate),
         endDate: reformatDate(endDate),
         // TODO - make id dynamic
-        companyId: "629a17598e81c16bf7beaf9a",
+        // companyId: "629a17598e81c16bf7beaf9a",
         countries: countriesData,
         activities: activitiesData,
       },
