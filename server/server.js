@@ -59,7 +59,8 @@ app.post("/images/:id", upload.single("image"), async (req, res) => {
   //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
 
   console.log(trip.imageUrl);
-  res.send({ imagePath: `/images/${result.Key}` });
+  //   res.send({ imagePath: `/images/${result.Key}` });
+  res.redirect("/companydashboard");
 });
 
 const startApolloServer = async (typeDefs, resolvers) => {
