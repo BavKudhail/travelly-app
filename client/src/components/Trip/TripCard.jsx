@@ -38,16 +38,6 @@ const TripCard = ({
           <Badge borderRadius="full" px="2" colorScheme="teal">
             New Trip!
           </Badge>
-          <Box
-            color="gray.500"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            fontSize="xs"
-            textTransform="uppercase"
-            ml="2"
-          >
-            Here is some data about the specific trip!
-          </Box>
         </Box>
         <Box
           mt="1"

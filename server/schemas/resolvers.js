@@ -58,7 +58,6 @@ const resolvers = {
     },
 
     getAllTrips: async (parent, args, context) => {
-      console.log(context);
       const trips = await Trip.find().populate("countries");
       return trips;
     },
@@ -73,6 +72,16 @@ const resolvers = {
           model: "CountryBadge",
         })
         .execPopulate();
+    },
+
+    getAllCountries: async (parent, args, context) => {
+      const country = await Country.find();
+      return country;
+    },
+
+    getAllActivities: async (parent, args, context) => {
+      const activities = await Activity.find();
+      return activities
     },
 
     //////////////////////////////////////

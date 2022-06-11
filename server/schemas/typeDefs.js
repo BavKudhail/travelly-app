@@ -137,6 +137,8 @@ const typeDefs = gql`
     getAllCountryBadges: [CountryBadge]
     getAllActivityBadges: [ActivityBadge]
     getAllTrips: [Trip]
+    getAllCountries: [Country]
+    getAllActivities: [Activity]
   }
 
   type Mutation {
