@@ -104,6 +104,26 @@ export const LOGIN_ADMIN = gql`
   }
 `;
 
+export const UPDATE_TRIP = gql`
+  mutation updateTrip(
+    $tripName: String!
+    $tripDescription: String!
+    $startDate: String!
+    $tripId: ID!
+    $endDate: String
+  ) {
+    updateTrip(
+      tripName: $tripName
+      tripDescription: $tripDescription
+      startDate: $startDate
+      tripId: $tripId
+      endDate: $endDate
+    ) {
+      _id
+    }
+  }
+`;
+
 export const ADD_TRIP = gql`
   mutation addTrip(
     $tripName: String!

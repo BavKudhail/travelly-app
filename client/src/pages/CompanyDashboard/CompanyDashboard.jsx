@@ -20,6 +20,8 @@ function CompanyDashboard() {
     return <CompanyTripCard key={trip._id} tripId={trip._id} tripName={trip.tripName} tripDescription={trip.tripDescription} startDate={trip.startDate}  endDate={trip.endDate} image={trip.imageUrl}/>
   })}
 
+
+
   </>)
 
 }

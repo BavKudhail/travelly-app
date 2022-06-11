@@ -368,6 +368,7 @@ const resolvers = {
       { tripName, tripDescription, startDate, endDate, tripId },
       context
     ) => {
+      console.log("update trip");
       const trip = Trip.findByIdAndUpdate(
         { _id: tripId },
         { tripName, tripDescription, startDate, endDate },
