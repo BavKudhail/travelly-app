@@ -47,7 +47,6 @@ export const GET_HOME = gql`
       tripName
       countries {
         _id
-        countryName
       }
     }
     getUserBucketList {

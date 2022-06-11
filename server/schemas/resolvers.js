@@ -58,7 +58,6 @@ const resolvers = {
     },
 
     getAllTrips: async (parent, args, context) => {
-      console.log(context);
       const trips = await Trip.find().populate("countries");
       return trips;
     },
