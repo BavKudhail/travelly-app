@@ -74,6 +74,16 @@ const resolvers = {
         .execPopulate();
     },
 
+    getAllCountries: async (parent, args, context) => {
+      const country = await Country.find();
+      return country;
+    },
+
+    getAllActivities: async (parent, args, context) => {
+      const activities = await Activity.find();
+      return activities
+    },
+
     //////////////////////////////////////
     ////////////// CHAT //////////////////
     //////////////////////////////////////

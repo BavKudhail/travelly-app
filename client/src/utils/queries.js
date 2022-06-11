@@ -13,6 +13,21 @@ export const GET_ME = gql`
   }
 `;
 
+// get all countries
+export const GET_TRIP_DATA = gql`
+  query getTripData {
+    getAllCountries {
+      _id
+      countryName
+    }
+    # add activities
+    getAllActivities {
+      _id
+      activityName
+    }
+  }
+`;
+
 // get group chats
 export const GET_GROUP_CHATS = gql`
   query getGroupChats($userId: ID!) {

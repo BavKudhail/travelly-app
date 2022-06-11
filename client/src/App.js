@@ -28,6 +28,7 @@ import {
   Home,
   UserProfile,
   CompanyLogin,
+  CompanyDashboard,
   AdminLogin,
   ImageUpload,
 } from "./pages";
@@ -82,6 +83,7 @@ function App() {
               <Route path="/chat" element={<Chat />} />
               <Route path="/image-upload" element={<ImageUpload />} />
               <Route path="/companyLogin" element={<CompanyLogin />} />
+              <Route path="/companyDashboard" element={<CompanyDashboard />} />
               <Route path="/adminLogin" element={<AdminLogin />} />
             </Routes>
           </Flex>
