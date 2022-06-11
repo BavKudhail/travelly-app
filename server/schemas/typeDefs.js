@@ -63,6 +63,7 @@ const typeDefs = gql`
     activities: [Activity]
     travellers: [User]
     companyId: [ID]
+    imageUrl: String
   }
 
   type CountryBadge {
@@ -140,6 +141,7 @@ const typeDefs = gql`
     getAllTrips: [Trip]
     getAllCountries: [Country]
     getAllActivities: [Activity]
+    getCompanyTrips: [Trip]
   }
 
   type Mutation {

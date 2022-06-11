@@ -62,6 +62,13 @@ const resolvers = {
       return trips;
     },
 
+    getCompanyTrips: async (parent, args, context) => {
+      const trips = Trip.find({ companyId: context.user._id });
+
+      console.log(trips);
+      return trips;
+    },
+
     getUserBucketList: async (parent, args, context) => {
       console.log(context.user);
       const user = await User.findById({ _id: context.user._id });

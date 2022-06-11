@@ -46,13 +46,13 @@ app.get("/images/:key", (req, res) => {
   readStream.pipe(res);
 });
 
-app.post("/images", upload.single("image"), async (req, res) => {
+app.post("/images/:id", upload.single("image"), async (req, res) => {
   const file = req.file;
   const result = await uploadFile(file);
   console.log(result);
-  console.log(req.body.tripId);
+  //   console.log(req.body.tripId);
   const trip = await Trip.findByIdAndUpdate(
-    { _id: req.body.tripId },
+    { _id: req.params.id },
     { imageUrl: `/images/${result.Key}` },
     { new: true, runValidators: true }
   );
