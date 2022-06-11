@@ -13,7 +13,7 @@ import {
       <Container h="full" maxW="xl" centerContent>
         <Box bg="white" w="100%" p="4" borderRadius="lg" borderWidth="1px">
           <h1>Image Upload</h1>
-          <form action={`/images/${tripId}`} method="POST" enctype="multipart/form-data">
+          <form action={`/images/${tripId.tripId}`} method="POST" enctype="multipart/form-data">
          
           <input type="file" name="image"/>
           <button type="submit" className="">Submit</button>
