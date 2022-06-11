@@ -362,6 +362,21 @@ const resolvers = {
         })
         .execPopulate();
     },
+
+    updateTrip: async (
+      parent,
+      { tripName, tripDescription, startDate, endDate, tripId },
+      context
+    ) => {
+      console.log("update trip");
+      const trip = Trip.findByIdAndUpdate(
+        { _id: tripId },
+        { tripName, tripDescription, startDate, endDate },
+        { new: true, runValidators: true }
+      );
+
+      return trip;
+    },
     addActivity: async (parent, args) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)

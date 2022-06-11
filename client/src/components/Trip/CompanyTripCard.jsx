@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 
 import ImageUpload from "../../pages/ImageUpload/ImageUpload"
 
+import EditTrip from "../../components/Company/EditTrip"
+
 import { Box, Image, Badge, Button, useDisclosure, Modal,
     ModalOverlay,
     ModalContent,
@@ -28,6 +30,7 @@ const CompanyTripCard = ({
   };
 console.log(typeof tripId)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
 
   return (
     <Box
@@ -67,6 +70,30 @@ console.log(typeof tripId)
           </Box>
         </Box>
 
+        {/* EDIT MODAL */}
+        <Button onClick={onEditOpen}>Open Modal</Button>
+  
+  <Modal isOpen={isEditOpen} onClose={onEditClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Modal Title</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} startDate={startDate} endDate={endDate} />
+      </ModalBody>
+    
+      <ModalFooter>
+        <Button colorScheme='blue' mr={3} onClick={onEditClose}>
+          Close
+        </Button>
+        <Button variant='ghost'>Secondary Action</Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+    
+
+
+{/* IMAGE UPLOAD MODAL */}
         <Button onClick={onOpen}>Open Modal</Button>
   
   <Modal isOpen={isOpen} onClose={onClose}>

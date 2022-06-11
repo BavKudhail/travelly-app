@@ -180,6 +180,14 @@ const typeDefs = gql`
       activities: [ID]
     ): Company
 
+    updateTrip(
+      tripName: String!
+      tripDescription: String!
+      startDate: String!
+      endDate: String
+      tripId: ID!
+    ): Trip
+
     addActivity(activityName: String!): Activity
 
     addActivityBadge(
