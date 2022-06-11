@@ -5,8 +5,14 @@ import AdminLoginForm from '../../components/Admin/AdminLoginForm';
 const AdminLogin = () => {
   return (
     <>
-      <AdminSignUp />
-      {/* <AdminLoginForm /> */}
+      <div>
+        <h1>Sign up</h1>
+        <AdminSignUp />
+      </div>
+      <div>
+        <h1>Login</h1>
+        <AdminLoginForm />
+      </div>
     </>
   );
 };
