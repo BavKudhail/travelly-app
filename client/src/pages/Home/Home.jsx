@@ -44,6 +44,8 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [getLatestTrips] = useLazyQuery(GET_HOME);
+  
+  const [bucketList, setBucketList] = useState([]);
 
   const randomDates = [
     "10/06/2022",
@@ -60,13 +62,28 @@ const Home = () => {
     const response = await getLatestTrips();
     const { data, loading, error } = response;
     setLatestTrips(data.getAllTrips);
+  
+    setBucketList(data.getUserBucketList.bucketList)
   };
+
+ 
 
   function filterTrips() {
     console.log(latestTrips[0]);
   }
+ 
+
+  const  recommendedTrips = latestTrips.filter((trip)=>{
+    
+    const countryIds = trip.countries.map((country)=>country._id)
+  
+    return countryIds.some((country)=> bucketList.includes(country))
+  })
+  console.log("latestTripIds", latestTrips.map((trip)=>trip._id))
+  console.log("recommendedTrips:", recommendedTrips)
   useEffect(() => {
     getLatestTripsFunc();
+    // getUserBucketListFunc()
   }, []);
 
   // filter trips based on the date - or company?

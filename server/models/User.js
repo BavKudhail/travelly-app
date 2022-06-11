@@ -127,6 +127,7 @@ userSchema.virtual("followerCount").get(function () {
 // ! Bucket list virtual returns an array of country IDS which is all we really need but curious as to how we could populate it with country info as was unable to get that to work
 userSchema.virtual("bucketList").get(function () {
   const bucketList = [];
+
   this.savedCountryBadges.forEach((badge) => {
     bucketList.push(
       // Mapping over the countries array of each badge and returning an array that contains each country _id

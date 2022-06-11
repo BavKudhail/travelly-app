@@ -50,6 +50,9 @@ export const GET_HOME = gql`
         countryName
       }
     }
+    getUserBucketList {
+      bucketList
+    }
   }
 `;
 

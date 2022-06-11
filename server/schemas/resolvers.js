@@ -58,8 +58,21 @@ const resolvers = {
     },
 
     getAllTrips: async (parent, args, context) => {
+      console.log(context);
       const trips = await Trip.find().populate("countries");
       return trips;
+    },
+
+    getUserBucketList: async (parent, args, context) => {
+      console.log(context.user);
+      const user = await User.findById({ _id: context.user._id });
+
+      return user
+        .populate({
+          path: "savedCountryBadges",
+          model: "CountryBadge",
+        })
+        .execPopulate();
     },
 
     //////////////////////////////////////
