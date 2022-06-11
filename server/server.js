@@ -62,6 +62,8 @@ app.post("/images/:id", upload.single("image"), async (req, res) => {
   res.send({ imagePath: `/images/${result.Key}` });
 });
 
+//
+
 const startApolloServer = async (typeDefs, resolvers) => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
