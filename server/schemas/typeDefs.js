@@ -130,6 +130,7 @@ const typeDefs = gql`
     # Get all posts for posts page
     getAllPosts: [Post]
     getFollowingPosts: User
+    getUserBucketList: User
     # return an array of Chats
     getGroupChats(userId: ID!): [Chat]
     getAllMessages(chatId: ID!): [Message]

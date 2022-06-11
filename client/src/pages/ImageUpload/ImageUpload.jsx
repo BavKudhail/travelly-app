@@ -17,7 +17,7 @@ import {
           <button type="submit" className="">Submit</button>
           </form>
 
-          <img src="/images/4d305bb93ed958fb7147cf93f29309d7" alt="" />
+          <img src="/images/be3b617a9512dbd1326936c41bd231cc" alt="" />
         </Box>
       </Container>
     );

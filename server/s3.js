@@ -1,4 +1,8 @@
-require("dotenv").config();
+const path = require("path");
+
+require("dotenv").config({
+  path: "../.env",
+});
 const fs = require("fs");
 
 const S3 = require("aws-sdk/clients/s3");
@@ -17,6 +21,7 @@ const s3 = new S3({
 // uploads a file to S3
 
 function uploadFile(file) {
+  console.log(file);
   const fileStream = fs.createReadStream(file.path);
   const uploadParams = {
     Bucket: bucketName,
