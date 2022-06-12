@@ -65,12 +65,10 @@ const resolvers = {
     getCompanyTrips: async (parent, args, context) => {
       const trips = Trip.find({ companyId: context.user._id });
 
-      console.log(trips);
       return trips;
     },
 
     getUserBucketList: async (parent, args, context) => {
-      console.log(context.user);
       const user = await User.findById({ _id: context.user._id });
 
       return user
@@ -239,7 +237,6 @@ const resolvers = {
     //////////////////////////////////////
 
     loginUser: async (parent, { email, password }, context) => {
-      console.log(context.user);
       const user = await User.findOne({ email });
       if (!user) {
         throw new AuthenticationError("Email not found!");
@@ -251,7 +248,7 @@ const resolvers = {
         throw new AuthenticationError("Incorrect password!");
       }
       const token = signToken(user);
-      console.log(user);
+
       return { token, user };
     },
 
@@ -267,7 +264,7 @@ const resolvers = {
         throw new AuthenticationError("Incorrect password!");
       }
       const token = signToken(company);
-      console.log(company);
+
       return { token, company };
     },
 
@@ -283,7 +280,7 @@ const resolvers = {
         throw new AuthenticationError("Incorrect password!");
       }
       const token = signToken(admin);
-      console.log(admin);
+
       return { token, admin };
     },
 
@@ -368,7 +365,6 @@ const resolvers = {
       { tripName, tripDescription, startDate, endDate, tripId },
       context
     ) => {
-      console.log("update trip");
       const trip = Trip.findByIdAndUpdate(
         { _id: tripId },
         { tripName, tripDescription, startDate, endDate },
