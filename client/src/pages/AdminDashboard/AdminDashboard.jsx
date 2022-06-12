@@ -5,6 +5,7 @@ import { ADMIN_DASHBOARD } from "../../utils/queries";
 
 import CountryForm from "../../components/Admin/CountryForm"
 import ActivityForm from "../../components/Admin/ActivityForm"
+import CountryBadgeForm from "../../components/Admin/CountryBadgeForm"
 
 import { Box, Image, Badge, Button, useDisclosure, Modal,
     ModalOverlay,
@@ -26,6 +27,7 @@ function AdminDashboard() {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isActivityOpen, onOpen: onActivityOpen, onClose: onActivityClose } = useDisclosure()
+  const { isOpen: isCountryBadgeOpen, onOpen: onCountryBadgeOpen, onClose: onCountryBadgeClose } = useDisclosure()
 
       console.log(data)
   
@@ -72,7 +74,25 @@ function AdminDashboard() {
   </Modal>
 
 
-
+  <Button onClick={onCountryBadgeOpen}>Add Country Badge</Button>
+ <Modal isOpen={isCountryBadgeOpen} onClose={onCountryBadgeClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Modal Title</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <CountryBadgeForm />
+        
+   
+      </ModalBody>
+      <ModalFooter>
+        <Button colorScheme='blue' mr={3} onClick={onCountryBadgeClose}>
+          Close
+        </Button>
+        <Button variant='ghost'>Secondary Action</Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
   </>)
 
 }
