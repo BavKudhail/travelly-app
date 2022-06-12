@@ -156,6 +156,22 @@ export const ADD_COUNTRY_BADGE = gql`
   }
 `;
 
+export const ADD_ACTIVITY_BADGE = gql`
+  mutation addActivityBadge(
+    $badgeName: String!
+    $badgeImage: String
+    $activities: [ID]
+  ) {
+    addActivityBadge(
+      badgeName: $badgeName
+      badgeImage: $badgeImage
+      activities: $activities
+    ) {
+      _id
+    }
+  }
+`;
+
 export const ADD_TRIP = gql`
   mutation addTrip(
     $tripName: String!

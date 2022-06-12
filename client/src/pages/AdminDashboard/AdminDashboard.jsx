@@ -6,6 +6,7 @@ import { ADMIN_DASHBOARD } from "../../utils/queries";
 import CountryForm from "../../components/Admin/CountryForm"
 import ActivityForm from "../../components/Admin/ActivityForm"
 import CountryBadgeForm from "../../components/Admin/CountryBadgeForm"
+import ActivityBadgeForm from "../../components/Admin/ActivityBadgeForm"
 
 import { Box, Image, Badge, Button, useDisclosure, Modal,
     ModalOverlay,
@@ -28,6 +29,7 @@ function AdminDashboard() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isActivityOpen, onOpen: onActivityOpen, onClose: onActivityClose } = useDisclosure()
   const { isOpen: isCountryBadgeOpen, onOpen: onCountryBadgeOpen, onClose: onCountryBadgeClose } = useDisclosure()
+  const { isOpen: isActivityBadgeOpen, onOpen: onActivityBadgeOpen, onClose: onActivityBadgeClose } = useDisclosure()
 
       console.log(data)
   
@@ -87,6 +89,26 @@ function AdminDashboard() {
       </ModalBody>
       <ModalFooter>
         <Button colorScheme='blue' mr={3} onClick={onCountryBadgeClose}>
+          Close
+        </Button>
+        <Button variant='ghost'>Secondary Action</Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+
+  <Button onClick={onActivityBadgeOpen}>Add Country Badge</Button>
+ <Modal isOpen={isActivityBadgeOpen} onClose={onActivityBadgeClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Modal Title</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <ActivityBadgeForm />
+        
+   
+      </ModalBody>
+      <ModalFooter>
+        <Button colorScheme='blue' mr={3} onClick={onActivityBadgeClose}>
           Close
         </Button>
         <Button variant='ghost'>Secondary Action</Button>
