@@ -325,7 +325,7 @@ const resolvers = {
 
     deleteTrip: async (parent, { tripId }, context) => {
       console.log(tripId);
-      const deletedTrip = await Trip.findByIdAndDelete({ tripId });
+      const deletedTrip = await Trip.findByIdAndDelete({ _id: tripId });
 
       return deletedTrip;
     },

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import { motion } from 'framer-motion';
 
 import ImageUpload from '../../pages/ImageUpload/ImageUpload';
@@ -8,10 +9,23 @@ import EditTrip from '../../components/Company/EditTrip';
 import { Box, Image, Badge, Button, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { MotionConfig } from 'framer-motion';
 
+import { DELETE_TRIP } from '../../utils/mutations';
+
 const CompanyTripCard = ({ tripId, tripName, tripDescription, startDate, endDate, countries, activities, image }) => {
   const property = {
     imageUrl: 'https://static.seeker.io/media/img/1/9f2de8cd-b9b1-4165-a23d-39353fb68f93-1400.jpg?placeid=6342&name=Lavender%20Field,%20Valensole&lat=43.833843&lng=6.026507',
     imageAlt: 'Rear view of modern home with pool',
+  };
+
+  const [deleteTrip, { error }] = useMutation(DELETE_TRIP);
+
+  const handleDeleteTrip = async (e) => {
+    e.preventDefault();
+
+    console.log(tripId);
+    const { data } = await deleteTrip({
+      variables: { tripId },
+    });
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -79,6 +93,7 @@ const CompanyTripCard = ({ tripId, tripName, tripDescription, startDate, endDate
             </ModalFooter>
           </ModalContent>
         </Modal>
+        <Button onClick={handleDeleteTrip}>Delete Trip</Button>
       </Box>
     </Box>
   );
