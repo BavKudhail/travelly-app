@@ -28,7 +28,6 @@ const resolvers = {
         const user = User.findOne({ _id: context.user._id }).select(
           "-__v -password"
         );
-
         return user
           .populate("following")
           .populate("followers")
@@ -104,19 +103,18 @@ const resolvers = {
       return messages;
     },
     // get all group chats that the specific user is a part of
-    getGroupChats: async (parent, { userId }, context) => {
-      const loggedInUser = await User.findById({
-        _id: userId,
-      });
-      const chats = await Chat.find({
-        // find all chats that the logged in user is a part of
-        users: { $elemMatch: { $eq: loggedInUser } },
-      })
-        .populate("groupAdmin")
-        .populate("users")
-        .populate("latestMessage");
-      // how can I populate the users information?
-      return chats;
+    getGroupChats: async (parent, args, context) => {
+      if (context.user) {
+        const chats = await Chat.find({
+          // find all chats that the logged in user is a part of
+          users: { $elemMatch: { $eq: context.user._id } },
+        })
+          .populate("groupAdmin")
+          .populate("users")
+          .populate("latestMessage");
+        console.log(context.user);
+        return chats;
+      }
     },
 
     //////////////////////////////////////

@@ -30,8 +30,8 @@ export const GET_TRIP_DATA = gql`
 
 // get group chats
 export const GET_GROUP_CHATS = gql`
-  query getGroupChats($userId: ID!) {
-    getGroupChats(userId: $userId) {
+  query getGroupChats {
+    getGroupChats {
       _id
       chatName
       users {

@@ -8,22 +8,11 @@ import { ChatState } from "../../context/ChatProvider";
 // mutations/queries
 import { GET_GROUP_CHATS } from "../../utils/queries";
 
-// static user for testing - this needs to come from the loggedin user
-const user = {
-  _id: "6299eaa2b3b3eb625a753dd0",
-  username: "Max Kanat-Alexander",
-  email: "mkanatalexander@techfriends.dev",
-};
-
 const Chat = () => {
   const { selectedChat, setSelectedChat } = ChatState();
 
   // Execute the query on component load
-  const { loading, data } = useQuery(GET_GROUP_CHATS, {
-    variables: {
-      userId: user._id,
-    },
-  });
+  const { loading, data } = useQuery(GET_GROUP_CHATS);
   const chatData = data?.getGroupChats || [];
   console.log(chatData);
 

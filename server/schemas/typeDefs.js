@@ -134,7 +134,7 @@ const typeDefs = gql`
     getFollowingPosts: User
     getUserBucketList: User
     # return an array of Chats
-    getGroupChats(userId: ID!): [Chat]
+    getGroupChats: [Chat]
     getAllMessages(chatId: ID!): [Message]
     getAllCountryBadges: [CountryBadge]
     getAllActivityBadges: [ActivityBadge]
