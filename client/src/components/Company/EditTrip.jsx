@@ -23,21 +23,22 @@ import {
 import { Textarea } from "@chakra-ui/react";
 import { MultiSelect } from "react-multi-select-component";
 
-function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
+function EditTrip({tripId, tripName, tripDescription, startDate, endDate, countries, activities}) {
   // queries/mutations
-  console.log("tripId", tripId)
+
+
   const { loading, data } = useQuery(GET_TRIP_DATA);
-//   const countryData = data?.getAllCountries || [];
-//   const activityData = data?.getAllActivities || [];
+  const countryData = data?.getAllCountries || [];
+  const activityData = data?.getAllActivities || [];
   const [updateTrip] = useMutation(UPDATE_TRIP);
 
   //   state
-  const [updatedTripName, setTripName] = useState(tripId.tripName);
-  const [updatedTripDescription, setTripDescription] = useState(tripId.tripDescription);
-  const [updatedStartDate, setStartDate] = useState(tripId.startDate);
-  const [updatedEndDate, setEndDate] = useState(tripId.endDate);
-//   const [selectedCountry, setSelectedCountry] = useState([]);
-//   const [selectedActivity, setSelectedActivity] = useState([]);
+  const [updatedTripName, setTripName] = useState(tripName);
+  const [updatedTripDescription, setTripDescription] = useState(tripDescription);
+  const [updatedStartDate, setStartDate] = useState(startDate);
+  const [updatedEndDate, setEndDate] = useState(endDate);
+  const [selectedCountry, setSelectedCountry] = useState(countries.map((country)=>{return {label: country.countryName, value: country._id}}));
+  const [selectedActivity, setSelectedActivity] = useState(activities.map((activity)=>{return {label: activity.activityName, value: activity._id}}));
 
 
 
@@ -50,7 +51,6 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
     const unformattedDate = unformattedArr.join('-')
     return unformattedDate
   }
-
 
 
   // reformat date
@@ -72,19 +72,19 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
 
 
     // // handle country data
-    // const countriesData = selectedCountry.map((country) => {
-    //   return country.value;
-    // });
+    const countriesData = selectedCountry.map((country) => {
+      return country.value;
+    });
 
-    // const activitiesData = selectedActivity.map((activity) => {
-    //   return activity.value;
-    // });
+    const activitiesData = selectedActivity.map((activity) => {
+      return activity.value;
+    });
 
-    console.log("tripName", tripName);
-    console.log("tripDescription", tripDescription);
-    console.log("startDate", startDate);
-    console.log("endDate", endDate);
-    console.log("tripId", tripId)
+    // console.log("tripName", tripName);
+    // console.log("tripDescription", tripDescription);
+    // console.log("startDate", startDate);
+    // console.log("endDate", endDate);
+    // console.log("tripId", tripId)
 
     // network request
     const { data } = await updateTrip({
@@ -93,11 +93,11 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
         tripDescription: updatedTripDescription,
         startDate: reformatDate(updatedStartDate),
         endDate: reformatDate(updatedEndDate),
-        tripId: tripId.tripId
+        tripId: tripId,
         // TODO - make id dynamic
         // companyId: "629a17598e81c16bf7beaf9a",
-        // countries: countriesData,
-        // activities: activitiesData,
+        countries: countriesData,
+        activities: activitiesData,
       },
     });
   
@@ -106,20 +106,20 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
   };
 
   //   options for multi-select countries
-//   const countryOptions = countryData.map((country) => {
-//     return {
-//       label: country.countryName,
-//       value: country._id,
-//     };
-//   });
+  const countryOptions = countryData.map((country) => {
+    return {
+      label: country.countryName,
+      value: country._id,
+    };
+  });
 
 //   //   options for multi-select activites
-//   const activityOptions = activityData.map((activity) => {
-//     return {
-//       label: activity.activityName,
-//       value: activity._id,
-//     };
-//   });
+  const activityOptions = activityData.map((activity) => {
+    return {
+      label: activity.activityName,
+      value: activity._id,
+    };
+  });
 
   return (
     <>
@@ -174,7 +174,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
             </InputGroup>
           </FormControl>
           {/*  */}
-          {/* <FormControl my={"4"}>
+           <FormControl my={"4"}>
             <FormLabel>Countries</FormLabel>
             <MultiSelect
               width="100%"
@@ -183,7 +183,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
               value={selectedCountry}
               onChange={setSelectedCountry}
               labelledBy="Select"
-            />
+            /> 
           </FormControl>
           <FormControl my={"4"}>
             <FormLabel>Activities</FormLabel>
@@ -194,8 +194,8 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
               value={selectedActivity}
               onChange={setSelectedActivity}
               labelledBy="Select"
-            /> */}
-          {/* </FormControl> */}
+            /> 
+          </FormControl>
           <Button
             width={"full"}
             mt="4"
@@ -208,6 +208,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
       </VStack>
     </>
   );
-}
+} 
+
 
 export default EditTrip;

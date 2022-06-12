@@ -63,7 +63,9 @@ const resolvers = {
     },
 
     getCompanyTrips: async (parent, args, context) => {
-      const trips = Trip.find({ companyId: context.user._id });
+      const trips = Trip.find({ companyId: context.user._id })
+        .populate("countries")
+        .populate("activities");
 
       return trips;
     },

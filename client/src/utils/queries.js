@@ -177,6 +177,14 @@ export const COMPANY_DASHBOARD = gql`
       startDate
       endDate
       imageUrl
+      countries {
+        _id
+        countryName
+      }
+      activities {
+        _id
+        activityName
+      }
     }
   }
 `;

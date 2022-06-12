@@ -21,6 +21,7 @@ const CompanyTripCard = ({
   startDate,
   endDate,
   countries,
+  activities,
   image,
 }) => {
   const property = {
@@ -32,13 +33,7 @@ const CompanyTripCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
 
-//   console.log(  tripId,
-//     tripName,
-//     tripDescription,
-//     startDate,
-//     endDate,
-//     countries,
-//     image,)
+
 
   return (
     <Box
@@ -87,7 +82,7 @@ const CompanyTripCard = ({
       <ModalHeader>Modal Title</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} startDate={startDate} endDate={endDate} />
+        <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} countries={countries} activities={activities} startDate={startDate} endDate={endDate} />
       </ModalBody>
     
       <ModalFooter>
