@@ -124,6 +124,14 @@ export const UPDATE_TRIP = gql`
   }
 `;
 
+export const ADD_COUNTRY = gql`
+  mutation addCountry($countryName: String!) {
+    addCountry(countryName: $countryName) {
+      _id
+    }
+  }
+`;
+
 export const ADD_TRIP = gql`
   mutation addTrip(
     $tripName: String!
