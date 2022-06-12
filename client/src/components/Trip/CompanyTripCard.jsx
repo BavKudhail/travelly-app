@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 
 import ImageUpload from "../../pages/ImageUpload/ImageUpload"
 
+import EditTrip from "../../components/Company/EditTrip"
+
 import { Box, Image, Badge, Button, useDisclosure, Modal,
     ModalOverlay,
     ModalContent,
@@ -19,6 +21,7 @@ const CompanyTripCard = ({
   startDate,
   endDate,
   countries,
+  activities,
   image,
 }) => {
   const property = {
@@ -26,8 +29,11 @@ const CompanyTripCard = ({
       "https://static.seeker.io/media/img/1/9f2de8cd-b9b1-4165-a23d-39353fb68f93-1400.jpg?placeid=6342&name=Lavender%20Field,%20Valensole&lat=43.833843&lng=6.026507",
     imageAlt: "Rear view of modern home with pool",
   };
-console.log(typeof tripId)
+
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
+
+
 
   return (
     <Box
@@ -67,6 +73,30 @@ console.log(typeof tripId)
           </Box>
         </Box>
 
+        {/* EDIT MODAL */}
+        <Button onClick={onEditOpen}>Open Modal</Button>
+  
+  <Modal isOpen={isEditOpen} onClose={onEditClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Modal Title</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} countries={countries} activities={activities} startDate={startDate} endDate={endDate} />
+      </ModalBody>
+    
+      <ModalFooter>
+        <Button colorScheme='blue' mr={3} onClick={onEditClose}>
+          Close
+        </Button>
+        <Button variant='ghost'>Secondary Action</Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+    
+
+
+{/* IMAGE UPLOAD MODAL */}
         <Button onClick={onOpen}>Open Modal</Button>
   
   <Modal isOpen={isOpen} onClose={onClose}>
