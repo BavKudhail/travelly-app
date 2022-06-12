@@ -65,10 +65,10 @@ const BadgeCard = ({
  <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent>
-      <ModalHeader>Modal Title</ModalHeader>
+      <ModalHeader>{badgeName}</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        <BadgeImageForm badgeId={badgeId} model={model} />
+        <BadgeImageForm badgeName={badgeName} badgeId={badgeId} model={model} />
         
    
       </ModalBody>
