@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useEffect } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { GET_TRIP_DATA } from "../../utils/queries";
 import { UPDATE_TRIP } from "../../utils/mutations";
@@ -25,18 +25,33 @@ import { MultiSelect } from "react-multi-select-component";
 
 function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
   // queries/mutations
+  console.log("tripId", tripId)
   const { loading, data } = useQuery(GET_TRIP_DATA);
 //   const countryData = data?.getAllCountries || [];
 //   const activityData = data?.getAllActivities || [];
   const [updateTrip] = useMutation(UPDATE_TRIP);
 
   //   state
-  const [updatedTripName, setTripName] = useState("");
-  const [updatedTripDescription, setTripDescription] = useState("");
-  const [updatedStartDate, setStartDate] = useState();
-  const [updatedEndDate, setEndDate] = useState();
+  const [updatedTripName, setTripName] = useState(tripId.tripName);
+  const [updatedTripDescription, setTripDescription] = useState(tripId.tripDescription);
+  const [updatedStartDate, setStartDate] = useState(tripId.startDate);
+  const [updatedEndDate, setEndDate] = useState(tripId.endDate);
 //   const [selectedCountry, setSelectedCountry] = useState([]);
 //   const [selectedActivity, setSelectedActivity] = useState([]);
+
+
+
+//   unformatDate
+
+  const unformatDate = (date)=>{
+    const dateArr = date.split('/')
+    const unformattedArr = dateArr.reverse()
+
+    const unformattedDate = unformattedArr.join('-')
+    return unformattedDate
+  }
+
+
 
   // reformat date
 
@@ -50,7 +65,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("event")
+   
 
     
 
@@ -116,7 +131,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
               placeholder="trip name"
               name="tripName"
               type="text"
-              value={tripName}
+              value={updatedTripName}
               onChange={(e) => setTripName(e.target.value)}
               required
             />
@@ -126,7 +141,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
             <Textarea
               placeholder="trip description"
               name="tripDescription"
-              value={tripDescription}
+              value={updatedTripDescription}
               onChange={(e) => setTripDescription(e.target.value)}
               type="text"
               required
@@ -139,7 +154,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
                 placeholder="date"
                 name="startDate"
                 type="date"
-                value={startDate}
+                value={unformatDate(updatedStartDate)}
                 required
                 onChange={(e) => setStartDate(e.target.value)}
               />
@@ -152,7 +167,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
                 placeholder="date"
                 name="endDate"
                 type="date"
-                value={endDate}
+                value={unformatDate(updatedEndDate)}
                 required
                 onChange={(e) => setEndDate(e.target.value)}
               />
