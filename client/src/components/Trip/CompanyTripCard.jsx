@@ -21,6 +21,7 @@ const CompanyTripCard = ({
   startDate,
   endDate,
   countries,
+  activities,
   image,
 }) => {
   const property = {
@@ -28,9 +29,11 @@ const CompanyTripCard = ({
       "https://static.seeker.io/media/img/1/9f2de8cd-b9b1-4165-a23d-39353fb68f93-1400.jpg?placeid=6342&name=Lavender%20Field,%20Valensole&lat=43.833843&lng=6.026507",
     imageAlt: "Rear view of modern home with pool",
   };
-console.log(typeof tripId)
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
+
+
 
   return (
     <Box
@@ -79,7 +82,7 @@ console.log(typeof tripId)
       <ModalHeader>Modal Title</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} startDate={startDate} endDate={endDate} />
+        <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} countries={countries} activities={activities} startDate={startDate} endDate={endDate} />
       </ModalBody>
     
       <ModalFooter>

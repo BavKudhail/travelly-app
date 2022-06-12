@@ -11,13 +11,14 @@ import { CreateTrip } from "../../components/";
 function CompanyDashboard() {
   const {data, error, loading} = useQuery(COMPANY_DASHBOARD)
   const tripData = data?.getCompanyTrips || [];
-  console.log(tripData)
+
   return (<>
   <CreateTrip />;
   {/* <CompanyTripCard /> */}
 
   {tripData.map((trip)=>{
-    return <CompanyTripCard key={trip._id} tripId={trip._id} tripName={trip.tripName} tripDescription={trip.tripDescription} startDate={trip.startDate}  endDate={trip.endDate} image={trip.imageUrl}/>
+
+    return <CompanyTripCard key={trip._id} tripId={trip._id} tripName={trip.tripName} tripDescription={trip.tripDescription} startDate={trip.startDate} countries={trip.countries} activities={trip.activities}  endDate={trip.endDate} image={trip.imageUrl}/>
   })}
 
 

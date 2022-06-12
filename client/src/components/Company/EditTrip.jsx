@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useEffect } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { GET_TRIP_DATA } from "../../utils/queries";
 import { UPDATE_TRIP } from "../../utils/mutations";
@@ -23,20 +23,35 @@ import {
 import { Textarea } from "@chakra-ui/react";
 import { MultiSelect } from "react-multi-select-component";
 
-function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
+function EditTrip({tripId, tripName, tripDescription, startDate, endDate, countries, activities}) {
   // queries/mutations
+
+
   const { loading, data } = useQuery(GET_TRIP_DATA);
-//   const countryData = data?.getAllCountries || [];
-//   const activityData = data?.getAllActivities || [];
+  const countryData = data?.getAllCountries || [];
+  const activityData = data?.getAllActivities || [];
   const [updateTrip] = useMutation(UPDATE_TRIP);
 
   //   state
-  const [updatedTripName, setTripName] = useState("");
-  const [updatedTripDescription, setTripDescription] = useState("");
-  const [updatedStartDate, setStartDate] = useState();
-  const [updatedEndDate, setEndDate] = useState();
-//   const [selectedCountry, setSelectedCountry] = useState([]);
-//   const [selectedActivity, setSelectedActivity] = useState([]);
+  const [updatedTripName, setTripName] = useState(tripName);
+  const [updatedTripDescription, setTripDescription] = useState(tripDescription);
+  const [updatedStartDate, setStartDate] = useState(startDate);
+  const [updatedEndDate, setEndDate] = useState(endDate);
+  const [selectedCountry, setSelectedCountry] = useState(countries.map((country)=>{return {label: country.countryName, value: country._id}}));
+  const [selectedActivity, setSelectedActivity] = useState(activities.map((activity)=>{return {label: activity.activityName, value: activity._id}}));
+
+
+
+//   unformatDate
+
+  const unformatDate = (date)=>{
+    const dateArr = date.split('/')
+    const unformattedArr = dateArr.reverse()
+
+    const unformattedDate = unformattedArr.join('-')
+    return unformattedDate
+  }
+
 
   // reformat date
 
@@ -50,26 +65,26 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("event")
+   
 
     
 
 
 
     // // handle country data
-    // const countriesData = selectedCountry.map((country) => {
-    //   return country.value;
-    // });
+    const countriesData = selectedCountry.map((country) => {
+      return country.value;
+    });
 
-    // const activitiesData = selectedActivity.map((activity) => {
-    //   return activity.value;
-    // });
+    const activitiesData = selectedActivity.map((activity) => {
+      return activity.value;
+    });
 
-    console.log("tripName", tripName);
-    console.log("tripDescription", tripDescription);
-    console.log("startDate", startDate);
-    console.log("endDate", endDate);
-    console.log("tripId", tripId)
+    // console.log("tripName", tripName);
+    // console.log("tripDescription", tripDescription);
+    // console.log("startDate", startDate);
+    // console.log("endDate", endDate);
+    // console.log("tripId", tripId)
 
     // network request
     const { data } = await updateTrip({
@@ -78,11 +93,11 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
         tripDescription: updatedTripDescription,
         startDate: reformatDate(updatedStartDate),
         endDate: reformatDate(updatedEndDate),
-        tripId: tripId.tripId
+        tripId: tripId,
         // TODO - make id dynamic
         // companyId: "629a17598e81c16bf7beaf9a",
-        // countries: countriesData,
-        // activities: activitiesData,
+        countries: countriesData,
+        activities: activitiesData,
       },
     });
   
@@ -91,20 +106,20 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
   };
 
   //   options for multi-select countries
-//   const countryOptions = countryData.map((country) => {
-//     return {
-//       label: country.countryName,
-//       value: country._id,
-//     };
-//   });
+  const countryOptions = countryData.map((country) => {
+    return {
+      label: country.countryName,
+      value: country._id,
+    };
+  });
 
 //   //   options for multi-select activites
-//   const activityOptions = activityData.map((activity) => {
-//     return {
-//       label: activity.activityName,
-//       value: activity._id,
-//     };
-//   });
+  const activityOptions = activityData.map((activity) => {
+    return {
+      label: activity.activityName,
+      value: activity._id,
+    };
+  });
 
   return (
     <>
@@ -116,7 +131,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
               placeholder="trip name"
               name="tripName"
               type="text"
-              value={tripName}
+              value={updatedTripName}
               onChange={(e) => setTripName(e.target.value)}
               required
             />
@@ -126,7 +141,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
             <Textarea
               placeholder="trip description"
               name="tripDescription"
-              value={tripDescription}
+              value={updatedTripDescription}
               onChange={(e) => setTripDescription(e.target.value)}
               type="text"
               required
@@ -139,7 +154,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
                 placeholder="date"
                 name="startDate"
                 type="date"
-                value={startDate}
+                value={unformatDate(updatedStartDate)}
                 required
                 onChange={(e) => setStartDate(e.target.value)}
               />
@@ -152,14 +167,14 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
                 placeholder="date"
                 name="endDate"
                 type="date"
-                value={endDate}
+                value={unformatDate(updatedEndDate)}
                 required
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </InputGroup>
           </FormControl>
           {/*  */}
-          {/* <FormControl my={"4"}>
+           <FormControl my={"4"}>
             <FormLabel>Countries</FormLabel>
             <MultiSelect
               width="100%"
@@ -168,7 +183,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
               value={selectedCountry}
               onChange={setSelectedCountry}
               labelledBy="Select"
-            />
+            /> 
           </FormControl>
           <FormControl my={"4"}>
             <FormLabel>Activities</FormLabel>
@@ -179,8 +194,8 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
               value={selectedActivity}
               onChange={setSelectedActivity}
               labelledBy="Select"
-            /> */}
-          {/* </FormControl> */}
+            /> 
+          </FormControl>
           <Button
             width={"full"}
             mt="4"
@@ -193,6 +208,7 @@ function EditTrip(tripId, startDate, endDate, tripName, tripDescription) {
       </VStack>
     </>
   );
-}
+} 
+
 
 export default EditTrip;
