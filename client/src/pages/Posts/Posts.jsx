@@ -153,11 +153,14 @@ const Posts = () => {
             <TabPanels>
               <TabPanel>
                 {followingPosts.map((user) => {
-                  return user.posts.map((post) => {
-                    console.log(user.username);
-                    console.log(post);
-                    return <PostCard key={post._id} date={post.createdAt} postTitle={post.postTitle} postText={post.postText} username={user.username} />;
-                  });
+                  return user.posts
+                    .slice(0)
+                    .reverse()
+                    .map((post) => {
+                      console.log(user.username);
+                      console.log(post);
+                      return <PostCard key={post._id} date={post.createdAt} postTitle={post.postTitle} postText={post.postText} username={user.username} />;
+                    });
                 })}
               </TabPanel>
               <TabPanel>
