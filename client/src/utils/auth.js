@@ -38,6 +38,12 @@ class AuthService {
     window.location.assign('/');
   }
 
+  companyLogin(idToken) {
+    // Saves user token to localStorage
+    localStorage.setItem('id_token', idToken);
+    window.location.assign('/companydashboard');
+  }
+
   logout() {
     // Clear user token and profile data from localStorage
     localStorage.removeItem('id_token');

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // TODO - add authentication token here
 
@@ -64,16 +64,8 @@ export const ADD_POST = gql`
 
 // company
 export const ADD_COMPANY = gql`
-  mutation addCompany(
-    $companyUsername: String!
-    $email: String!
-    $password: String!
-  ) {
-    addCompany(
-      companyUsername: $companyUsername
-      email: $email
-      password: $password
-    ) {
+  mutation addCompany($companyUsername: String!, $email: String!, $password: String!) {
+    addCompany(companyUsername: $companyUsername, email: $email, password: $password) {
       token
     }
   }
@@ -105,20 +97,16 @@ export const LOGIN_ADMIN = gql`
 `;
 
 export const UPDATE_TRIP = gql`
-  mutation updateTrip(
-    $tripName: String!
-    $tripDescription: String!
-    $startDate: String!
-    $tripId: ID!
-    $endDate: String
-  ) {
-    updateTrip(
-      tripName: $tripName
-      tripDescription: $tripDescription
-      startDate: $startDate
-      tripId: $tripId
-      endDate: $endDate
-    ) {
+  mutation updateTrip($tripName: String!, $tripDescription: String!, $startDate: String!, $tripId: ID!, $endDate: String) {
+    updateTrip(tripName: $tripName, tripDescription: $tripDescription, startDate: $startDate, tripId: $tripId, endDate: $endDate) {
+      _id
+    }
+  }
+`;
+
+export const DELETE_TRIP = gql`
+  mutation deleteTrip($tripId: String!) {
+    deleteTrip(tripId: $tripId) {
       _id
     }
   }
@@ -173,14 +161,7 @@ export const ADD_ACTIVITY_BADGE = gql`
 `;
 
 export const ADD_TRIP = gql`
-  mutation addTrip(
-    $tripName: String!
-    $tripDescription: String!
-    $startDate: String!
-    $endDate: String
-    $countries: [ID]
-    $activities: [ID]
-  ) {
+  mutation addTrip($tripName: String!, $tripDescription: String!, $startDate: String!, $endDate: String, $countries: [ID], $activities: [ID]) {
     addTrip(
       tripName: $tripName
       tripDescription: $tripDescription

@@ -32,7 +32,7 @@ export default function CompanyLoginForm() {
         variables: { ...userInput },
       });
       console.log(data);
-      Auth.login(data.loginCompany.token);
+      Auth.companyLogin(data.loginCompany.token);
       console.log('Logged in!');
     } catch (err) {
       console.error(err);
