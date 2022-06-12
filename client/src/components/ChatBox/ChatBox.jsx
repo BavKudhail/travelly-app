@@ -4,9 +4,11 @@ import { FormControl, Input } from "@chakra-ui/react";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import io from "socket.io-client";
 import { ChatState } from "../../context/ChatProvider";
+import { Button, Text, Box, VStack, Spinner, Image } from "@chakra-ui/react";
+import ScrollableFeed from "react-scrollable-feed"
 
 // mutations / queries
-import { GET_ALL_MESSAGES } from "../../utils/queries";
+import { CHATBOX } from "../../utils/queries";
 import { SEND_MESSAGE } from "../../utils/mutations";
 
 // refactor endpoint for heroku
@@ -14,23 +16,23 @@ const ENDPOINT = "http://localhost:3000"; //"https://xxxxxxx.herokuapp.com";
 let socket;
 let selectedChatCompare;
 
-// static user for testing - this needs to come from the loggedin user
+// get the id of logged in user
 const user = {
-  _id: "6299eaa2b3b3eb625a753dd0",
-  username: "Max Kanat-Alexander",
-  email: "mkanatalexander@techfriends.dev",
+  _id: "629789320f3fb256b41ad4fc",
 };
 
 const ChatBox = () => {
   // mutations/queries
   const [sendMessage] = useMutation(SEND_MESSAGE);
-  const [getAllMessages] = useLazyQuery(GET_ALL_MESSAGES);
+  const [getAllMessages] = useLazyQuery(CHATBOX);
   const [socketConnected, setSocketConnected] = useState(false);
 
   //  defining states
-  const { selectedChat, setSelectedChat } = ChatState();
+  const { selectedChat, setSelectedChat, loggedInUser } = ChatState();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+
+  console.log("TESTING AGAIN:", loggedInUser);
 
   // get all message data
   const getAllMessageData = async () => {
@@ -62,7 +64,6 @@ const ChatBox = () => {
             // make below dynamic
             chatId: selectedChat._id,
             // TODO - this must become dynamic
-            userId: user._id,
             content: newMessage,
           },
         });
@@ -80,7 +81,7 @@ const ChatBox = () => {
 
   useEffect(() => {
     socket = io(ENDPOINT);
-    socket.emit("setup", user);
+    socket.emit("setup", loggedInUser);
     socket.on("connection", () => setSocketConnected(true));
   }, []);
 
@@ -114,18 +115,30 @@ const ChatBox = () => {
 
   return (
     <>
-      <div>ChatBox</div>
-      <div>Messages:</div>
-      {/* SCROLLABLE CHAT - this can be another component */}
-      <div>
-        {messages.map((message, index) => (
-          <div key={message._id} className="message-box">
-            <div>{message.content}</div>
-            <div>{message.sender.username}</div>
-          </div>
-        ))}
-      </div>
-
+      {/*  */}
+      <Box
+        height="900px"
+        overflowY={"scroll"}
+        alignItems="center"
+        flexDir="column"
+        p="3"
+        // bg="white"
+        w="100"
+        borderRadius="lg"
+        borderWidth="1px"
+        className="glassmorphic"
+      >
+        <ScrollableFeed>
+          <Box borderRadius="30px">
+            {messages.map((message, index) => (
+              <Box key={message._id} className="chat-bubble">
+                <div>{message.content}</div>
+                <div>{message.sender.username}</div>
+              </Box>
+            ))}
+          </Box>
+        </ScrollableFeed>
+      </Box>
       <FormControl onKeyDown={sendMessageHandler}>
         <Input value={newMessage} onChange={typingHandler} />
       </FormControl>

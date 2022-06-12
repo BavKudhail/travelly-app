@@ -1,54 +1,56 @@
-import React, { useState } from "react";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import React, { useState, useEffect } from "react";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import "./Chat.css";
 import { ChatBox } from "../../components";
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Text, Box, VStack, Spinner, Image } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
 
 // mutations/queries
 import { GET_GROUP_CHATS } from "../../utils/queries";
 
 const Chat = () => {
-  const { selectedChat, setSelectedChat } = ChatState();
+  const { selectedChat, setSelectedChat, loggedInUser, setLoggedInUser } =
+    ChatState();
 
   // Execute the query on component load
   const { loading, data } = useQuery(GET_GROUP_CHATS);
   const chatData = data?.getGroupChats || [];
-  console.log(chatData);
 
   return (
     <>
-      <h1 className="head-text">My Chats</h1>
-      {/* if loading  */}
       {loading ? (
-        <span>loading</span>
+        <Spinner />
       ) : (
-        <div>
+        <Box mt="10">
           {/* else show chats */}
           {chatData.map((chat) => {
             return (
-              <div key={chat._id}>
+              <Box key={chat._id} m={"3"} w="full">
                 <Button
+                  w="100%"
                   onClick={() => {
                     setSelectedChat(chat);
                   }}
                 >
                   {chat.chatName}
                 </Button>
-              </div>
+              </Box>
             );
           })}
-        </div>
+          <Box>{/* message box */}</Box>
+        </Box>
       )}
 
-      <h1 className="head-text">Messages</h1>
-      {selectedChat ? (
-        <div>
-          <ChatBox />
-        </div>
-      ) : (
-        <div>Please select a chat</div>
-      )}
+      <Box m="10" width={"100%"}>
+        <Image />
+        {selectedChat ? (
+          <div>
+            <ChatBox />
+          </div>
+        ) : (
+          <div>Please select a chat</div>
+        )}
+      </Box>
     </>
   );
 };

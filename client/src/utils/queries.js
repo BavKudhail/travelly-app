@@ -153,7 +153,7 @@ export const GET_DASHBOARD = gql`
 `;
 
 // get messages
-export const GET_ALL_MESSAGES = gql`
+export const CHATBOX = gql`
   query getAllMessages($chatId: ID!) {
     getAllMessages(chatId: $chatId) {
       _id
@@ -164,6 +164,15 @@ export const GET_ALL_MESSAGES = gql`
       chat {
         chatName
       }
+    }
+  }
+`;
+
+export const CONTEXT = gql`
+  query context {
+    me {
+      _id
+      username
     }
   }
 `;

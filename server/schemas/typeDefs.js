@@ -146,7 +146,7 @@ const typeDefs = gql`
 
   type Mutation {
     # messages
-    sendMessage(content: String!, chatId: ID!, userId: ID!): Message
+    sendMessage(content: String!, chatId: ID!): Message
     # chat
     createGroupChat(chatName: String!, userId: ID!): Chat
     # add user

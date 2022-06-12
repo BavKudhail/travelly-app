@@ -1,4 +1,10 @@
-.message-box {
-  background-color: rgb(241, 241, 241);
-  margin-top: 1rem;
+.chat-bubble {
+  /* max-width: 255px; */
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  line-height: 24px;
+  position: relative;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #fff;
 }

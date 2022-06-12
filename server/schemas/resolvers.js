@@ -157,10 +157,10 @@ const resolvers = {
     //////////////////////////////////////
 
     // create new message
-    sendMessage: async (parent, { content, chatId, userId }, context) => {
+    sendMessage: async (parent, { content, chatId }, context) => {
       const newMessage = await Message.create({
         // the sender of the message is the currently logged in user
-        sender: userId,
+        sender: context.user._id,
         content,
         chat: chatId,
       });
