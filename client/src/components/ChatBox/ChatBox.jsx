@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ChatBox.css";
 import { FormControl, Input } from "@chakra-ui/react";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import io from "socket.io-client";
 import { ChatState } from "../../context/ChatProvider";
 import { Button, Text, Box, VStack, Spinner, Image } from "@chakra-ui/react";
-import ScrollableFeed from "react-scrollable-feed"
 
 // mutations / queries
 import { CHATBOX } from "../../utils/queries";
@@ -32,7 +31,15 @@ const ChatBox = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  console.log("TESTING AGAIN:", loggedInUser);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   // get all message data
   const getAllMessageData = async () => {
@@ -93,18 +100,20 @@ const ChatBox = () => {
 
   // update everytime state updates
   useEffect(() => {
-    socket.on("message recieved", (newMessageRecieved) => {
-      if (
-        // if chat is not selected or doesn't match current chat
-        !selectedChatCompare ||
-        selectedChatCompare._id !== newMessageRecieved.chat._id
-      ) {
-        return;
-      } else {
-        // TODO - THE PROBLEM IS HERE
-        setMessages([...messages, newMessageRecieved]);
-      }
-    });
+    // messages.scrollTop = messages.scrollHeight;
+    // socket.on("message recieved", (newMessageRecieved) => {
+    //   if (
+    //     // if chat is not selected or doesn't match current chat
+    //     !selectedChatCompare ||
+    //     selectedChatCompare._id !== newMessageRecieved.chat._id
+    //   ) {
+    //     return;
+    //   } else {
+    //     // TODO - THE PROBLEM IS HERE
+    //     setMessages([...messages, newMessageRecieved]);
+    //     // scroll to bottom of chat page
+    //   }
+    // });
   });
 
   // handing the user input
@@ -121,27 +130,35 @@ const ChatBox = () => {
         overflowY={"scroll"}
         alignItems="center"
         flexDir="column"
-        p="3"
+        padding={"70px"}
         // bg="white"
         w="100"
-        borderRadius="lg"
+        borderRadius="30px"
         borderWidth="1px"
         className="glassmorphic"
       >
-        <ScrollableFeed>
-          <Box borderRadius="30px">
-            {messages.map((message, index) => (
-              <Box key={message._id} className="chat-bubble">
-                <div>{message.content}</div>
-                <div>{message.sender.username}</div>
-              </Box>
-            ))}
-          </Box>
-        </ScrollableFeed>
+        <Box borderRadius="30px">
+          {messages.map((message, index) => (
+            <Box key={message._id} my="20px" className="chat-bubble">
+              <Text mb="5px" fontWeight={"600"} fontSize="xl">
+                {message.content}
+              </Text>
+              <Text fontSize="small" color="grey">
+                {message.sender.username}
+              </Text>
+            </Box>
+          ))}
+          <div ref={messagesEndRef} />
+        </Box>
+        <FormControl onKeyDown={sendMessageHandler}>
+          <Input
+            placeholder="insert your message here"
+            backgroundColor="#fff"
+            value={newMessage}
+            onChange={typingHandler}
+          />
+        </FormControl>
       </Box>
-      <FormControl onKeyDown={sendMessageHandler}>
-        <Input value={newMessage} onChange={typingHandler} />
-      </FormControl>
     </>
   );
 };

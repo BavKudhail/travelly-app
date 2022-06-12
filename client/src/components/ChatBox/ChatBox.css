@@ -1,7 +1,6 @@
 .chat-bubble {
   /* max-width: 255px; */
   word-wrap: break-word;
-  margin-bottom: 12px;
   line-height: 24px;
   position: relative;
   padding: 10px 20px;
