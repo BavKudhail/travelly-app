@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import { ADMIN_DASHBOARD } from "../../utils/queries";
 
 import CountryForm from "../../components/Admin/CountryForm"
+import ActivityForm from "../../components/Admin/ActivityForm"
 
 import { Box, Image, Badge, Button, useDisclosure, Modal,
     ModalOverlay,
@@ -24,14 +25,15 @@ function AdminDashboard() {
   const {data, error, loading} = useQuery(ADMIN_DASHBOARD)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isActivityOpen, onOpen: onActivityOpen, onClose: onActivityClose } = useDisclosure()
 
       console.log(data)
   
 
   return (<>
  <h1>Admin dashboard</h1>
- {/* EDIT MODAL */}
- <Button onClick={onOpen}>Open Modal</Button>
+ {/* COUNTRY MODAL */}
+ <Button onClick={onOpen}>Add country</Button>
  <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent>
@@ -42,6 +44,26 @@ function AdminDashboard() {
       </ModalBody>
       <ModalFooter>
         <Button colorScheme='blue' mr={3} onClick={onClose}>
+          Close
+        </Button>
+        <Button variant='ghost'>Secondary Action</Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+
+  <Button onClick={onActivityOpen}>Add activity</Button>
+ <Modal isOpen={isActivityOpen} onClose={onActivityClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Modal Title</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <ActivityForm />
+        
+   
+      </ModalBody>
+      <ModalFooter>
+        <Button colorScheme='blue' mr={3} onClick={onActivityClose}>
           Close
         </Button>
         <Button variant='ghost'>Secondary Action</Button>

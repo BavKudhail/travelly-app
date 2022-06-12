@@ -132,6 +132,14 @@ export const ADD_COUNTRY = gql`
   }
 `;
 
+export const ADD_ACTIVITY = gql`
+  mutation addActivity($activityName: String!) {
+    addActivity(activityName: $activityName) {
+      _id
+    }
+  }
+`;
+
 export const ADD_TRIP = gql`
   mutation addTrip(
     $tripName: String!
