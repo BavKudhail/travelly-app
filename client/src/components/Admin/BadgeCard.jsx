@@ -61,7 +61,7 @@ const BadgeCard = ({
           {badgeName}
         </Box>
        
-        <Button onClick={onOpen}>Add Country Badge</Button>
+        <Button onClick={onOpen}>Upload image</Button>
  <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent>

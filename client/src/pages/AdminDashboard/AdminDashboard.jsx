@@ -100,7 +100,7 @@ if(!loading){
     </ModalContent>
   </Modal>
 
-  <Button onClick={onActivityBadgeOpen}>Add Country Badge</Button>
+  <Button onClick={onActivityBadgeOpen}>Add Activity Badge</Button>
  <Modal isOpen={isActivityBadgeOpen} onClose={onActivityBadgeClose}>
     <ModalOverlay />
     <ModalContent>
