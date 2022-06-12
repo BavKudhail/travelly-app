@@ -7,6 +7,7 @@ import CountryForm from "../../components/Admin/CountryForm"
 import ActivityForm from "../../components/Admin/ActivityForm"
 import CountryBadgeForm from "../../components/Admin/CountryBadgeForm"
 import ActivityBadgeForm from "../../components/Admin/ActivityBadgeForm"
+import BadgeCard from "../../components/Admin/BadgeCard"
 
 import { Box, Image, Badge, Button, useDisclosure, Modal,
     ModalOverlay,
@@ -19,12 +20,15 @@ import { Box, Image, Badge, Button, useDisclosure, Modal,
 
 
 
-import { CreateTrip } from "../../components/";
+
 
 
 
 function AdminDashboard() {
   const {data, error, loading} = useQuery(ADMIN_DASHBOARD)
+
+  const countryBadges = data?.getAllCountryBadges
+  const activityBadges = data?.getAllActivityBadges
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isActivityOpen, onOpen: onActivityOpen, onClose: onActivityClose } = useDisclosure()
@@ -33,7 +37,7 @@ function AdminDashboard() {
 
       console.log(data)
   
-
+if(!loading){
   return (<>
  <h1>Admin dashboard</h1>
  {/* COUNTRY MODAL */}
@@ -115,7 +119,21 @@ function AdminDashboard() {
       </ModalFooter>
     </ModalContent>
   </Modal>
+
+<div className="d-flex flex-column"> 
+  {countryBadges.map((badge)=>{
+    return <BadgeCard key={badge._id} badgeName={badge.badgeName} badgeId={badge._id} model="CountryBadge" badgeImage={badge.badgeImage}/>
+  })}
+
+</div>
+
+<div className="d-flex flex-column"> 
+{activityBadges.map((badge)=>{
+    return <BadgeCard key={badge._id} badgeName={badge.badgeName} badgeId={badge._id} model="ActivityBadge" badgeImage={badge.badgeImage}/>
+  })}
+  </div>
   </>)
+}
 
 }
 

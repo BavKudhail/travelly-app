@@ -200,6 +200,25 @@ export const ADMIN_DASHBOARD = gql`
       _id
       activityName
     }
+    getAllCountryBadges {
+      _id
+      badgeName
+      badgeImage
+      countries {
+        _id
+        countryName
+      }
+    }
+
+    getAllActivityBadges {
+      _id
+      badgeName
+      badgeImage
+      activities {
+        _id
+        activityName
+      }
+    }
   }
 `;
 

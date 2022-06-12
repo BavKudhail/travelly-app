@@ -26,7 +26,7 @@ const io = require("socket.io")(server, {
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const { uploadFile, getFileStream } = require("./s3");
-const { Trip } = require("./models");
+const { Trip, CountryBadge, ActivityBadge } = require("./models");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -58,9 +58,36 @@ app.post("/images/:id", upload.single("image"), async (req, res) => {
   );
   //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
 
-  console.log(trip.imageUrl);
   //   res.send({ imagePath: `/images/${result.Key}` });
   res.redirect("/companydashboard");
+});
+
+app.post("/badgeImages/:id", upload.single("image"), async (req, res) => {
+  const file = req.file;
+  const result = await uploadFile(file);
+  console.log(result);
+  //   console.log(req.body.tripId);
+  if (req.body.model === "CountryBadge") {
+    const countryBadge = await CountryBadge.findByIdAndUpdate(
+      { _id: req.params.id },
+      { badgeImage: `/images/${result.Key}` },
+      { new: true, runValidators: true }
+    );
+    //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
+
+    //   res.send({ imagePath: `/images/${result.Key}` });
+    res.redirect("/admindashboard");
+  } else if ((req.body.model = "ActivityBadge")) {
+    const activityBadge = await ActivityBadge.findByIdAndUpdate(
+      { _id: req.params.id },
+      { badgeImage: `/images/${result.Key}` },
+      { new: true, runValidators: true }
+    );
+    //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
+
+    //   res.send({ imagePath: `/images/${result.Key}` });
+    res.redirect("/admindashboard");
+  }
 });
 
 const startApolloServer = async (typeDefs, resolvers) => {
