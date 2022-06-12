@@ -7,4 +7,5 @@ export { default as UserProfile } from "./UserProfile/UserProfile";
 export { default as CompanyLogin } from "./CompanyLogin/CompanyLogin";
 export { default as AdminLogin } from "./AdminLogin/AdminLogin";
 export { default as CompanyDashboard } from "./CompanyDashboard/CompanyDashboard";
+export { default as AdminDashboard } from "./AdminDashboard/AdminDashboard";
 export { default as ImageUpload } from "./ImageUpload/ImageUpload";

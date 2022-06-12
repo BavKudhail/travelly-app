@@ -31,6 +31,7 @@ import {
   CompanyDashboard,
   AdminLogin,
   ImageUpload,
+  AdminDashboard,
 } from "./pages";
 
 // components
@@ -85,6 +86,7 @@ function App() {
               <Route path="/companyLogin" element={<CompanyLogin />} />
               <Route path="/companyDashboard" element={<CompanyDashboard />} />
               <Route path="/adminLogin" element={<AdminLogin />} />
+              <Route path="/adminDashboard" element={<AdminDashboard />} />
             </Routes>
           </Flex>
         </Router>

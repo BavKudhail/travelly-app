@@ -189,6 +189,39 @@ export const COMPANY_DASHBOARD = gql`
   }
 `;
 
+export const ADMIN_DASHBOARD = gql`
+  query getCountriesAndActivities {
+    getAllCountries {
+      _id
+      countryName
+    }
+    # add activities
+    getAllActivities {
+      _id
+      activityName
+    }
+    getAllCountryBadges {
+      _id
+      badgeName
+      badgeImage
+      countries {
+        _id
+        countryName
+      }
+    }
+
+    getAllActivityBadges {
+      _id
+      badgeName
+      badgeImage
+      activities {
+        _id
+        activityName
+      }
+    }
+  }
+`;
+
 // post page queries
 export const GET_POSTS = gql`
   query posts {

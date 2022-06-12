@@ -124,6 +124,54 @@ export const UPDATE_TRIP = gql`
   }
 `;
 
+export const ADD_COUNTRY = gql`
+  mutation addCountry($countryName: String!) {
+    addCountry(countryName: $countryName) {
+      _id
+    }
+  }
+`;
+
+export const ADD_ACTIVITY = gql`
+  mutation addActivity($activityName: String!) {
+    addActivity(activityName: $activityName) {
+      _id
+    }
+  }
+`;
+
+export const ADD_COUNTRY_BADGE = gql`
+  mutation AddCountryBadge(
+    $badgeName: String!
+    $badgeImage: String
+    $countries: [ID]
+  ) {
+    addCountryBadge(
+      badgeName: $badgeName
+      badgeImage: $badgeImage
+      countries: $countries
+    ) {
+      _id
+    }
+  }
+`;
+
+export const ADD_ACTIVITY_BADGE = gql`
+  mutation addActivityBadge(
+    $badgeName: String!
+    $badgeImage: String
+    $activities: [ID]
+  ) {
+    addActivityBadge(
+      badgeName: $badgeName
+      badgeImage: $badgeImage
+      activities: $activities
+    ) {
+      _id
+    }
+  }
+`;
+
 export const ADD_TRIP = gql`
   mutation addTrip(
     $tripName: String!
