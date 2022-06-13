@@ -122,7 +122,9 @@ const CompanyTripCard = ({
         </Modal>
 
         {/* IMAGE UPLOAD MODAL */}
-        <Button onClick={onOpen}>Upload Image</Button>
+        <Button m="10px" onClick={onOpen}>
+          Upload Image
+        </Button>
 
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
