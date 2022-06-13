@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_ME = gql`
   query getLoggedInUser {
@@ -9,6 +9,7 @@ export const GET_ME = gql`
         username
         _id
       }
+      bucketList
     }
   }
 `;
@@ -63,9 +64,6 @@ export const GET_HOME = gql`
       countries {
         _id
       }
-    }
-    getUserBucketList {
-      bucketList
     }
   }
 `;

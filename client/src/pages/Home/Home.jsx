@@ -46,7 +46,7 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [getLatestTrips] = useLazyQuery(GET_HOME);
-  const { loading, data, error } = useQuery(GET_ME);
+  const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
 
   const [bucketList, setBucketList] = useState([]);
   const userData = data?.me || [];
@@ -57,7 +57,9 @@ const Home = () => {
     const response = await getLatestTrips();
     const { data, loading, error } = response;
     setLatestTrips(data.getAllTrips);
-    setBucketList(data.getUserBucketList.bucketList);
+    const bucketResponse = await getBucketList();
+    console.log('bucketResponse', bucketResponse.data.me.bucketList);
+    setBucketList(bucketResponse.data.me.bucketList);
     console.log('data', data);
   };
 
