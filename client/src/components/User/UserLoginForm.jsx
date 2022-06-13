@@ -3,14 +3,16 @@ import { useMutation } from '@apollo/react-hooks';
 // TODO - import auth here
 import Auth from '../../utils/auth';
 // mutations/queries
-import { LOGIN_ADMIN } from '../../utils/mutations';
+import { LOGIN_USER } from '../../utils/mutations';
 
 import { VStack, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button } from '@chakra-ui/react';
 
-export default function AdminLoginForm() {
+import '.././SignUpForm.css';
+
+export default function UserLoginForm() {
   const [userInput, setUserInput] = useState({ email: '', password: '' });
 
-  const [loginAdmin, { error }] = useMutation(LOGIN_ADMIN);
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   const handleUserInput = (event) => {
     const { name, value } = event.target;
@@ -28,17 +30,18 @@ export default function AdminLoginForm() {
     }
 
     try {
-      const { data } = await loginAdmin({
+      const { data } = await loginUser({
         variables: { ...userInput },
       });
       console.log(data);
-      Auth.adminLogin(data.loginAdmin.token);
+      Auth.login(data.loginUser.token);
       console.log('Logged in!');
     } catch (err) {
       console.error(err);
     }
 
     setUserInput({
+      username: '',
       email: '',
       password: '',
     });
