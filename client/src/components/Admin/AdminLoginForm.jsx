@@ -32,7 +32,7 @@ export default function AdminLoginForm() {
         variables: { ...userInput },
       });
       console.log(data);
-      Auth.login(data.loginAdmin.token);
+      Auth.adminLogin(data.loginAdmin.token);
       console.log('Logged in!');
     } catch (err) {
       console.error(err);

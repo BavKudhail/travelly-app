@@ -37,7 +37,7 @@ const AdminSignUpForm = () => {
       const { data } = await addAdmin({
         variables: { ...userFormData },
       });
-      Auth.login(data.addAdmin.token);
+      Auth.adminLogin(data.addAdmin.token);
     } catch (err) {
       console.error(err);
     }
