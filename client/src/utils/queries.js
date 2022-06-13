@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_ME = gql`
   query getLoggedInUser {
@@ -9,6 +9,7 @@ export const GET_ME = gql`
         username
         _id
       }
+      bucketList
     }
   }
 `;
@@ -63,9 +64,6 @@ export const GET_HOME = gql`
       countries {
         _id
       }
-    }
-    getUserBucketList {
-      bucketList
     }
   }
 `;
@@ -191,6 +189,39 @@ export const COMPANY_DASHBOARD = gql`
         _id
         countryName
       }
+      activities {
+        _id
+        activityName
+      }
+    }
+  }
+`;
+
+export const ADMIN_DASHBOARD = gql`
+  query getCountriesAndActivities {
+    getAllCountries {
+      _id
+      countryName
+    }
+    # add activities
+    getAllActivities {
+      _id
+      activityName
+    }
+    getAllCountryBadges {
+      _id
+      badgeName
+      badgeImage
+      countries {
+        _id
+        countryName
+      }
+    }
+
+    getAllActivityBadges {
+      _id
+      badgeName
+      badgeImage
       activities {
         _id
         activityName

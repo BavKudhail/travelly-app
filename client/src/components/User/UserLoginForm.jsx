@@ -3,14 +3,16 @@ import { useMutation } from '@apollo/react-hooks';
 // TODO - import auth here
 import Auth from '../../utils/auth';
 // mutations/queries
-import { LOGIN_COMPANY } from '../../utils/mutations';
+import { LOGIN_USER } from '../../utils/mutations';
 
 import { VStack, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button } from '@chakra-ui/react';
 
-export default function CompanyLoginForm() {
+import '.././SignUpForm.css';
+
+export default function UserLoginForm() {
   const [userInput, setUserInput] = useState({ email: '', password: '' });
 
-  const [loginCompany, { error }] = useMutation(LOGIN_COMPANY);
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   const handleUserInput = (event) => {
     const { name, value } = event.target;
@@ -28,17 +30,18 @@ export default function CompanyLoginForm() {
     }
 
     try {
-      const { data } = await loginCompany({
+      const { data } = await loginUser({
         variables: { ...userInput },
       });
       console.log(data);
-      Auth.companyLogin(data.loginCompany.token);
+      Auth.login(data.loginUser.token);
       console.log('Logged in!');
     } catch (err) {
       console.error(err);
     }
 
     setUserInput({
+      username: '',
       email: '',
       password: '',
     });

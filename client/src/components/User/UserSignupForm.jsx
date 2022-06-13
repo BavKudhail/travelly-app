@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import '.././SignUpForm.css';
 // TODO - import auth here
 import Auth from '../../utils/auth';
 
@@ -7,16 +8,17 @@ import { VStack, FormControl, FormLabel, Input, InputGroup, InputRightElement, B
 
 // import Auth from "../utils/auth";
 // mutations/queries
-import { ADD_ADMIN } from '../../utils/mutations';
+import { ADD_USER } from '../../utils/mutations';
 
-const AdminSignUpForm = () => {
+const UserSignUpForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({
+    username: '',
     email: '',
     password: '',
   });
 
-  const [addAdmin, { error }] = useMutation(ADD_ADMIN);
+  const [addUser, { error }] = useMutation(ADD_USER);
 
   const handleUserInput = (event) => {
     const { name, value } = event.target;
@@ -34,15 +36,16 @@ const AdminSignUpForm = () => {
     }
 
     try {
-      const { data } = await addAdmin({
+      const { data } = await addUser({
         variables: { ...userFormData },
       });
-      Auth.adminLogin(data.addAdmin.token);
+      Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
     }
 
     setUserFormData({
+      username: '',
       email: '',
       password: '',
     });
@@ -53,6 +56,10 @@ const AdminSignUpForm = () => {
       <VStack spacing="5px" color="black">
         <form onSubmit={handleFormSubmit} className="signup-form">
           <FormControl my={'4'}>
+            <FormLabel>Username</FormLabel>
+            <Input onChange={handleUserInput} placeholder="username" name="username" type="text" required />
+          </FormControl>
+          <FormControl my={'4'}>
             <FormLabel>Email</FormLabel>
             <Input onChange={handleUserInput} placeholder="email" name="email" type="email" required />
           </FormControl>
@@ -60,6 +67,12 @@ const AdminSignUpForm = () => {
             <FormLabel>Password</FormLabel>
             <InputGroup>
               <Input onChange={handleUserInput} placeholder="password" name="password" type="password" required />
+            </InputGroup>
+          </FormControl>
+          <FormControl my={'4'}>
+            <FormLabel>Image Upload</FormLabel>
+            <InputGroup>
+              <input type="file" />
             </InputGroup>
           </FormControl>
           <Button width={'full'} mt="4" type="submit">
@@ -71,4 +84,4 @@ const AdminSignUpForm = () => {
   );
 };
 
-export default AdminSignUpForm;
+export default UserSignUpForm;
