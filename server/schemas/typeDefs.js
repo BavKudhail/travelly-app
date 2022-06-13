@@ -109,6 +109,8 @@ const typeDefs = gql`
     earnedActivityBadges: [ActivityBadge]
     followingCount: Int
     followerCount: Int
+    unsavedCountryBadges: [CountryBadge]
+    unsavedActivityBadges: [ActivityBadge]
   }
 
   type UserAuth {

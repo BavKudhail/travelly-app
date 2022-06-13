@@ -57,6 +57,32 @@ const Dashboard = () => {
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD);
   const userData = data?.me || [];
+  const allCountryBadges = data?.getAllCountryBadges
+  const allActivityBadges = data?.getAllActivityBadges
+  const earnedCountryBadges = data?.me.earnedCountryBadges
+
+  const savedBadges = data?.me.savedCountryBadges
+
+// 
+if(!loading){
+  const allCountryBadgeIds = allCountryBadges.map((badge)=>badge._id)
+
+  const earnedBadgeIds = [...earnedCountryBadges].map((badge)=>badge._id)
+
+  const savedBadgeIds = savedBadges.map((badge)=>badge._id)
+
+  const unsavedCountryBadgeIds = allCountryBadgeIds.filter((badge)=>{
+    return !earnedBadgeIds.includes(badge) && !savedBadgeIds.includes(badge)
+  })
+
+
+  const unsavedCountryBadges = unsavedCountryBadgeIds.map((id)=>{
+    return allCountryBadges.find((badge)=> badge._id === id )
+  })
+  console.log("unsavedCountryBadges",unsavedCountryBadges)
+}
+
+
 
   console.log(userData);
   console.log(userData.username);

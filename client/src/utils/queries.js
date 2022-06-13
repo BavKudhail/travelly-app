@@ -114,6 +114,12 @@ export const GET_DASHBOARD = gql`
         badgeImage
         badgeName
       }
+      unsavedActivityBadges {
+        _id
+      }
+      unsavedCountryBadges {
+        _id
+      }
       bucketList
       visitedCountries {
         _id
