@@ -75,7 +75,7 @@ const Chat = () => {
           </Box>
         )}
 
-        <Box m="10" width={"100%"}>
+        <Box mx="20px" width={"100%"}>
           <Image />
           {selectedChat ? (
             <div>

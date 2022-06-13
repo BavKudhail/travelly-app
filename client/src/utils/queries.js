@@ -158,6 +158,7 @@ export const CHATBOX = gql`
     getAllMessages(chatId: $chatId) {
       _id
       sender {
+        _id
         username
       }
       content

@@ -27,11 +27,6 @@ const ENDPOINT = "http://localhost:3000"; //"https://xxxxxxx.herokuapp.com";
 let socket;
 let selectedChatCompare;
 
-// get the id of logged in user
-const user = {
-  _id: "629789320f3fb256b41ad4fc",
-};
-
 const ChatBox = () => {
   // mutations/queries
   const [sendMessage] = useMutation(SEND_MESSAGE);
@@ -70,7 +65,6 @@ const ChatBox = () => {
       });
       // update message state
       setMessages(data.getAllMessages);
-      // socket.io - (room = selectedChatID)
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
       console.log(error);
@@ -86,9 +80,7 @@ const ChatBox = () => {
         // send message network request
         const { data } = await sendMessage({
           variables: {
-            // make below dynamic
             chatId: selectedChat._id,
-            // TODO - this must become dynamic
             content: newMessage,
           },
         });
@@ -105,7 +97,9 @@ const ChatBox = () => {
   };
 
   useEffect(() => {
+    // connect to endpoint
     socket = io(ENDPOINT);
+    // send logged in user data
     socket.emit("setup", loggedInUser);
     socket.on("connection", () => setSocketConnected(true));
   }, []);
@@ -118,7 +112,7 @@ const ChatBox = () => {
 
   // update everytime state updates
   useEffect(() => {
-    socket.on("message recieved", function (newMessageRecieved) {
+    socket.on("message recieved", (newMessageRecieved) => {
       if (
         // if chat is not selected or doesn't match current chat
         !selectedChatCompare ||
@@ -127,12 +121,11 @@ const ChatBox = () => {
         return;
       } else {
         // TODO - THE PROBLEM IS HERE
-        setMessages((messages) => [...messages, newMessageRecieved]);
+        setMessages([...messages, newMessageRecieved]);
         // scroll to bottom of chat page
       }
-      return () => socket.disconnect();
     });
-  }, [messages]);
+  });
 
   // handing the user input
   const typingHandler = (e) => {
@@ -142,11 +135,15 @@ const ChatBox = () => {
 
   return (
     <>
-      <Box width={"100%"}>
-        <Heading mb="10" textAlign={"center"}>
-          {selectedChat.chatName}
-        </Heading>
-        <WrapItem>
+      <Flex
+        width={"100%"}
+        flexDir="column"
+        flexDirection={"column"}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Heading textAlign={"center"}>{selectedChat.chatName}</Heading>
+        <WrapItem my="10px">
           <Avatar
             as={motion.div}
             animate={{ rotate: 360 }}
@@ -157,13 +154,15 @@ const ChatBox = () => {
             src="https://bit.ly/dan-abramov"
           />
         </WrapItem>
-        <Flex>
-          <Text>Group Admin:</Text>
-          <Text>{selectedChat.groupAdmin.username}</Text>
+        <Flex justifyContent={"center"} alignItems="center">
+          <Text color={"gray.500"}>Group Admin:</Text>
+          <Text mx="10px" fontWeight={"600"}>
+            {selectedChat.groupAdmin.username}
+          </Text>
         </Flex>
-      </Box>
+      </Flex>
       <Box
-        height="900px"
+        height="850px"
         overflowY={"scroll"}
         alignItems="center"
         flexDir="column"
@@ -175,16 +174,43 @@ const ChatBox = () => {
         className="glassmorphic"
       >
         <Box borderRadius="30px">
-          {messages.map((message, index) => (
-            <Box key={message._id} my="20px" className="chat-bubble">
-              <Text mb="5px" fontWeight={"600"} fontSize="xl">
-                {message.content}
-              </Text>
-              <Text fontSize="small" color="grey">
-                {message.sender.username}
-              </Text>
-            </Box>
-          ))}
+          {messages.map((message, index) => {
+            return message.sender._id == loggedInUser._id ? (
+              <Flex flexDir={"column"} alignItems={"flex-end"}>
+                <Flex
+                  flexDir={"column"}
+                  width={["100%", "100%", "70%", "70%", "50%"]}
+                  key={message._id}
+                  my="20px"
+                  className="other-chat-bubble"
+                >
+                  <Text mb="5px" fontWeight={"600"} fontSize="xl">
+                    {message.content}
+                  </Text>
+                  <Text fontSize="small" color="white">
+                    {message.sender.username}
+                  </Text>
+                </Flex>
+              </Flex>
+            ) : (
+              <Flex flexDir={"column"} alignItems={"flex-start"}>
+                <Flex
+                  flexDir={"column"}
+                  width={["100%", "100%", "70%", "70%", "50%"]}
+                  key={message._id}
+                  my="20px"
+                  className="chat-bubble"
+                >
+                  <Text mb="5px" fontWeight={"600"} fontSize="xl">
+                    {message.content}
+                  </Text>
+                  <Text fontSize="small" color="grey">
+                    {message.sender.username}
+                  </Text>
+                </Flex>
+              </Flex>
+            );
+          })}
           <div ref={messagesEndRef} />
         </Box>
         <FormControl onKeyDown={sendMessageHandler}>
