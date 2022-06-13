@@ -12,6 +12,7 @@ const ChatProvider = ({ children }) => {
   const [chats, setChats] = useState();
   const [loggedInUser, setLoggedInUser] = useState();
   const [getUserData] = useLazyQuery(CONTEXT);
+  const [notifications, setNotifications] = useState(0);
 
   // get information regarding the logged in user
   const getUserDataFunc = async () => {
