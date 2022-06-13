@@ -11,7 +11,7 @@ import LoginForm from '../LoginForm';
 
 import Auth from '../../utils/auth';
 
-import './NavBar.css';
+import './Navbar.css';
 
 import {
   Image,
@@ -57,7 +57,7 @@ import {
 // images
 import logo from '../../assets/logo_icon.png';
 
-const NavBar = () => {
+const Navbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -185,4 +185,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default Navbar;

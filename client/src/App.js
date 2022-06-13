@@ -18,7 +18,7 @@ import backgroundimg from './assets/background.png';
 import { Chat, Landing, Dashboard, Posts, Home, UserProfile, CompanyLogin, CompanyDashboard, AdminLogin, ImageUpload, AdminDashboard, UserLogin } from './pages';
 
 // components
-import { NavBar } from './components';
+import { Navbar } from './components';
 
 import Auth from './utils/auth';
 
@@ -53,7 +53,7 @@ function App() {
       <ChatProvider>
         <Router>
           <Flex h={[null, null, '100vh', '100vh', '100vh']} maxW="2000px" flexDir={['column', 'column', 'row']} overflow="hidden" backgroundImage={backgroundimg} className="app">
-            <NavBar />
+            <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/userprofile" element={<UserProfile />} />
