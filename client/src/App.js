@@ -57,14 +57,14 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/userprofile" element={<UserProfile />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/posts" element={<Posts />} />
-              <Route path="/chat" element={<Chat />} />
-              <Route path="/image-upload" element={<ImageUpload />} />
+              <Route path="/dashboard" element={Auth.loggedIn() ? <Dashboard /> : <UserLogin />} />
+              <Route path="/posts" element={Auth.loggedIn() ? <Posts /> : <UserLogin />} />
+              <Route path="/chat" element={Auth.loggedIn() ? <Chat /> : <UserLogin />} />
+              <Route path="/image-upload" element={Auth.loggedIn() ? <ImageUpload /> : <UserLogin />} />
               <Route path="/companyLogin" element={<CompanyLogin />} />
-              <Route path="/companyDashboard" element={<CompanyDashboard />} />
+              <Route path="/companyDashboard" element={Auth.loggedIn() ? <CompanyDashboard /> : <CompanyLogin />} />
               <Route path="/adminLogin" element={<AdminLogin />} />
-              <Route path="/adminDashboard" element={<AdminDashboard />} />
+              <Route path="/adminDashboard" element={Auth.loggedIn() ? <AdminDashboard /> : <AdminLogin />} />
               <Route path="/userLogin" element={<UserLogin />} />
             </Routes>
           </Flex>

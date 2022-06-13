@@ -1,6 +1,5 @@
 import { React, useState, useRef } from 'react';
 import navList from './NavList';
-import loggedOutNavList from './LoggedOutNavList';
 import {
   BrowserRouter as Router,
   NavLink as RouterLink, // <-- import the NavLink component
@@ -97,7 +96,7 @@ const NavBar = () => {
             {/* this is the navigation */}
             <Flex flexDir={['row', 'row', 'column']} alignItems="flex-start" justifyContent="center">
               {/* nav items */}
-              {(Auth.loggedIn() ? navList : loggedOutNavList).map((navLink, index) => {
+              {navList.map((navLink, index) => {
                 return (
                   <Link
                     as={RouterLink}
