@@ -1,5 +1,5 @@
 import { React, useState, useRef } from 'react';
-import navList from './NavList';
+import navList from './Navlist';
 import {
   BrowserRouter as Router,
   NavLink as RouterLink, // <-- import the NavLink component
