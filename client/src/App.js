@@ -15,7 +15,7 @@ import { Flex } from '@chakra-ui/react';
 import backgroundimg from './assets/background.png';
 // pages
 
-import { Chat, Landing, Dashboard, Posts, Home, UserProfile, CompanyLogin, CompanyDashboard, AdminLogin, ImageUpload, AdminDashboard } from './pages';
+import { Chat, Landing, Dashboard, Posts, Home, UserProfile, CompanyLogin, CompanyDashboard, AdminLogin, ImageUpload, AdminDashboard, UserLogin } from './pages';
 
 // components
 import { NavBar } from './components';
@@ -65,6 +65,7 @@ function App() {
               <Route path="/companyDashboard" element={<CompanyDashboard />} />
               <Route path="/adminLogin" element={<AdminLogin />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
+              <Route path="/userLogin" element={<UserLogin />} />
             </Routes>
           </Flex>
         </Router>
