@@ -4,7 +4,19 @@ import { FormControl, Input } from "@chakra-ui/react";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import io from "socket.io-client";
 import { ChatState } from "../../context/ChatProvider";
-import { Button, Text, Box, VStack, Spinner, Image } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import {
+  Button,
+  Text,
+  Box,
+  VStack,
+  Spinner,
+  Image,
+  Heading,
+  Flex,
+  WrapItem,
+  Avatar,
+} from "@chakra-ui/react";
 
 // mutations / queries
 import { CHATBOX } from "../../utils/queries";
@@ -27,7 +39,13 @@ const ChatBox = () => {
   const [socketConnected, setSocketConnected] = useState(false);
 
   //  defining states
-  const { selectedChat, setSelectedChat, loggedInUser } = ChatState();
+  const {
+    selectedChat,
+    setSelectedChat,
+    loggedInUser,
+    notifications,
+    setNotifications,
+  } = ChatState();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -100,21 +118,21 @@ const ChatBox = () => {
 
   // update everytime state updates
   useEffect(() => {
-    // messages.scrollTop = messages.scrollHeight;
-    // socket.on("message recieved", (newMessageRecieved) => {
-    //   if (
-    //     // if chat is not selected or doesn't match current chat
-    //     !selectedChatCompare ||
-    //     selectedChatCompare._id !== newMessageRecieved.chat._id
-    //   ) {
-    //     return;
-    //   } else {
-    //     // TODO - THE PROBLEM IS HERE
-    //     setMessages([...messages, newMessageRecieved]);
-    //     // scroll to bottom of chat page
-    //   }
-    // });
-  });
+    socket.on("message recieved", function (newMessageRecieved) {
+      if (
+        // if chat is not selected or doesn't match current chat
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        return;
+      } else {
+        // TODO - THE PROBLEM IS HERE
+        setMessages((messages) => [...messages, newMessageRecieved]);
+        // scroll to bottom of chat page
+      }
+      return () => socket.disconnect();
+    });
+  }, [messages]);
 
   // handing the user input
   const typingHandler = (e) => {
@@ -124,7 +142,26 @@ const ChatBox = () => {
 
   return (
     <>
-      {/*  */}
+      <Box width={"100%"}>
+        <Heading mb="10" textAlign={"center"}>
+          {selectedChat.chatName}
+        </Heading>
+        <WrapItem>
+          <Avatar
+            as={motion.div}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 10 }}
+            border={"1px solid white"}
+            size="lg"
+            name="Dan Abrahmov"
+            src="https://bit.ly/dan-abramov"
+          />
+        </WrapItem>
+        <Flex>
+          <Text>Group Admin:</Text>
+          <Text>{selectedChat.groupAdmin.username}</Text>
+        </Flex>
+      </Box>
       <Box
         height="900px"
         overflowY={"scroll"}
