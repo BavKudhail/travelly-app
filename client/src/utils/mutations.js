@@ -104,6 +104,14 @@ export const UPDATE_TRIP = gql`
   }
 `;
 
+export const JOIN_TRIP = gql`
+mutation userGoing($tripId: ID!) {
+  userGoing(tripId: $tripId) {
+    _id
+  }
+}
+`
+
 export const DELETE_TRIP = gql`
   mutation deleteTrip($tripId: String!) {
     deleteTrip(tripId: $tripId) {

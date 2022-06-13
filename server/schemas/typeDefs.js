@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type Admin {
@@ -46,11 +46,10 @@ const typeDefs = gql`
   type Chat {
     _id: ID!
     chatName: String!
-    # an array of users
     users: [User]
     latestMessage: Message
-    # reference the user that created this
-    groupAdmin: User!
+    groupAdmin: User
+    tripId: ID!
   }
 
   type Trip {
@@ -64,6 +63,7 @@ const typeDefs = gql`
     travellers: [User]
     companyId: [ID]
     imageUrl: String
+    chatId: ID
   }
 
   type CountryBadge {
@@ -152,9 +152,18 @@ const typeDefs = gql`
     # add user
     addUserToGroupChat(chatId: ID!, userId: ID!): Chat
 
-    addUser(username: String!, email: String!, password: String!, bio: String): UserAuth
+    addUser(
+      username: String!
+      email: String!
+      password: String!
+      bio: String
+    ): UserAuth
 
-    addCompany(companyUsername: String!, email: String!, password: String!): CompanyAuth
+    addCompany(
+      companyUsername: String!
+      email: String!
+      password: String!
+    ): CompanyAuth
 
     addAdmin(email: String!, password: String!): AdminAuth
 
@@ -162,19 +171,40 @@ const typeDefs = gql`
     loginCompany(email: String!, password: String!): CompanyAuth
     loginAdmin(email: String!, password: String!): AdminAuth
 
-    addTrip(tripName: String!, tripDescription: String!, startDate: String!, endDate: String, countries: [ID], activities: [ID]): Company
+    addTrip(
+      tripName: String!
+      tripDescription: String!
+      startDate: String!
+      endDate: String
+      countries: [ID]
+      activities: [ID]
+    ): Company
 
-    updateTrip(tripName: String!, tripDescription: String!, startDate: String!, endDate: String, tripId: ID!): Trip
+    updateTrip(
+      tripName: String!
+      tripDescription: String!
+      startDate: String!
+      endDate: String
+      tripId: ID!
+    ): Trip
 
     deleteTrip(tripId: String!): Trip
 
     addActivity(activityName: String!): Activity
 
-    addActivityBadge(badgeName: String!, badgeImage: String, activities: [ID]): ActivityBadge
+    addActivityBadge(
+      badgeName: String!
+      badgeImage: String
+      activities: [ID]
+    ): ActivityBadge
 
     addCountry(countryName: String!): Country
 
-    addCountryBadge(badgeName: String!, badgeImage: String, countries: [ID]): CountryBadge
+    addCountryBadge(
+      badgeName: String!
+      badgeImage: String
+      countries: [ID]
+    ): CountryBadge
 
     addPost(postText: String!, postTitle: String): Post
 

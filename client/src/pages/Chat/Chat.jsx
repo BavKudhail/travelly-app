@@ -40,6 +40,8 @@ const Chat = () => {
   const { loading, data } = useQuery(GET_GROUP_CHATS);
   const chatData = data?.getGroupChats || [];
 
+  console.log(chatData);
+
   return (
     <>
       <Flex
