@@ -121,7 +121,9 @@ const Home = () => {
                 <WavingHand />
               </Heading>
             ) : (
-              <></>
+              <Heading fontWeight="normal" mb={4} letterSpacing="tight">
+                Welcome to Travelly
+              </Heading>
             )}
           </Box>
 
@@ -129,7 +131,7 @@ const Home = () => {
             <Tabs variant="soft-rounded" colorScheme="purple">
               <TabList>
                 <Tab fontSize={'lg'}>Latest Trips</Tab>
-                <Tab fontSize={'lg'}>Recommended for you!</Tab>
+                {Auth.loggedIn() ? <Tab fontSize={'lg'}>Recommended for you!</Tab> : <></>}
               </TabList>
               <TabPanels>
                 <TabPanel>
