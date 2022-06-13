@@ -65,6 +65,7 @@ const Posts = () => {
     setLatestPosts(data.getAllPosts);
   };
 
+  console.log("latestposts",latestPosts)
   // get following posts
   const getFollowingPosts = async () => {
     const response = await getPosts();
@@ -159,7 +160,7 @@ const Posts = () => {
                     .map((post) => {
                       console.log(user.username);
                       console.log(post);
-                      return <PostCard key={post._id} date={post.createdAt} postTitle={post.postTitle} postText={post.postText} username={user.username} />;
+                      return <PostCard key={post._id} date={post.createdAt} postTitle={post.postTitle} postText={post.postText} username={user.username}  />;
                     });
                 })}
               </TabPanel>
@@ -168,7 +169,7 @@ const Posts = () => {
                   .slice(0)
                   .reverse()
                   .map((post) => {
-                    return <PostCard key={post._id} date={post.createdAt} postTitle={post.postTitle} postText={post.postText} username={post.postedBy.username} />;
+                    return <PostCard key={post._id} date={post.createdAt} postTitle={post.postTitle} postText={post.postText} username={post.postedBy.username} userId={post.postedBy._id} />;
                   })}
               </TabPanel>
             </TabPanels>

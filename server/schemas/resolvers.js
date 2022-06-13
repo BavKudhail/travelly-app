@@ -39,6 +39,18 @@ const resolvers = {
       }
     },
 
+    getUser: async (parent, {}, context) => {
+      const user = User.findById({ _id: userId });
+      return user
+        .populate("following")
+        .populate("followers")
+        .populate("posts")
+        .populate("savedCountryBadges")
+        .populate("savedActivityBadges")
+        .populate("upcomingTrips")
+        .populate("countries");
+    },
+
     getFollowingPosts: async (me, args, context) => {
       // get the currently logged in user
       if (context.user) {
