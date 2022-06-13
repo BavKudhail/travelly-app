@@ -142,6 +142,7 @@ const typeDefs = gql`
     getAllCountries: [Country]
     getAllActivities: [Activity]
     getCompanyTrips: [Trip]
+    getUser(userId: ID!): User
   }
 
   type Mutation {

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ME = gql`
   query getLoggedInUser {
@@ -150,6 +150,57 @@ export const GET_DASHBOARD = gql`
   }
 `;
 
+export const GET_USER = gql`
+  query getUser($userId: ID!) {
+    getUser(userId: $userId) {
+      _id
+      username
+      savedCountryBadges {
+        _id
+        badgeName
+      }
+      savedActivityBadges {
+        _id
+        badgeName
+      }
+      upcomingTrips {
+        _id
+        tripName
+      }
+      followers {
+        _id
+        username
+      }
+      following {
+        _id
+        username
+      }
+      pastTrips {
+        _id
+        tripName
+        endDate
+      }
+      earnedCountryBadges {
+        _id
+        badgeImage
+        badgeName
+      }
+      bucketList
+      visitedCountries {
+        _id
+      }
+      followingCount
+      followerCount
+      posts {
+        _id
+        postText
+        postTitle
+        createdAt
+      }
+    }
+  }
+`;
+
 // get messages
 export const CHATBOX = gql`
   query getAllMessages($chatId: ID!) {
@@ -238,6 +289,7 @@ export const GET_POSTS = gql`
       _id
       postedBy {
         username
+        _id
       }
       createdAt
       postTitle
