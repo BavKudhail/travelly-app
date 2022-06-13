@@ -55,10 +55,23 @@ app.post("/images/:id", upload.single("image"), async (req, res) => {
     { imageUrl: `/images/${result.Key}` },
     { new: true, runValidators: true }
   );
-  //   TODO: Will need to add result.key to relevant model (may have to send key to front end and trigger a gql mutation from there?)
 
   //   res.send({ imagePath: `/images/${result.Key}` });
   res.redirect("/companydashboard");
+});
+
+app.post("/user/:id/image", upload.single("image"), async (req, res) => {
+  const file = req.file;
+  const result = await uploadFile(file);
+  console.log(result);
+  //   console.log(req.body.tripId);
+  const user = await User.findByIdAndUpdate(
+    { _id: req.params.id },
+    { profilePicture: `/images/${result.Key}` },
+    { new: true, runValidators: true }
+  );
+
+  res.redirect("/dashboard");
 });
 
 app.post("/badgeImages/:id", upload.single("image"), async (req, res) => {
