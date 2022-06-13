@@ -156,9 +156,7 @@ const ChatBox = () => {
         </WrapItem>
         <Flex justifyContent={"center"} alignItems="center">
           <Text color={"gray.500"}>Group Admin:</Text>
-          <Text mx="10px" fontWeight={"600"}>
-            {selectedChat.groupAdmin.username}
-          </Text>
+
         </Flex>
       </Flex>
       <Box

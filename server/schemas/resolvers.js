@@ -1,12 +1,25 @@
-const { User, Trip, Activity, ActivityBadge, Country, CountryBadge, Company, Admin, Post, Comment, Chat, Message } = require('../models');
-const { AuthenticationError } = require('apollo-server-express');
+const {
+  User,
+  Trip,
+  Activity,
+  ActivityBadge,
+  Country,
+  CountryBadge,
+  Company,
+  Admin,
+  Post,
+  Comment,
+  Chat,
+  Message,
+} = require("../models");
+const { AuthenticationError } = require("apollo-server-express");
 
 // Bav Kudhail ID - 6297844e0f3fb256b41ad4f2
 
-const chatData = require('../data/data');
+const chatData = require("../data/data");
 
-const { signToken } = require('../utils/auth');
-const { isConstValueNode } = require('graphql');
+const { signToken } = require("../utils/auth");
+const { isConstValueNode } = require("graphql");
 
 const resolvers = {
   Query: {
@@ -29,25 +42,29 @@ const resolvers = {
     getFollowingPosts: async (me, args, context) => {
       // get the currently logged in user
       if (context.user) {
-        const user = User.findOne({ _id: context.user._id }).select('-__v -password');
+        const user = User.findOne({ _id: context.user._id }).select(
+          "-__v -password"
+        );
         return user.populate({
-          path: 'following',
-          model: 'User',
+          path: "following",
+          model: "User",
           populate: {
-            path: 'posts',
-            model: 'Post',
+            path: "posts",
+            model: "Post",
           },
         });
       }
     },
 
     getAllTrips: async (parent, args, context) => {
-      const trips = await Trip.find().populate('countries');
+      const trips = await Trip.find().populate("countries");
       return trips;
     },
 
     getCompanyTrips: async (parent, args, context) => {
-      const trips = Trip.find({ companyId: context.user._id }).populate('countries').populate('activities');
+      const trips = Trip.find({ companyId: context.user._id })
+        .populate("countries")
+        .populate("activities");
 
       return trips;
     },
@@ -57,8 +74,8 @@ const resolvers = {
 
       return user
         .populate({
-          path: 'savedCountryBadges',
-          model: 'CountryBadge',
+          path: "savedCountryBadges",
+          model: "CountryBadge",
         })
         .execPopulate();
     },
@@ -80,11 +97,13 @@ const resolvers = {
     // get all messages
     getAllMessages: async (parent, { chatId }, context) => {
       // get all messages based on the chat ID
-      const messages = await Message.find({ chat: chatId }).populate('sender').populate('chat');
+      const messages = await Message.find({ chat: chatId })
+        .populate("sender")
+        .populate("chat");
       return messages;
     },
     // get all group chats that the specific user is a part of
-    
+
     getGroupChats: async (parent, args, context) => {
       if (context.user) {
         const chats = await Chat.find({
@@ -94,7 +113,7 @@ const resolvers = {
           .populate("groupAdmin")
           .populate("users")
           .populate("latestMessage");
-        console.log(context.user);
+        console.log("chats", chats);
         return chats;
       }
     },
@@ -105,13 +124,17 @@ const resolvers = {
 
     // ******
     getAllCountryBadges: async (parent, args, context) => {
-      const allCountryBadges = await CountryBadge.find({}).populate('countries');
+      const allCountryBadges = await CountryBadge.find({}).populate(
+        "countries"
+      );
 
       return allCountryBadges;
     },
 
     getAllActivityBadges: async (parent, args, context) => {
-      const allActivityBadges = await ActivityBadge.find({}).populate('activities');
+      const allActivityBadges = await ActivityBadge.find({}).populate(
+        "activities"
+      );
 
       return allActivityBadges;
     },
@@ -121,7 +144,9 @@ const resolvers = {
     //////////////////////////////////////
 
     getAllPosts: async (parent, args, context) => {
-      const allPosts = await Post.find({}).populate('postedBy').populate('comments');
+      const allPosts = await Post.find({})
+        .populate("postedBy")
+        .populate("comments");
 
       return allPosts;
     },
@@ -144,11 +169,14 @@ const resolvers = {
       const updatedMessage = await Message.findById({
         _id: newMessage._id,
       })
-        .populate('sender')
-        .populate('chat');
+        .populate("sender")
+        .populate("chat");
 
       // update the latest message with the sent message
-      const updateLatestMessage = await Chat.findByIdAndUpdate({ _id: chatId }, { latestMessage: updatedMessage });
+      const updateLatestMessage = await Chat.findByIdAndUpdate(
+        { _id: chatId },
+        { latestMessage: updatedMessage }
+      );
 
       return updatedMessage;
     },
@@ -157,10 +185,6 @@ const resolvers = {
       // static user ID - change to logged in user
       const loggedInUser = await User.findById({
         _id: userId,
-      });
-      const chat = await Chat.create({
-        chatName,
-        groupAdmin: loggedInUser,
       });
 
       return chat;
@@ -177,7 +201,7 @@ const resolvers = {
         { _id: chatId },
         // push the loggedInUser to the users array
         { $push: { users: loggedInUser } }
-      ).populate('users');
+      ).populate("users");
       return updatedChat;
     },
 
@@ -212,13 +236,13 @@ const resolvers = {
     loginUser: async (parent, { email, password }, context) => {
       const user = await User.findOne({ email });
       if (!user) {
-        throw new AuthenticationError('Email not found!');
+        throw new AuthenticationError("Email not found!");
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect password!');
+        throw new AuthenticationError("Incorrect password!");
       }
       const token = signToken(user);
 
@@ -228,13 +252,13 @@ const resolvers = {
     loginCompany: async (parent, { email, password }) => {
       const company = await Company.findOne({ email });
       if (!company) {
-        throw new AuthenticationError('Email not found!');
+        throw new AuthenticationError("Email not found!");
       }
 
       const correctPw = await company.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect password!');
+        throw new AuthenticationError("Incorrect password!");
       }
       const token = signToken(company);
 
@@ -244,13 +268,13 @@ const resolvers = {
     loginAdmin: async (parent, { email, password }) => {
       const admin = await Admin.findOne({ email });
       if (!admin) {
-        throw new AuthenticationError('Email not found!');
+        throw new AuthenticationError("Email not found!");
       }
 
       const correctPw = await admin.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect password!');
+        throw new AuthenticationError("Incorrect password!");
       }
       const token = signToken(admin);
 
@@ -261,7 +285,11 @@ const resolvers = {
     /////////COMPANY FUNCTIONS////////////
     //////////////////////////////////////
 
-    addTrip: async (parent, { tripName, tripDescription, startDate, endDate, countries, activities }, context) => {
+    addTrip: async (
+      parent,
+      { tripName, tripDescription, startDate, endDate, countries, activities },
+      context
+    ) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if current user isCompanyAdmin (maybe use context?)
 
@@ -272,6 +300,14 @@ const resolvers = {
         startDate,
         endDate,
         companyId: context.user._id,
+      });
+
+      // ===================== create a chat ========================
+
+      const chat = await Chat.create({
+        chatName: tripName + " " + "Chat",
+        groupAdmin: context.user._id,
+        tripId: trip._id,
       });
 
       const updatedTrip = await Trip.findByIdAndUpdate(
@@ -285,10 +321,13 @@ const resolvers = {
               }),
             },
           },
+          // create a chatId value set to the newly created chats ID
+          $set: { chatId: chat._id },
         },
-
         { new: true, runValidators: true }
       );
+
+      console.log(chat._id);
 
       const newUpdatedTrip = await Trip.findByIdAndUpdate(
         { _id: trip._id },
@@ -306,27 +345,39 @@ const resolvers = {
         { new: true, runValidators: true }
       );
 
-      const company = await Company.findByIdAndUpdate({ _id: context.user._id }, { $addToSet: { trips: trip._id } }, { new: true, runValidators: true });
+      const company = await Company.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { trips: trip._id } },
+        { new: true, runValidators: true }
+      );
       //////////RETURN VALUE///////////////
       // const returnCompany = Company.findOne({ _id: companyId });
       return company
         .populate({
-          path: 'trips',
-          model: 'Trip',
+          path: "trips",
+          model: "Trip",
           populate: {
-            path: 'countries',
-            model: 'Country',
+            path: "countries",
+            model: "Country",
           },
           populate: {
-            path: 'activities',
-            model: 'Activity',
+            path: "activities",
+            model: "Activity",
           },
         })
         .execPopulate();
     },
 
-    updateTrip: async (parent, { tripName, tripDescription, startDate, endDate, tripId }, context) => {
-      const trip = Trip.findByIdAndUpdate({ _id: tripId }, { tripName, tripDescription, startDate, endDate }, { new: true, runValidators: true });
+    updateTrip: async (
+      parent,
+      { tripName, tripDescription, startDate, endDate, tripId },
+      context
+    ) => {
+      const trip = Trip.findByIdAndUpdate(
+        { _id: tripId },
+        { tripName, tripDescription, startDate, endDate },
+        { new: true, runValidators: true }
+      );
 
       return trip;
     },
@@ -392,8 +443,8 @@ const resolvers = {
       // Returning the populated activityBadge
       return updatedActivityBadge
         .populate({
-          path: 'activities',
-          model: 'Activity',
+          path: "activities",
+          model: "Activity",
         })
         .execPopulate();
     },
@@ -427,8 +478,8 @@ const resolvers = {
       // Returning the populated CountryBadge
       return updatedCountryBadge
         .populate({
-          path: 'countries',
-          model: 'Country',
+          path: "countries",
+          model: "Country",
         })
         .execPopulate();
     },
@@ -451,7 +502,7 @@ const resolvers = {
 
       const updatedPost = await Post.findById({
         _id: post._id,
-      }).populate('postedBy');
+      }).populate("postedBy");
 
       // add to the users posts array
       const user = await User.findByIdAndUpdate(
@@ -462,7 +513,7 @@ const resolvers = {
           },
         },
         { new: true, runValidators: true }
-      ).populate('posts');
+      ).populate("posts");
 
       //////////RETURN VALUE///////////////
 
@@ -502,17 +553,21 @@ const resolvers = {
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
 
       //////////PROCESSING/////////////////
-      const user = await User.findByIdAndUpdate({ _id: context.user._id }, { $addToSet: { savedCountryBadges: badgeId } }, { new: true, runValidators: true });
+      const user = await User.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { savedCountryBadges: badgeId } },
+        { new: true, runValidators: true }
+      );
 
       //////////RETURN VALUE///////////////
       return (
         user
           .populate({
-            path: 'savedCountryBadges',
-            model: 'CountryBadge',
+            path: "savedCountryBadges",
+            model: "CountryBadge",
             populate: {
-              path: 'countries',
-              model: 'Country',
+              path: "countries",
+              model: "Country",
             },
           })
           // .populate({
@@ -534,48 +589,66 @@ const resolvers = {
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
 
       //////////PROCESSING/////////////////
-      const user = await User.findByIdAndUpdate({ _id: context.user._id }, { $addToSet: { savedActivityBadges: badgeId } }, { new: true, runValidators: true });
+      const user = await User.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { savedActivityBadges: badgeId } },
+        { new: true, runValidators: true }
+      );
 
       //////////RETURN VALUE///////////////
       return user
         .populate({
-          path: 'savedActivityBadges',
-          model: 'ActivityBadge',
+          path: "savedActivityBadges",
+          model: "ActivityBadge",
           populate: {
-            path: 'activities',
-            model: 'Activity',
+            path: "activities",
+            model: "Activity",
           },
         })
         .populate({
-          path: 'savedCountryBadges',
-          model: 'CountryBadge',
+          path: "savedCountryBadges",
+          model: "CountryBadge",
           populate: {
-            path: 'countries',
-            model: 'Country',
+            path: "countries",
+            model: "Country",
           },
         })
         .execPopulate();
     },
 
-    // ! Need to refactor to use context to get userId rather than passing it in in the args
     // Adds a trip to users upcomingTrips array
     userGoing: async (parent, { tripId }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
 
       //////////PROCESSING/////////////////
-      const user = await User.findByIdAndUpdate({ _id: context.user._id }, { $addToSet: { upcomingTrips: tripId } }, { new: true, runValidators: true });
+      const user = await User.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { upcomingTrips: tripId } },
+        { new: true, runValidators: true }
+      );
 
-      const trip = await Trip.findByIdAndUpdate({ _id: tripId }, { $addToSet: { travellers: context.user._id } }, { new: true, runValidators: true });
+      const trip = await Trip.findByIdAndUpdate(
+        { _id: tripId },
+        { $addToSet: { travellers: context.user._id } },
+        { new: true, runValidators: true }
+      );
+
+      // add user to group chat :-)
+      const updatedChat = await Chat.findByIdAndUpdate(
+        { _id: trip.chatId },
+        { $push: { users: user } }
+      );
+      console.log("trip", trip);
 
       //////////RETURN VALUE///////////////
       return user
         .populate({
-          path: 'upcomingTrips',
-          model: 'Trip',
+          path: "upcomingTrips",
+          model: "Trip",
           populate: {
-            path: 'countries',
-            model: 'Country',
+            path: "countries",
+            model: "Country",
           },
         })
         .execPopulate();
@@ -586,16 +659,24 @@ const resolvers = {
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
 
       //////////PROCESSING/////////////////
-      const userLoggedIn = await User.findByIdAndUpdate({ _id: context.user._id }, { $addToSet: { following: userId } }, { new: true, runValidators: true });
+      const userLoggedIn = await User.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { following: userId } },
+        { new: true, runValidators: true }
+      );
 
-      const user = await User.findByIdAndUpdate({ _id: userId }, { $addToSet: { followers: context.user._id } }, { new: true, runValidators: true });
+      const user = await User.findByIdAndUpdate(
+        { _id: userId },
+        { $addToSet: { followers: context.user._id } },
+        { new: true, runValidators: true }
+      );
       //////////RETURN VALUE///////////////
       return userLoggedIn
         .populate({
-          path: 'following',
-          model: 'User',
+          path: "following",
+          model: "User",
         })
-        .populate({ path: 'followers', model: 'User' })
+        .populate({ path: "followers", model: "User" })
         .execPopulate();
     },
 
@@ -604,11 +685,11 @@ const resolvers = {
 
       return user
         .populate({
-          path: 'upcomingTrips',
-          model: 'Trip',
+          path: "upcomingTrips",
+          model: "Trip",
           populate: {
-            path: 'countries',
-            model: 'Country',
+            path: "countries",
+            model: "Country",
           },
         })
 
