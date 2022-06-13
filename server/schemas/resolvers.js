@@ -39,7 +39,7 @@ const resolvers = {
       }
     },
 
-    getUser: async (parent, {}, context) => {
+    getUser: async (parent, { userId }, context) => {
       const user = User.findById({ _id: userId });
       return user
         .populate("following")
