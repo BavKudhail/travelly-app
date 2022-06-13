@@ -1,5 +1,6 @@
 import { React, useState, useRef } from 'react';
 import navList from './NavList';
+import loggedOutNavList from './LoggedOutNavList';
 import {
   BrowserRouter as Router,
   NavLink as RouterLink, // <-- import the NavLink component
@@ -96,7 +97,7 @@ const NavBar = () => {
             {/* this is the navigation */}
             <Flex flexDir={['row', 'row', 'column']} alignItems="flex-start" justifyContent="center">
               {/* nav items */}
-              {navList.map((navLink, index) => {
+              {(Auth.loggedIn() ? navList : loggedOutNavList).map((navLink, index) => {
                 return (
                   <Link
                     as={RouterLink}
@@ -105,14 +106,18 @@ const NavBar = () => {
                     width={['auto', null, null, null, '200px']}
                     key={navLink.route}
                     color="#000"
-                    _activeLink={{
-                      backgroundColor: '#0093e9',
-                      backgroundImage: 'linear-gradient(160deg, #5959ba 0%, #a19cdb 100%)',
-                      fontWeight: 'bold',
-                      color: 'white',
-                      borderRadius: '30px',
-                      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.1)',
-                    }}
+                    _activeLink={
+                      Auth.loggedIn()
+                        ? {
+                            backgroundColor: '#0093e9',
+                            backgroundImage: 'linear-gradient(160deg, #5959ba 0%, #a19cdb 100%)',
+                            fontWeight: 'bold',
+                            color: 'white',
+                            borderRadius: '30px',
+                            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.1)',
+                          }
+                        : {}
+                    }
                     className="sidebar-items"
                   >
                     {/* NavLink */}
