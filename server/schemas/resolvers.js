@@ -12,9 +12,17 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        const user = User.findOne({ _id: context.user._id }).select('-__v -password');
-
-        return user.populate('following').populate('followers').populate('posts').populate('savedCountryBadges').populate('savedActivityBadges').populate('upcomingTrips').populate('countries');
+        const user = User.findOne({ _id: context.user._id }).select(
+          "-__v -password"
+        );
+        return user
+          .populate("following")
+          .populate("followers")
+          .populate("posts")
+          .populate("savedCountryBadges")
+          .populate("savedActivityBadges")
+          .populate("upcomingTrips")
+          .populate("countries");
       }
     },
 
@@ -76,19 +84,19 @@ const resolvers = {
       return messages;
     },
     // get all group chats that the specific user is a part of
-    getGroupChats: async (parent, { userId }, context) => {
-      const loggedInUser = await User.findById({
-        _id: userId,
-      });
-      const chats = await Chat.find({
-        // find all chats that the logged in user is a part of
-        users: { $elemMatch: { $eq: loggedInUser } },
-      })
-        .populate('groupAdmin')
-        .populate('users')
-        .populate('latestMessage');
-      // how can I populate the users information?
-      return chats;
+    
+    getGroupChats: async (parent, args, context) => {
+      if (context.user) {
+        const chats = await Chat.find({
+          // find all chats that the logged in user is a part of
+          users: { $elemMatch: { $eq: context.user._id } },
+        })
+          .populate("groupAdmin")
+          .populate("users")
+          .populate("latestMessage");
+        console.log(context.user);
+        return chats;
+      }
     },
 
     //////////////////////////////////////
@@ -125,10 +133,10 @@ const resolvers = {
     //////////////////////////////////////
 
     // create new message
-    sendMessage: async (parent, { content, chatId, userId }, context) => {
+    sendMessage: async (parent, { content, chatId }, context) => {
       const newMessage = await Message.create({
         // the sender of the message is the currently logged in user
-        sender: userId,
+        sender: context.user._id,
         content,
         chat: chatId,
       });

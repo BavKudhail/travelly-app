@@ -31,8 +31,8 @@ export const GET_TRIP_DATA = gql`
 
 // get group chats
 export const GET_GROUP_CHATS = gql`
-  query getGroupChats($userId: ID!) {
-    getGroupChats(userId: $userId) {
+  query getGroupChats {
+    getGroupChats {
       _id
       chatName
       users {
@@ -151,17 +151,27 @@ export const GET_DASHBOARD = gql`
 `;
 
 // get messages
-export const GET_ALL_MESSAGES = gql`
+export const CHATBOX = gql`
   query getAllMessages($chatId: ID!) {
     getAllMessages(chatId: $chatId) {
       _id
       sender {
+        _id
         username
       }
       content
       chat {
         chatName
       }
+    }
+  }
+`;
+
+export const CONTEXT = gql`
+  query context {
+    me {
+      _id
+      username
     }
   }
 `;

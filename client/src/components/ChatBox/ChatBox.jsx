@@ -1,12 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ChatBox.css";
 import { FormControl, Input } from "@chakra-ui/react";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import io from "socket.io-client";
 import { ChatState } from "../../context/ChatProvider";
+import { motion } from "framer-motion";
+import {
+  Button,
+  Text,
+  Box,
+  VStack,
+  Spinner,
+  Image,
+  Heading,
+  Flex,
+  WrapItem,
+  Avatar,
+} from "@chakra-ui/react";
 
 // mutations / queries
-import { GET_ALL_MESSAGES } from "../../utils/queries";
+import { CHATBOX } from "../../utils/queries";
 import { SEND_MESSAGE } from "../../utils/mutations";
 
 // refactor endpoint for heroku
@@ -14,23 +27,32 @@ const ENDPOINT = "http://localhost:3000"; //"https://xxxxxxx.herokuapp.com";
 let socket;
 let selectedChatCompare;
 
-// static user for testing - this needs to come from the loggedin user
-const user = {
-  _id: "6299eaa2b3b3eb625a753dd0",
-  username: "Max Kanat-Alexander",
-  email: "mkanatalexander@techfriends.dev",
-};
-
 const ChatBox = () => {
   // mutations/queries
   const [sendMessage] = useMutation(SEND_MESSAGE);
-  const [getAllMessages] = useLazyQuery(GET_ALL_MESSAGES);
+  const [getAllMessages] = useLazyQuery(CHATBOX);
   const [socketConnected, setSocketConnected] = useState(false);
 
   //  defining states
-  const { selectedChat, setSelectedChat } = ChatState();
+  const {
+    selectedChat,
+    setSelectedChat,
+    loggedInUser,
+    notifications,
+    setNotifications,
+  } = ChatState();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   // get all message data
   const getAllMessageData = async () => {
@@ -43,7 +65,6 @@ const ChatBox = () => {
       });
       // update message state
       setMessages(data.getAllMessages);
-      // socket.io - (room = selectedChatID)
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
       console.log(error);
@@ -59,10 +80,7 @@ const ChatBox = () => {
         // send message network request
         const { data } = await sendMessage({
           variables: {
-            // make below dynamic
             chatId: selectedChat._id,
-            // TODO - this must become dynamic
-            userId: user._id,
             content: newMessage,
           },
         });
@@ -79,8 +97,10 @@ const ChatBox = () => {
   };
 
   useEffect(() => {
+    // connect to endpoint
     socket = io(ENDPOINT);
-    socket.emit("setup", user);
+    // send logged in user data
+    socket.emit("setup", loggedInUser);
     socket.on("connection", () => setSocketConnected(true));
   }, []);
 
@@ -102,6 +122,7 @@ const ChatBox = () => {
       } else {
         // TODO - THE PROBLEM IS HERE
         setMessages([...messages, newMessageRecieved]);
+        // scroll to bottom of chat page
       }
     });
   });
@@ -114,21 +135,93 @@ const ChatBox = () => {
 
   return (
     <>
-      <div>ChatBox</div>
-      <div>Messages:</div>
-      {/* SCROLLABLE CHAT - this can be another component */}
-      <div>
-        {messages.map((message, index) => (
-          <div key={message._id} className="message-box">
-            <div>{message.content}</div>
-            <div>{message.sender.username}</div>
-          </div>
-        ))}
-      </div>
-
-      <FormControl onKeyDown={sendMessageHandler}>
-        <Input value={newMessage} onChange={typingHandler} />
-      </FormControl>
+      <Flex
+        width={"100%"}
+        flexDir="column"
+        flexDirection={"column"}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Heading textAlign={"center"}>{selectedChat.chatName}</Heading>
+        <WrapItem my="10px">
+          <Avatar
+            as={motion.div}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 10 }}
+            border={"1px solid white"}
+            size="lg"
+            name="Dan Abrahmov"
+            src="https://bit.ly/dan-abramov"
+          />
+        </WrapItem>
+        <Flex justifyContent={"center"} alignItems="center">
+          <Text color={"gray.500"}>Group Admin:</Text>
+          <Text mx="10px" fontWeight={"600"}>
+            {selectedChat.groupAdmin.username}
+          </Text>
+        </Flex>
+      </Flex>
+      <Box
+        height="850px"
+        overflowY={"scroll"}
+        alignItems="center"
+        flexDir="column"
+        padding={"70px"}
+        // bg="white"
+        w="100"
+        borderRadius="30px"
+        borderWidth="1px"
+        className="glassmorphic"
+      >
+        <Box borderRadius="30px">
+          {messages.map((message, index) => {
+            return message.sender._id == loggedInUser._id ? (
+              <Flex flexDir={"column"} alignItems={"flex-end"}>
+                <Flex
+                  flexDir={"column"}
+                  width={["100%", "100%", "70%", "70%", "50%"]}
+                  key={message._id}
+                  my="20px"
+                  className="other-chat-bubble"
+                >
+                  <Text mb="5px" fontWeight={"600"} fontSize="xl">
+                    {message.content}
+                  </Text>
+                  <Text fontSize="small" color="white">
+                    {message.sender.username}
+                  </Text>
+                </Flex>
+              </Flex>
+            ) : (
+              <Flex flexDir={"column"} alignItems={"flex-start"}>
+                <Flex
+                  flexDir={"column"}
+                  width={["100%", "100%", "70%", "70%", "50%"]}
+                  key={message._id}
+                  my="20px"
+                  className="chat-bubble"
+                >
+                  <Text mb="5px" fontWeight={"600"} fontSize="xl">
+                    {message.content}
+                  </Text>
+                  <Text fontSize="small" color="grey">
+                    {message.sender.username}
+                  </Text>
+                </Flex>
+              </Flex>
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </Box>
+        <FormControl onKeyDown={sendMessageHandler}>
+          <Input
+            placeholder="insert your message here"
+            backgroundColor="#fff"
+            value={newMessage}
+            onChange={typingHandler}
+          />
+        </FormControl>
+      </Box>
     </>
   );
 };

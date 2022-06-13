@@ -134,7 +134,7 @@ const typeDefs = gql`
     getFollowingPosts: User
     getUserBucketList: User
     # return an array of Chats
-    getGroupChats(userId: ID!): [Chat]
+    getGroupChats: [Chat]
     getAllMessages(chatId: ID!): [Message]
     getAllCountryBadges: [CountryBadge]
     getAllActivityBadges: [ActivityBadge]
@@ -146,7 +146,7 @@ const typeDefs = gql`
 
   type Mutation {
     # messages
-    sendMessage(content: String!, chatId: ID!, userId: ID!): Message
+    sendMessage(content: String!, chatId: ID!): Message
     # chat
     createGroupChat(chatName: String!, userId: ID!): Chat
     # add user

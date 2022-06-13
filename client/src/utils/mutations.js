@@ -31,8 +31,8 @@ export const LOGIN_USER = gql`
 
 // send message - TODO - refactor userId to use context
 export const SEND_MESSAGE = gql`
-  mutation ($content: String!, $chatId: ID!, $userId: ID!) {
-    sendMessage(content: $content, chatId: $chatId, userId: $userId) {
+  mutation ($content: String!, $chatId: ID!) {
+    sendMessage(content: $content, chatId: $chatId) {
       _id
       sender {
         username
