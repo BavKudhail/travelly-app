@@ -114,6 +114,11 @@ export const GET_DASHBOARD = gql`
         badgeImage
         badgeName
       }
+      earnedActivityBadges {
+        _id
+        badgeImage
+        badgeName
+      }
       unsavedActivityBadges {
         _id
       }

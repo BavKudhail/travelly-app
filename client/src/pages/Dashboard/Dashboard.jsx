@@ -60,24 +60,37 @@ const Dashboard = () => {
   const allCountryBadges = data?.getAllCountryBadges
   const allActivityBadges = data?.getAllActivityBadges
   const earnedCountryBadges = data?.me.earnedCountryBadges
+  const earnedActivityBadges = data?.me.earnedActivityBadges
 
-  const savedBadges = data?.me.savedCountryBadges
+  const savedCountryBadges = data?.me.savedCountryBadges
+  const savedActivityBadges = data?.me.savedActivityBadges
 
 // 
 if(!loading){
   const allCountryBadgeIds = allCountryBadges.map((badge)=>badge._id)
+  const allActivityBadgeIds = allActivityBadges.map((badge)=>badge._id)
 
-  const earnedBadgeIds = [...earnedCountryBadges].map((badge)=>badge._id)
+  const earnedCountryBadgeIds = [...earnedCountryBadges].map((badge)=>badge._id)
+  const earnedActivityBadgeIds = [...earnedActivityBadges].map((badge)=>badge._id)
 
-  const savedBadgeIds = savedBadges.map((badge)=>badge._id)
+  const savedCountryBadgeIds = savedCountryBadges.map((badge)=>badge._id)
+  const savedActivityBadgeIds = savedActivityBadges.map((badge)=>badge._id)
 
   const unsavedCountryBadgeIds = allCountryBadgeIds.filter((badge)=>{
-    return !earnedBadgeIds.includes(badge) && !savedBadgeIds.includes(badge)
+    return !earnedCountryBadgeIds.includes(badge) && !savedCountryBadgeIds.includes(badge)
+  })
+
+  const unsavedActivityBadgeIds = allActivityBadgeIds.filter((badge)=>{
+    return !earnedActivityBadgeIds.includes(badge) && !savedActivityBadgeIds.includes(badge)
   })
 
 
   const unsavedCountryBadges = unsavedCountryBadgeIds.map((id)=>{
     return allCountryBadges.find((badge)=> badge._id === id )
+  })
+
+  const unsavedActivityBadges = unsavedActivityBadgeIds.map((id)=>{
+    return allActivityBadges.find((badge)=> badge._id === id )
   })
   console.log("unsavedCountryBadges",unsavedCountryBadges)
 }
