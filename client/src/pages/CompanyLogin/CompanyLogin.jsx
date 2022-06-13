@@ -21,8 +21,8 @@ const CompanyLogin = () => {
           p="20"
         >
           <TabList>
-            <Tab>One</Tab>
-            <Tab>Two</Tab>
+            <Tab>Login</Tab>
+            <Tab>SignUp</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
