@@ -5,7 +5,7 @@ import TripCard from '../../components/Trip/TripCard';
 import landingMountain from '../../assets/landing-mountain.png';
 import './Home.css';
 import MobileModal from '../../components/MobileModal';
-import { GET_HOME } from '../../utils/queries';
+import { GET_HOME, GET_ME } from '../../utils/queries';
 
 // date picker
 import DatePicker from 'react-datepicker';
@@ -37,6 +37,8 @@ import { FiBell } from 'react-icons/fi';
 // images
 import logo from '../../assets/logo_icon.png';
 
+import Auth from '../../utils/auth';
+
 const Home = () => {
   // queries and mutations
   const [loggedIn, setLoggedIn] = useState(false);
@@ -44,8 +46,10 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [getLatestTrips] = useLazyQuery(GET_HOME);
+  const { loading, data, error } = useQuery(GET_ME);
 
   const [bucketList, setBucketList] = useState([]);
+  const userData = data?.me || [];
 
   const randomDates = ['10/06/2022', '10/01/2022', '10/12/2022', '12/12/2023', '1/1/2023', '10/06/2024', '10/01/2024', '10/12/2024'];
 
@@ -106,13 +110,17 @@ const Home = () => {
         {/* COLUMN 2 - MAIN SECTION */}
         <Flex justifyContent="center" flexDir="column">
           <Box mt="10" textAlign={'center'}>
-            <Heading fontWeight="normal" mb={4} letterSpacing="tight">
-              Welcome back,
-              <Text fontWeight="bold" display="inline-flex">
-                &#160; Johnny
-              </Text>
-              <WavingHand />
-            </Heading>
+            {Auth.loggedIn() ? (
+              <Heading fontWeight="normal" mb={4} letterSpacing="tight">
+                Welcome back,
+                <Text fontWeight="bold" display="inline-flex">
+                  &#160; {userData.username}
+                </Text>
+                <WavingHand />
+              </Heading>
+            ) : (
+              <></>
+            )}
           </Box>
 
           <Box my="10" textAlign="center" alignSelf={'center'}>
