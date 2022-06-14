@@ -57,10 +57,10 @@ import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import DashboardBadges from "../../components/Dashboard/DashboardBadges";
 import PostCard from "../../components/PostCard";
 import CountryBadges from "../../components/CountryBadges/CountryBadges";
+import SocialHeader from "../../components/Dashboard/SocialHeader";
 
 const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const staticUserId = "6299eaa2b3b3eb625a753dd0";
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD);
   const userData = data?.me || [];
@@ -125,89 +125,20 @@ const Dashboard = () => {
           className="section_main"
         >
           {/* COLUMN 2 - MAIN SECTION */}
-          <Flex justifyContent="center" flexDir="column">
-            {/* user avatar */}
-            <Flex justify={"center"}>
-              <Avatar
-                size={"2xl"}
-                src={userData.profilePicture}
-                alt={"Author"}
-                css={{
-                  border: "2px solid white",
-                }}
-              />
-            </Flex>
-            {/* social header */}
-            <Box p={6}>
-              <Stack spacing={0} align={"center"} mb={5}>
-                {/* Change profile pic  */}
-                <Button mb="15px" onClick={onOpen}>
-                  <MdOutlineAddPhotoAlternate />
-                </Button>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalCloseButton />
-                    <ModalBody>
-                      <ProfileImageForm userId={userData._id} />
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button colorScheme="blue" mr={3} onClick={onClose}>
-                        Close
-                      </Button>
-                      <Button variant="ghost">Secondary Action</Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-                <Heading fontSize={"2xl"} fontFamily={"body"}>
-                  {userData.username}
-                </Heading>
-                <Text color={"gray.500"}>{userData.bio}</Text>
-              </Stack>
-              {/* socials count */}
-              <Stack direction={"row"} justify={"center"} spacing={6}>
-                <Stack spacing={0} align={"center"}>
-                  <Text fontWeight={600}>{userData.followingCount}</Text>
-                  <Text fontSize={"sm"} color={"gray.500"}>
-                    Following
-                  </Text>
-                </Stack>
-                <Stack spacing={0} align={"center"}>
-                  <Text fontWeight={600}>{userData.followerCount}</Text>
-                  <Text fontSize={"sm"} color={"gray.500"}>
-                    Followers
-                  </Text>
-                </Stack>
-                <Stack spacing={0} align={"center"}>
-                  <Text fontWeight={600}>
-                    {userData.visitedCountries.length}
-                  </Text>
-                  <Text fontSize={"sm"} color={"gray.500"}>
-                    Countries Visited
-                  </Text>
-                </Stack>
-              </Stack>
-            </Box>
-            {/* badges */}
-            <Box alignSelf="center">
-              <Text mb="10px" fontWeight={600}>
-                Earned badges
-              </Text>
-              <Stack direction={"row"}>
-                {userData.earnedCountryBadges.map((badge) => {
-                  return (
-                    <Tooltip label={badge.badgeName} aria-label="A tooltip">
-                      <Box w="60px">
-                        <img src={badge.badgeImage} />
-                      </Box>
-                    </Tooltip>
-                  );
-                })}
-              </Stack>
-              {/*  */}
-            </Box>
+          <Flex 
+          justifyContent="center" 
+          flexDir="column">
+            <SocialHeader
+              profilePicture={userData.profilePicture}
+              username={userData.username}
+              bio={userData.bio}
+              followerCount={userData.followerCount}
+              followingCount={userData.followingCount}
+              visitedCountries={userData.visitedCountries}
+              earnedCountryBadges={userData.earnedCountryBadges}
+              userId={userData._id}
+            />
             <Box>
-              {/*  */}
               <Flex mt="10" justifyContent={"center"}>
                 <Tabs variant="soft-rounded" colorScheme="purple">
                   <TabList>
@@ -232,7 +163,6 @@ const Dashboard = () => {
                       </Box>
                     </TabPanel>
                     <TabPanel>
-                      {/* MY POSTS */}
                       <Box>
                         {userData.posts
                           .slice(0)
