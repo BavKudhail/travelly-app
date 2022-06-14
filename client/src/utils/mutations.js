@@ -184,4 +184,10 @@ export const ADD_TRIP = gql`
   }
 `;
 
-// What is the difference between named vs default export??
+export const SAVE_COUNTRY_BADGE = gql`
+  mutation saveCountryBadge($badgeId: ID!) {
+    saveCountryBadge(badgeId: $badgeId) {
+      _id
+    }
+  }
+`;

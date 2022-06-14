@@ -1,5 +1,10 @@
 import React from "react";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import { motion } from "framer-motion";
+
+// mutations/queries
+import { SAVE_COUNTRY_BADGE } from "../../utils/mutations";
+
 import {
   Flex,
   Image,
@@ -16,9 +21,24 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-export default function CountryBadges({ image, badgeTitle, countries }) {
+export default function CountryBadges({
+  image,
+  badgeTitle,
+  countries,
+  badgeId,
+}) {
   // modal logic
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [saveCountryBadge] = useMutation(SAVE_COUNTRY_BADGE);
+
+  const saveCountryBadgeFunc = (event) => {
+    event.preventDefault();
+    const { data } = saveCountryBadge({
+      variables: {
+        badgeId: badgeId,
+      },
+    });
+  };
 
   return (
     <>
@@ -61,7 +81,9 @@ export default function CountryBadges({ image, badgeTitle, countries }) {
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant="ghost">Save Badge</Button>
+            <Button onClick={saveCountryBadgeFunc} variant="">
+              Save Badge
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

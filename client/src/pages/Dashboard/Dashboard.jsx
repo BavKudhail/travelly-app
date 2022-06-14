@@ -292,14 +292,12 @@ const Dashboard = () => {
                     <TbPokeball />
                   </div>
                   {unsavedCountryBadges.map((badge) => {
-                    {
-                      console.log("dashboard", badge.countries);
-                    }
                     return (
                       <CountryBadges
                         image={badge.badgeImage}
                         badgeTitle={badge.badgeName}
                         countries={badge.countries}
+                        badgeId={badge._id}
                       />
                     );
                   })}
