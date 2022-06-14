@@ -55,6 +55,7 @@ function SocialHeader({
   visitedCountries,
   earnedCountryBadges,
   userId,
+  myFollowing
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const loggedInUserId = Auth.getProfile().data._id;
@@ -67,6 +68,8 @@ function SocialHeader({
       },
     });
   };
+
+  const followingIDs = myFollowing.map((follow)=>follow._id)
 
   return (
     <>
@@ -133,11 +136,12 @@ function SocialHeader({
         </Stack>
       </Box>
 
-      {loggedInUserId !== userId && (
+      {!followingIDs.includes(userId)&& loggedInUserId !== userId ?
         <Flex mb="15px" w="100%" justifyContent={"center"}>
           <Button onClick={followUserFunc}>Follow User</Button>
-        </Flex>
-      )}
+        </Flex> : <div></div>
+      }
+
 
       {/* badges */}
       <Box alignSelf="center">
