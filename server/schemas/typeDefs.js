@@ -95,6 +95,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     bio: String
+    profilePicture: String
     posts: [Post]
     savedCountryBadges: [CountryBadge]
     savedActivityBadges: [ActivityBadge]

@@ -74,9 +74,11 @@ export const GET_DASHBOARD = gql`
     me {
       _id
       username
+      profilePicture
       savedCountryBadges {
         _id
         badgeName
+        badgeImage
       }
       savedActivityBadges {
         _id
@@ -102,6 +104,7 @@ export const GET_DASHBOARD = gql`
       futureTrips {
         _id
         tripName
+        imageUrl
         tripDescription
         startDate
         endDate
@@ -166,9 +169,12 @@ export const GET_USER = gql`
     getUser(userId: $userId) {
       _id
       username
+      bio
+      profilePicture
       savedCountryBadges {
         _id
         badgeName
+        badgeImage
       }
       savedActivityBadges {
         _id
@@ -189,6 +195,9 @@ export const GET_USER = gql`
       pastTrips {
         _id
         tripName
+        imageUrl
+        tripDescription
+        startDate
         endDate
       }
       earnedCountryBadges {

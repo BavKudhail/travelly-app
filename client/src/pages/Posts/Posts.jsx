@@ -39,11 +39,6 @@ import PostCard from "../../components/PostCard";
 import plusIcon from "../../assets/plus.png";
 import { FiBell } from "react-icons/fi";
 
-// const user = {
-//   _id: "6299eaa2b3b3eb625a753dd0",
-//   username: "Max Kanat-Alexander",
-//   email: "mkanatalexander@techfriends.dev",
-// };
 
 const Posts = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
