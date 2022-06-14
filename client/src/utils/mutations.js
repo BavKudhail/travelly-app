@@ -191,3 +191,11 @@ export const SAVE_COUNTRY_BADGE = gql`
     }
   }
 `;
+
+export const FOLLOW_USER = gql`
+  mutation followUser($userId: ID!) {
+    followUser(userId: $userId) {
+      _id
+    }
+  }
+`;

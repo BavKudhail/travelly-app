@@ -42,6 +42,10 @@ import {
 } from "@chakra-ui/react";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 
+// mutations
+import { useMutation } from "@apollo/react-hooks";
+import { FOLLOW_USER } from "../../utils/mutations";
+
 function SocialHeader({
   profilePicture,
   username,
@@ -53,10 +57,16 @@ function SocialHeader({
   userId,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const loggedInUserId = Auth.getProfile().data._id;
+  const [followUser] = useMutation(FOLLOW_USER);
 
-  console.log(loggedInUserId);
+  const followUserFunc = async () => {
+    const { data } = await followUser({
+      variables: {
+        userId: userId,
+      },
+    });
+  };
 
   return (
     <>
@@ -122,11 +132,13 @@ function SocialHeader({
           </Stack>
         </Stack>
       </Box>
+
       {loggedInUserId !== userId && (
         <Flex mb="15px" w="100%" justifyContent={"center"}>
-          <Button>Follow User</Button>
+          <Button onClick={followUserFunc}>Follow User</Button>
         </Flex>
       )}
+
       {/* badges */}
       <Box alignSelf="center">
         <Text mb="10px" fontWeight={600}>
