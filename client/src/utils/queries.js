@@ -74,6 +74,7 @@ export const GET_DASHBOARD = gql`
     me {
       _id
       username
+      profilePicture
       savedCountryBadges {
         _id
         badgeName
@@ -103,6 +104,7 @@ export const GET_DASHBOARD = gql`
       futureTrips {
         _id
         tripName
+        imageUrl
         tripDescription
         startDate
         endDate

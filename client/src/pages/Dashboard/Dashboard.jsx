@@ -52,6 +52,7 @@ import {
 import { motion } from "framer-motion";
 
 import { FiBell } from "react-icons/fi";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import DashboardBadges from "../../components/Dashboard/DashboardBadges";
 import PostCard from "../../components/PostCard";
 
@@ -128,9 +129,7 @@ const Dashboard = () => {
             <Flex justify={"center"}>
               <Avatar
                 size={"2xl"}
-                src={
-                  "https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbc1dd99666153.5ef7dbf39ecee.jpg"
-                }
+                src={userData.profilePicture}
                 alt={"Author"}
                 css={{
                   border: "2px solid white",
@@ -141,7 +140,9 @@ const Dashboard = () => {
             <Box p={6}>
               <Stack spacing={0} align={"center"} mb={5}>
                 {/* Change profile pic  */}
-                <Button onClick={onOpen}>🖼️ + </Button>
+                <Button mb="15px" onClick={onOpen}>
+                  <MdOutlineAddPhotoAlternate />
+                </Button>
                 <Modal isOpen={isOpen} onClose={onClose}>
                   <ModalOverlay />
                   <ModalContent>
@@ -188,6 +189,9 @@ const Dashboard = () => {
             </Box>
             {/* badges */}
             <Box alignSelf="center">
+              <Text mb="10px" fontWeight={600}>
+                Earned badges
+              </Text>
               <Stack direction={"row"}>
                 {userData.earnedCountryBadges.map((badge) => {
                   return (
@@ -201,7 +205,7 @@ const Dashboard = () => {
             </Box>
             <Box>
               {/*  */}
-              <Box mt="10">
+              <Flex mt="10" justifyContent={"center"}>
                 <Tabs variant="soft-rounded" colorScheme="purple">
                   <TabList>
                     <Tab>Upcoming Trips</Tab>
@@ -214,6 +218,7 @@ const Dashboard = () => {
                         {userData.futureTrips.map((trip) => {
                           return (
                             <UpcomingTrips
+                              image={trip.imageUrl}
                               tripName={trip.tripName}
                               startDate={trip.startDate}
                               endDate={trip.endDate}
@@ -242,7 +247,7 @@ const Dashboard = () => {
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
-              </Box>
+              </Flex>
             </Box>
           </Flex>
         </Flex>
@@ -273,11 +278,13 @@ const Dashboard = () => {
             <Tabs variant="soft-rounded" colorScheme="purple">
               <TabList>
                 <Tab>Level Up</Tab>
-                <Tab>My Collection</Tab>
+                <Tab>Targets</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <Text>Gotta catch em all</Text>
+                  <Text>
+                    Here are all of the badges remaining for you to earn!
+                  </Text>
                   <div>
                     <TbPokeball />
                   </div>
@@ -304,7 +311,10 @@ const Dashboard = () => {
                   })}
                 </TabPanel>
                 <TabPanel>
-                  <Text>Gotta catch em all</Text>
+                  <Text>
+                    Here are the badges you have saved. Go and get those
+                    targets!
+                  </Text>
                   <div>
                     <TbPokeball />
                   </div>
