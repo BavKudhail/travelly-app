@@ -58,9 +58,12 @@ function UserProfile() {
       userId: id,
     },
   });
-  console.log(data);
-  console.log("following", data.me.following);
+ 
   const userData = data?.getUser || [];
+  const me = data?.me || []
+  const myFollowing = me.following
+  console.log("myFollowing", myFollowing)
+
   console.log(userData);
 
   if (!loading) {
@@ -86,6 +89,7 @@ function UserProfile() {
               visitedCountries={userData.visitedCountries}
               earnedCountryBadges={userData.earnedCountryBadges}
               userId={userData._id}
+              myFollowing={myFollowing}
             />
             <Tabs variant="soft-rounded" colorScheme="purple">
               <TabList>

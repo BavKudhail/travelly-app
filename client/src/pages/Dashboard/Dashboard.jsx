@@ -64,6 +64,8 @@ const Dashboard = () => {
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD);
   const userData = data?.me || [];
+  
+  const myFollowing = userData.following
   const allCountryBadges = data?.getAllCountryBadges;
   const allActivityBadges = data?.getAllActivityBadges;
   const earnedCountryBadges = data?.me.earnedCountryBadges;
@@ -137,6 +139,7 @@ const Dashboard = () => {
               visitedCountries={userData.visitedCountries}
               earnedCountryBadges={userData.earnedCountryBadges}
               userId={userData._id}
+              myFollowing={myFollowing}
             />
             <Box>
               <Flex mt="10" justifyContent={"center"}>
