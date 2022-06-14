@@ -47,6 +47,7 @@ import {
   ModalHeader,
   ModalFooter,
   Spinner,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import { motion } from "framer-motion";
@@ -55,6 +56,7 @@ import { FiBell } from "react-icons/fi";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import DashboardBadges from "../../components/Dashboard/DashboardBadges";
 import PostCard from "../../components/PostCard";
+import CountryBadges from "../../components/CountryBadges/CountryBadges";
 
 const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -108,7 +110,6 @@ const Dashboard = () => {
       return allActivityBadges.find((badge) => badge._id === id);
     });
 
-    console.log("unsavedCountryBadges", unsavedCountryBadges);
     console.log(userData);
     console.log(userData.username);
 
@@ -195,9 +196,11 @@ const Dashboard = () => {
               <Stack direction={"row"}>
                 {userData.earnedCountryBadges.map((badge) => {
                   return (
-                    <Box w="60px">
-                      <img src={badge.badgeImage} />
-                    </Box>
+                    <Tooltip label={badge.badgeName} aria-label="A tooltip">
+                      <Box w="60px">
+                        <img src={badge.badgeImage} />
+                      </Box>
+                    </Tooltip>
                   );
                 })}
               </Stack>
@@ -289,24 +292,15 @@ const Dashboard = () => {
                     <TbPokeball />
                   </div>
                   {unsavedCountryBadges.map((badge) => {
-                    console.log("unsaved country badges", unsavedCountryBadges);
+                    {
+                      console.log("dashboard", badge.countries);
+                    }
                     return (
-                      <Flex
-                        as={motion.div}
-                        h="200px"
-                        w="200px"
-                        my="20px"
-                        flexDirection={"column"}
-                        justifyContent={"center"}
-                        animate={{ x: [0, 100, 0] }}
-                        whileHover={{
-                          scale: 1.2,
-                          transition: { duration: 1 },
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Image src={badge.badgeImage} />
-                      </Flex>
+                      <CountryBadges
+                        image={badge.badgeImage}
+                        badgeTitle={badge.badgeName}
+                        countries={badge.countries}
+                      />
                     );
                   })}
                 </TabPanel>
@@ -319,25 +313,7 @@ const Dashboard = () => {
                     <TbPokeball />
                   </div>
                   {savedCountryBadges.map((badge) => {
-                    console.log("saved country badges", savedCountryBadges);
-                    return (
-                      <Flex
-                        as={motion.div}
-                        h="200px"
-                        w="200px"
-                        my="20px"
-                        flexDirection={"column"}
-                        justifyContent={"center"}
-                        animate={{ x: [0, 100, 0] }}
-                        whileHover={{
-                          scale: 1.2,
-                          transition: { duration: 1 },
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Image src={badge.badgeImage} />
-                      </Flex>
-                    );
+                    return <CountryBadges image={badge.badgeImage} />;
                   })}
                 </TabPanel>
               </TabPanels>
