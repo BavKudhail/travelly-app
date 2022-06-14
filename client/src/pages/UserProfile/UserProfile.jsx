@@ -1,7 +1,7 @@
-import React from "react";
-import { useMutation, useQuery } from "@apollo/react-hooks";
-import { Link, useParams } from "react-router-dom";
-import SocialHeader from "../../components/Dashboard/SocialHeader";
+import React from 'react';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { Link, useParams } from 'react-router-dom';
+import SocialHeader from '../../components/Dashboard/SocialHeader';
 import {
   Image,
   Flex,
@@ -38,15 +38,15 @@ import {
   ModalFooter,
   Spinner,
   Tooltip,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 // components
-import PostCard from "../../components/PostCard";
-import TripCard from "../../components/Dashboard/UpcomingTrips";
-import CountryBadges from "../../components/CountryBadges/CountryBadges";
+import PostCard from '../../components/PostCard';
+import TripCard from '../../components/Dashboard/UpcomingTrips';
+import CountryBadges from '../../components/CountryBadges/CountryBadges';
 
 // mutations/queries
-import { GET_USER } from "../../utils/queries";
+import { GET_USER } from '../../utils/queries';
 
 function UserProfile() {
   // get id from params
@@ -68,7 +68,7 @@ function UserProfile() {
         {/* main */}
         <Flex
           //   gain extra 5% from the first col shrinking into just icons
-          w={["100%", "100%", "60%", "60%", "55%"]}
+          w={['100%', '100%', '60%', '60%', '55%']}
           p="3%"
           flexDir="column"
           overflow="auto"
@@ -93,20 +93,14 @@ function UserProfile() {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  {/* upcoming trips */}
-                  <Box my="10">
-                    {userData.pastTrips.map((trip) => {
-                      return (
-                        <TripCard
-                          image={trip.imageUrl}
-                          tripName={trip.tripName}
-                          startDate={trip.startDate}
-                          endDate={trip.endDate}
-                          tripDescription={trip.tripDescription}
-                        />
-                      );
-                    })}
-                  </Box>
+                  {/* past trips */}
+                  <Flex justifyContent={'center'}>
+                    <Box my="10">
+                      {userData.pastTrips.map((trip) => {
+                        return <TripCard image={trip.imageUrl} tripName={trip.tripName} startDate={trip.startDate} endDate={trip.endDate} tripDescription={trip.tripDescription} />;
+                      })}
+                    </Box>
+                  </Flex>
                 </TabPanel>
                 <TabPanel>
                   <Box>
@@ -114,13 +108,7 @@ function UserProfile() {
                       .slice(0)
                       .reverse()
                       .map((post) => {
-                        return (
-                          <PostCard
-                            postText={post.postText}
-                            postTitle={post.postTitle}
-                            date={post.createdAt}
-                          />
-                        );
+                        return <PostCard postText={post.postText} postTitle={post.postTitle} date={post.createdAt} />;
                       })}
                   </Box>
                 </TabPanel>
@@ -130,23 +118,18 @@ function UserProfile() {
         </Flex>
         {/* right */}
         <Flex
-          display={["none", "none", "flex"]}
+          display={['none', 'none', 'flex']}
           //   responsive breakpooints
-          w={["100%", "100%", "25%", "30%"]}
+          w={['100%', '100%', '25%', '30%']}
           // bgColor="#F5F5F5"
           p="3%"
           flexDir="column"
           overflow="auto"
-          minW={[null, null, "300px", "300px", "400px"]}
+          minW={[null, null, '300px', '300px', '400px']}
           justifyContent="space-between"
           className="right_section"
         >
-          <Flex
-            flexDirection={"column"}
-            w="100%"
-            alignContent={"center"}
-            alignItems="center"
-          >
+          <Flex flexDirection={'column'} w="100%" alignContent={'center'} alignItems="center">
             <Heading my="30px">{userData.username}'s Targets</Heading>
             <Box>
               {userData.savedCountryBadges.map((badge) => {
