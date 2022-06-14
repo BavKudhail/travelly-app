@@ -218,6 +218,11 @@ export const GET_USER = gql`
         createdAt
       }
     }
+    me {
+      following {
+        _id
+      }
+    }
   }
 `;
 

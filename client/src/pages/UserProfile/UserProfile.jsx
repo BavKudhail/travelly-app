@@ -59,6 +59,7 @@ function UserProfile() {
     },
   });
   console.log(data);
+  console.log("following", data.me.following);
   const userData = data?.getUser || [];
   console.log(userData);
 
