@@ -536,6 +536,24 @@ const resolvers = {
       );
     },
 
+    // REmoves a country badge to users savedCountryBadges
+    removeCountryBadge: async (parent, { badgeId }, context) => {
+      //////////PROCESSING/////////////////
+      const user = await User.findByIdAndUpdate({ _id: context.user._id }, { $pull: { savedCountryBadges: badgeId } }, { new: true, runValidators: true });
+
+      //////////RETURN VALUE///////////////
+      return user
+        .populate({
+          path: 'savedCountryBadges',
+          model: 'CountryBadge',
+          populate: {
+            path: 'countries',
+            model: 'Country',
+          },
+        })
+        .execPopulate();
+    },
+
     // ! Need to refactor to use context to get userId rather than passing it in in the args
     // Adds an activity badge to users savedActivityBadges
     saveActivityBadge: async (parent, { badgeId }, context) => {
