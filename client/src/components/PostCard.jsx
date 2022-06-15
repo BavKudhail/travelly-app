@@ -1,13 +1,18 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
-
+// import context
+import { ChatState } from "../context/ChatProvider";
 import { Box, Center, Heading, Text, Stack, Avatar, Image, useColorModeValue, Button } from '@chakra-ui/react';
 
 import { DELETE_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
 
+
+
 const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId, profilePicture }) => {
   const [deletePost, { error }] = useMutation(DELETE_POST);
+
+  const { upcomingTrips, setUpcomingTrips, myPosts, setMyPosts } = ChatState();
 
   const isUserPostCreator = () => {
     if (Auth.getProfile().data._id === userId) {
@@ -23,6 +28,10 @@ const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId,
     const { data } = await deletePost({
       variables: { postId },
     });
+
+    setMyPosts(myPosts.filter((post)=>{
+      return post._id !== postId
+    }))
   };
 
   return (

@@ -65,6 +65,7 @@ import SocialHeader from "../../components/Dashboard/SocialHeader";
 const Dashboard = () => {
   // state
   const { upcomingTrips, setUpcomingTrips, myPosts } = ChatState();
+  console.log("myPosts",myPosts)
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD);
@@ -186,6 +187,7 @@ const Dashboard = () => {
                           .slice(0)
                           .reverse()
                           .map((post) => {
+                            console.log("postId",post._id)
                             return (
                               <PostCard
                                 postText={post.postText}

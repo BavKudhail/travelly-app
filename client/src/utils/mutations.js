@@ -52,6 +52,7 @@ export const SEND_MESSAGE = gql`
 export const ADD_POST = gql`
   mutation ($postText: String!, $postTitle: String) {
     addPost(postText: $postText, postTitle: $postTitle) {
+      _id
       postTitle
       postedBy {
         username

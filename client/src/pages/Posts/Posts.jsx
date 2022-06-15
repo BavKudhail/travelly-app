@@ -53,7 +53,7 @@ const Posts = () => {
   const [followingPosts, setFollowingPosts] = useState([]);
   const [getPosts] = useLazyQuery(GET_POSTS);
   const { upcomingTrips, setUpcomingTrips, myPosts, setMyPosts } = ChatState();
-
+  
   // get latest posts
   const getLatestPosts = async () => {
     const response = await getPosts();
@@ -90,7 +90,9 @@ const Posts = () => {
         postText: postText,
       },
     });
+    console.log("data.addPost", data.addPost)
     setMyPosts([...myPosts, data.addPost])
+    
     setLatestPosts([...latestPosts, data.addPost]);
   };
 
