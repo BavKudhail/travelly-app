@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { GET_POSTS, GET_ME } from '../../utils/queries';
+// import context
+import { ChatState } from "../../context/ChatProvider";
 
 import { ADD_POST } from '../../utils/mutations';
 // charka ui components
@@ -50,6 +52,7 @@ const Posts = () => {
   const [latestPosts, setLatestPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
   const [getPosts] = useLazyQuery(GET_POSTS);
+  const { upcomingTrips, setUpcomingTrips, myPosts, setMyPosts } = ChatState();
 
   // get latest posts
   const getLatestPosts = async () => {
@@ -87,6 +90,7 @@ const Posts = () => {
         postText: postText,
       },
     });
+    setMyPosts([...myPosts, data.addPost])
     setLatestPosts([...latestPosts, data.addPost]);
   };
 

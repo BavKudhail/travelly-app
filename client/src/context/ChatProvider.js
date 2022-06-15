@@ -24,6 +24,7 @@ const ChatProvider = ({ children }) => {
   const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
   const [bucketList, setBucketList] = useState([]);
   const userData = data?.me || [];
+  const [myPosts, setMyPosts] = useState([]);
 
   // get users upcoming trips
   const getUpcomingTrips = async () => {
@@ -31,7 +32,10 @@ const ChatProvider = ({ children }) => {
     setUpcomingTrips([...upcomingTripData.me.futureTrips]);
   };
 
-  console.log("context: upcoming trips:", upcomingTrips);
+  const getMyPosts = async () => {
+    const { data, loading, error } = await getUserData();
+    setMyPosts([...data.me.posts]);
+  };
 
   // get information regarding the logged in user
   // const getUserDataFunc = async () => {
@@ -55,7 +59,6 @@ const ChatProvider = ({ children }) => {
         (trip) => !userGoingTripsIds.includes(trip._id)
       );
       setBucketList(bucketResponse.data.me.bucketList);
-      console.log("all trips logged in:", allTrips);
       // if latest trips is an empty array then set it to that, else, don't
 
       if (latestTrips.length === 0) {
@@ -67,6 +70,7 @@ const ChatProvider = ({ children }) => {
   useEffect(() => {
     getUpcomingTrips();
     getLatestTripsFunc();
+    getMyPosts();
     // getUserDataFunc();
   }, []);
 
@@ -87,6 +91,8 @@ const ChatProvider = ({ children }) => {
         bucketList,
         setBucketList,
         userData,
+        myPosts,
+        setMyPosts,
       }}
     >
       {children}
