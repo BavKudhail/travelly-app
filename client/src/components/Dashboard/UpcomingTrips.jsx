@@ -1,39 +1,30 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Box, Image, Badge, Button } from "@chakra-ui/react";
-import { MotionConfig } from "framer-motion";
+import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
 
-import chatIcon from "../../assets/chat-box.png";
+import { motion } from 'framer-motion';
+import { Box, Image, Badge, Button } from '@chakra-ui/react';
+import { MotionConfig } from 'framer-motion';
 
-const TripCard = ({
-  tripName,
-  tripDescription,
-  startDate,
-  endDate,
-  countries,
-  image,
-  tripId,
-}) => {
+import chatIcon from '../../assets/chat-box.png';
+
+import { LEAVE_TRIP } from '../../utils/mutations';
+
+const TripCard = ({ tripName, tripDescription, startDate, endDate, countries, image, tripId }) => {
+  const [leaveTrip, { error }] = useMutation(LEAVE_TRIP);
+  const handleLeaveTrip = async (e) => {
+    e.preventDefault();
+
+    const { data } = await leaveTrip({
+      variables: { tripId },
+    });
+  };
+
   return (
-    <Box
-      maxW="lg"
-      borderWidth="1px"
-      borderRadius="30px"
-      overflow="hidden"
-      boxShadow={"2xl"}
-      my="10"
-      backgroundColor={"#fff"}
-    >
+    <Box maxW="lg" borderWidth="1px" borderRadius="30px" overflow="hidden" boxShadow={'2xl'} my="10" backgroundColor={'#fff'}>
       <Image src={image} borderRadius="30px" />
 
       <Box p="6">
-        <Box
-          mt="1"
-          fontWeight="semibold"
-          as="h4"
-          lineHeight="tight"
-          noOfLines={1}
-        >
+        <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
           {tripName}
         </Box>
         <Box>{tripDescription}</Box>
@@ -42,6 +33,9 @@ const TripCard = ({
           <Box as="span" ml="2" color="gray.600" fontSize="sm">
             {startDate} <span> - </span> {endDate}
           </Box>
+        </Box>
+        <Box>
+          <Button onClick={handleLeaveTrip}>Leave Trip</Button>
         </Box>
         {/* <Box
           w="50px"

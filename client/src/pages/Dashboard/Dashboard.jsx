@@ -141,7 +141,9 @@ const Dashboard = () => {
                       {/* upcoming trips */}
                       <Box my="10">
                         {userData.futureTrips.map((trip) => {
-                          return <UpcomingTrips image={trip.imageUrl} tripName={trip.tripName} startDate={trip.startDate} endDate={trip.endDate} tripDescription={trip.tripDescription} />;
+                          return (
+                            <UpcomingTrips image={trip.imageUrl} tripName={trip.tripName} startDate={trip.startDate} endDate={trip.endDate} tripDescription={trip.tripDescription} tripId={trip._id} />
+                          );
                         })}
                       </Box>
                     </TabPanel>

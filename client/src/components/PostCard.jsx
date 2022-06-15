@@ -6,8 +6,6 @@ import { Box, Center, Heading, Text, Stack, Avatar, Image, useColorModeValue, Bu
 import { DELETE_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
 
-const isUserPostCreater = () => {};
-
 const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId, profilePicture }) => {
   const [deletePost, { error }] = useMutation(DELETE_POST);
 
