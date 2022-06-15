@@ -186,6 +186,7 @@ const typeDefs = gql`
     addComment(commentText: String!, postId: ID!): Post
 
     saveCountryBadge(badgeId: ID!): User
+    removeCountryBadge(badgeId: ID!): User
 
     saveActivityBadge(badgeId: ID!): User
 

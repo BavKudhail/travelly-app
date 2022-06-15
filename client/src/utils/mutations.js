@@ -192,6 +192,14 @@ export const SAVE_COUNTRY_BADGE = gql`
   }
 `;
 
+export const REMOVE_COUNTRY_BADGE = gql`
+  mutation removeCountryBadge($badgeId: ID!) {
+    removeCountryBadge(badgeId: $badgeId) {
+      _id
+    }
+  }
+`;
+
 export const FOLLOW_USER = gql`
   mutation followUser($userId: ID!) {
     followUser(userId: $userId) {

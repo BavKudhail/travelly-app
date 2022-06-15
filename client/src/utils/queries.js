@@ -84,6 +84,10 @@ export const GET_DASHBOARD = gql`
         _id
         badgeName
         badgeImage
+        countries {
+          _id
+          countryName
+        }
       }
       savedActivityBadges {
         _id

@@ -213,7 +213,7 @@ const Dashboard = () => {
                     <TbPokeball />
                   </div>
                   {savedCountryBadges.map((badge) => {
-                    return <CountryBadges image={badge.badgeImage} />;
+                    return <CountryBadges image={badge.badgeImage} badgeTitle={badge.badgeName} countries={badge.countries} badgeId={badge._id} />;
                   })}
                 </TabPanel>
               </TabPanels>
