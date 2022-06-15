@@ -5,7 +5,7 @@ import TripCard from "../../components/Trip/TripCard";
 import landingMountain from "../../assets/landing-mountain.png";
 import "./Home.css";
 import MobileModal from "../../components/MobileModal";
-import { GET_HOME, GET_ME } from "../../utils/queries";
+import { GET_HOME, GET_ME, GET_DASHBOARD } from "../../utils/queries";
 
 // date picker
 import DatePicker from "react-datepicker";
@@ -36,43 +36,54 @@ import {
 import { FiBell } from "react-icons/fi";
 // import context
 import { ChatState } from "../../context/ChatProvider";
+import { Spinner } from "@chakra-ui/react";
 // images
 import logo from "../../assets/logo_icon.png";
 
 import Auth from "../../utils/auth";
 
-// when user clicks join trip
-// setLatestTrips = latest trips - the trip that we clicked on
-
 const Home = () => {
   // states
-  const { latestTrips, setLatestTrips } = ChatState();
-  const [getLatestTrips] = useLazyQuery(GET_HOME);
-  const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
+  const {
+    latestTrips,
+    setLatestTrips,
+    upcomingTrips,
+    setUpcomingTrips,
+    bucketList,
+    setBucketList,
+    userData,
+  } = ChatState();
 
-  const [bucketList, setBucketList] = useState([]);
-  const userData = data?.me || [];
+  // const [getLatestTrips] = useLazyQuery(GET_HOME);
+  // const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
+  // const [getUserData] = useLazyQuery(GET_DASHBOARD);
 
-  const getLatestTripsFunc = async () => {
-    const response = await getLatestTrips();
-    const { data, loading, error } = response;
-    console.log("all trips:", data.getAllTrips);
+  // const [bucketList, setBucketList] = useState([]);
+  // const userData = data?.me || [];
 
-    let allTrips = data.getAllTrips;
-    if (!Auth.loggedIn()) {
-      setLatestTrips(allTrips);
-    } else {
-      const bucketResponse = await getBucketList();
-      const userUpcomingTrips = bucketResponse.data.me.upcomingTrips;
-      const userGoingTripsIds = userUpcomingTrips.map((trip) => trip._id);
-      allTrips = allTrips.filter(
-        (trip) => !userGoingTripsIds.includes(trip._id)
-      );
-      setBucketList(bucketResponse.data.me.bucketList);
-      console.log("all trips logged in:", allTrips);
-      setLatestTrips(allTrips);
-    }
-  };
+  // const getLatestTripsFunc = async () => {
+  //   const response = await getLatestTrips();
+  //   const { data, loading, error } = response;
+
+  //   let allTrips = data.getAllTrips;
+  //   if (!Auth.loggedIn()) {
+  //     setLatestTrips(allTrips);
+  //   } else {
+  //     const bucketResponse = await getBucketList();
+  //     const userUpcomingTrips = bucketResponse.data.me.upcomingTrips;
+  //     const userGoingTripsIds = userUpcomingTrips.map((trip) => trip._id);
+  //     allTrips = allTrips.filter(
+  //       (trip) => !userGoingTripsIds.includes(trip._id)
+  //     );
+  //     setBucketList(bucketResponse.data.me.bucketList);
+  //     console.log("all trips logged in:", allTrips);
+  //     // if latest trips is an empty array then set it to that, else, don't
+
+  //     if (latestTrips.length === 0) {
+  //       setLatestTrips(allTrips);
+  //     }
+  //   }
+  // };
 
   function filterTrips() {
     console.log(latestTrips[0]);
@@ -83,13 +94,19 @@ const Home = () => {
 
     return countryIds.some((country) => bucketList.includes(country));
   });
+
+  // get users upcoming trips
+  // const getUpcomingTrips = async () => {
+  //   const { data: upcomingTripData } = await getUserData();
+  //   setUpcomingTrips([...upcomingTripData.me.futureTrips]);
+  // };
+
   console.log("recommendedTrips:", recommendedTrips);
   useEffect(() => {
-    getLatestTripsFunc();
+    // getLatestTripsFunc();
+    // getUpcomingTrips();
     // getUserBucketListFunc()
   }, []);
-
-  // filter trips based on the date - or company?
 
   const WavingHand = () => (
     <motion.div
@@ -107,6 +124,8 @@ const Home = () => {
       👋
     </motion.div>
   );
+
+  console.log("home - upcoming trips", upcomingTrips);
 
   return (
     // this is going to be the "app_container"
@@ -207,30 +226,6 @@ const Home = () => {
         className="right_section"
       >
         <Flex alignContent="center">
-          <Flex>
-            <IconButton
-              icon={<FiBell />}
-              fontSize="sm"
-              bgColor="#fff"
-              borderRadius="50%"
-              p="10px"
-            />
-            <Flex
-              w="30px"
-              h="25px"
-              bgColor="#b57296"
-              borderRadius="50%"
-              color="#fff"
-              align="center"
-              justify="center"
-              ml="-3"
-              mt="-2"
-              zIndex="100"
-            >
-              2
-            </Flex>
-          </Flex>
-          {/*  */}
           <Flex>
             <IconButton
               icon={<FiBell />}

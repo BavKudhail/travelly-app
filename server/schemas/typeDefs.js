@@ -220,9 +220,9 @@ const typeDefs = gql`
 
     saveActivityBadge(badgeId: ID!): User
 
-    userGoing(tripId: ID!): User
+    userGoing(tripId: ID!): Trip
 
-    leaveTrip(tripId: String!): User
+    leaveTrip(tripId: String!): Trip
 
     followUser(userId: ID!): User
 

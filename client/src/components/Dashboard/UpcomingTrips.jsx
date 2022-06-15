@@ -1,30 +1,71 @@
-import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import React from "react";
+import { useMutation } from "@apollo/react-hooks";
 
-import { motion } from 'framer-motion';
-import { Box, Image, Badge, Button } from '@chakra-ui/react';
-import { MotionConfig } from 'framer-motion';
+import { motion } from "framer-motion";
+import { Box, Image, Badge, Button } from "@chakra-ui/react";
+import { MotionConfig } from "framer-motion";
 
-import chatIcon from '../../assets/chat-box.png';
+import chatIcon from "../../assets/chat-box.png";
 
-import { LEAVE_TRIP } from '../../utils/mutations';
+// import context
+import { ChatState } from "../../context/ChatProvider";
 
-const TripCard = ({ tripName, tripDescription, startDate, endDate, countries, image, tripId }) => {
+import { LEAVE_TRIP } from "../../utils/mutations";
+
+const TripCard = ({
+  tripName,
+  tripDescription,
+  startDate,
+  endDate,
+  countries,
+  image,
+  tripId,
+}) => {
+  // state
+  const { upcomingTrips, setUpcomingTrips, latestTrips, setLatestTrips } =
+    ChatState();
+
   const [leaveTrip, { error }] = useMutation(LEAVE_TRIP);
-  const handleLeaveTrip = async (e) => {
-    e.preventDefault();
 
+  const handleLeaveTrip = async (e) => {
+    console.log("latest trips before", latestTrips)
+    e.preventDefault();
     const { data } = await leaveTrip({
       variables: { tripId },
     });
+    const updatedTripList = upcomingTrips.filter((trip) => {
+      return trip._id !== tripId;
+    });
+
+    // update state
+    setUpcomingTrips([...updatedTripList]);
+
+    // update latest trips
+    setLatestTrips([...latestTrips, data.leaveTrip]);
   };
 
+  console.log("latest trips after", latestTrips);
+
   return (
-    <Box maxW="lg" borderWidth="1px" borderRadius="30px" overflow="hidden" boxShadow={'2xl'} my="10" backgroundColor={'#fff'}>
+    <Box
+      maxW="lg"
+      borderWidth="1px"
+      borderRadius="30px"
+      overflow="hidden"
+      boxShadow={"2xl"}
+      my="10"
+      backgroundColor={"#fff"}
+    >
       <Image src={image} borderRadius="30px" />
 
       <Box p="6">
-        <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
+        <Box
+          mt="1"
+          fontWeight="semibold"
+          as="h4"
+          lineHeight="tight"
+          noOfLines={1}
+        >
           {tripName}
         </Box>
         <Box>{tripDescription}</Box>

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 // TODO - add authentication token here
 
@@ -72,8 +72,16 @@ export const DELETE_POST = gql`
 
 // company
 export const ADD_COMPANY = gql`
-  mutation addCompany($companyUsername: String!, $email: String!, $password: String!) {
-    addCompany(companyUsername: $companyUsername, email: $email, password: $password) {
+  mutation addCompany(
+    $companyUsername: String!
+    $email: String!
+    $password: String!
+  ) {
+    addCompany(
+      companyUsername: $companyUsername
+      email: $email
+      password: $password
+    ) {
       token
     }
   }
@@ -105,8 +113,20 @@ export const LOGIN_ADMIN = gql`
 `;
 
 export const UPDATE_TRIP = gql`
-  mutation updateTrip($tripName: String!, $tripDescription: String!, $startDate: String!, $tripId: ID!, $endDate: String) {
-    updateTrip(tripName: $tripName, tripDescription: $tripDescription, startDate: $startDate, tripId: $tripId, endDate: $endDate) {
+  mutation updateTrip(
+    $tripName: String!
+    $tripDescription: String!
+    $startDate: String!
+    $tripId: ID!
+    $endDate: String
+  ) {
+    updateTrip(
+      tripName: $tripName
+      tripDescription: $tripDescription
+      startDate: $startDate
+      tripId: $tripId
+      endDate: $endDate
+    ) {
       _id
     }
   }
@@ -116,6 +136,15 @@ export const JOIN_TRIP = gql`
   mutation userGoing($tripId: ID!) {
     userGoing(tripId: $tripId) {
       _id
+      countries {
+        _id
+      }
+      imageUrl
+      endDate
+      chatId
+      startDate
+      tripDescription
+      tripName
     }
   }
 `;
@@ -124,6 +153,15 @@ export const LEAVE_TRIP = gql`
   mutation leaveTrip($tripId: String!) {
     leaveTrip(tripId: $tripId) {
       _id
+      countries {
+        _id
+      }
+      imageUrl
+      endDate
+      chatId
+      startDate
+      tripDescription
+      tripName
     }
   }
 `;
@@ -153,23 +191,46 @@ export const ADD_ACTIVITY = gql`
 `;
 
 export const ADD_COUNTRY_BADGE = gql`
-  mutation AddCountryBadge($badgeName: String!, $badgeImage: String, $countries: [ID]) {
-    addCountryBadge(badgeName: $badgeName, badgeImage: $badgeImage, countries: $countries) {
+  mutation AddCountryBadge(
+    $badgeName: String!
+    $badgeImage: String
+    $countries: [ID]
+  ) {
+    addCountryBadge(
+      badgeName: $badgeName
+      badgeImage: $badgeImage
+      countries: $countries
+    ) {
       _id
     }
   }
 `;
 
 export const ADD_ACTIVITY_BADGE = gql`
-  mutation addActivityBadge($badgeName: String!, $badgeImage: String, $activities: [ID]) {
-    addActivityBadge(badgeName: $badgeName, badgeImage: $badgeImage, activities: $activities) {
+  mutation addActivityBadge(
+    $badgeName: String!
+    $badgeImage: String
+    $activities: [ID]
+  ) {
+    addActivityBadge(
+      badgeName: $badgeName
+      badgeImage: $badgeImage
+      activities: $activities
+    ) {
       _id
     }
   }
 `;
 
 export const ADD_TRIP = gql`
-  mutation addTrip($tripName: String!, $tripDescription: String!, $startDate: String!, $endDate: String, $countries: [ID], $activities: [ID]) {
+  mutation addTrip(
+    $tripName: String!
+    $tripDescription: String!
+    $startDate: String!
+    $endDate: String
+    $countries: [ID]
+    $activities: [ID]
+  ) {
     addTrip(
       tripName: $tripName
       tripDescription: $tripDescription

@@ -20,7 +20,8 @@ const TripCard = ({
   tripId,
 }) => {
   // states
-  const { latestTrips, setLatestTrips } = ChatState();
+  const { latestTrips, setLatestTrips, upcomingTrips, setUpcomingTrips } =
+    ChatState();
   const [getLatestTrips] = useLazyQuery(GET_HOME);
   const [userGoing, { error, loading }] = useMutation(JOIN_TRIP);
 
@@ -38,9 +39,14 @@ const TripCard = ({
     const updatedTripList = latestTrips.filter((trip) => {
       return trip._id !== tripId;
     });
- 
+
     // set that as state
     setLatestTrips([...updatedTripList]);
+
+    // update the value of upcoming trips to include that current trip
+    console.log("data", data.userGoing);
+    console.log("upcoming trips", upcomingTrips);
+    setUpcomingTrips([...upcomingTrips, data.userGoing]);
   };
 
   return (
