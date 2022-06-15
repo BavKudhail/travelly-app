@@ -120,6 +120,14 @@ export const JOIN_TRIP = gql`
   }
 `;
 
+export const LEAVE_TRIP = gql`
+  mutation leaveTrip($tripId: String!) {
+    leaveTrip(tripId: $tripId) {
+      _id
+    }
+  }
+`;
+
 export const DELETE_TRIP = gql`
   mutation deleteTrip($tripId: String!) {
     deleteTrip(tripId: $tripId) {
