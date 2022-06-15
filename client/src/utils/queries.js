@@ -5,6 +5,7 @@ export const GET_ME = gql`
     me {
       _id
       username
+      profilePicture
       following {
         username
         _id
@@ -319,6 +320,7 @@ export const GET_POSTS = gql`
       postedBy {
         username
         _id
+        profilePicture
       }
       createdAt
       postTitle
@@ -336,6 +338,7 @@ export const GET_POSTS = gql`
       following {
         _id
         username
+        profilePicture
         posts {
           _id
           createdAt
