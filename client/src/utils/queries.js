@@ -64,6 +64,7 @@ export const GET_HOME = gql`
       startDate
       tripDescription
       tripName
+      imageUrl
       countries {
         _id
       }

@@ -149,14 +149,34 @@ const Home = () => {
                       .slice(0)
                       .reverse()
                       .map((trip) => {
-                        return <TripCard key={trip._id} tripName={trip.tripName} tripDescription={trip.tripDescription} startDate={trip.startDate} endDate={trip.endDate} tripId={trip._id} />;
+                        return (
+                          <TripCard
+                            key={trip._id}
+                            tripName={trip.tripName}
+                            tripDescription={trip.tripDescription}
+                            startDate={trip.startDate}
+                            endDate={trip.endDate}
+                            tripId={trip._id}
+                            imageUrl={trip.imageUrl}
+                          />
+                        );
                       })}
                   </Box>
                 </TabPanel>
                 <TabPanel>
                   <Box>
                     {recommendedTrips.map((trip) => {
-                      return <TripCard key={trip._id} tripName={trip.tripName} tripDescription={trip.tripDescription} startDate={trip.startDate} endDate={trip.endDate} tripId={trip._id} />;
+                      return (
+                        <TripCard
+                          key={trip._id}
+                          tripName={trip.tripName}
+                          tripDescription={trip.tripDescription}
+                          startDate={trip.startDate}
+                          endDate={trip.endDate}
+                          tripId={trip._id}
+                          imageUrl={trip.imageUrl}
+                        />
+                      );
                     })}
                   </Box>
                 </TabPanel>
