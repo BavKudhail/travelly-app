@@ -8,7 +8,7 @@ import Auth from '../utils/auth';
 
 const isUserPostCreater = () => {};
 
-const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId }) => {
+const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId, profilePicture }) => {
   const [deletePost, { error }] = useMutation(DELETE_POST);
 
   const isUserPostCreator = () => {
@@ -49,7 +49,7 @@ const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId 
         <Text fontSize={'2xl'}>{postText}</Text>
         <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
           <a href={`/userprofile/${userId}`}>
-            <Avatar src={'https://avatars0.githubusercontent.com/u/1164541?v=4'} alt={'Author'} />
+            <Avatar src={profilePicture} alt={'Author'} />
           </a>
           <Stack direction={'column'} spacing={0} fontSize={'sm'}>
             <Text fontWeight={600}>Posted by: {username}</Text>

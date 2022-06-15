@@ -151,7 +151,17 @@ const Dashboard = () => {
                           .slice(0)
                           .reverse()
                           .map((post) => {
-                            return <PostCard postText={post.postText} postTitle={post.postTitle} date={post.createdAt} postId={post._id} username={userData.username} userId={userData._id} />;
+                            return (
+                              <PostCard
+                                postText={post.postText}
+                                postTitle={post.postTitle}
+                                date={post.createdAt}
+                                postId={post._id}
+                                username={userData.username}
+                                userId={userData._id}
+                                profilePicture={userData.profilePicture}
+                              />
+                            );
                           })}
                       </Box>
                     </TabPanel>
