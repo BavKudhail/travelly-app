@@ -10,7 +10,7 @@ export const GET_ME = gql`
         _id
       }
       bucketList
-      getAllTrips {
+      upcomingTrips {
         _id
       }
     }

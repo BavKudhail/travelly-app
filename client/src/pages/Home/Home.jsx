@@ -56,11 +56,20 @@ const Home = () => {
   const getLatestTripsFunc = async () => {
     const response = await getLatestTrips();
     const { data, loading, error } = response;
-    setLatestTrips(data.getAllTrips);
-    const bucketResponse = await getBucketList();
-    console.log('bucketResponse', bucketResponse.data.me.bucketList);
-    setBucketList(bucketResponse.data.me.bucketList);
-    console.log('data', data);
+    console.log('all trips:', data.getAllTrips);
+
+    let allTrips = data.getAllTrips;
+    if (!Auth.loggedIn()) {
+      setLatestTrips(allTrips);
+    } else {
+      const bucketResponse = await getBucketList();
+      const userUpcomingTrips = bucketResponse.data.me.upcomingTrips;
+      const userGoingTripsIds = userUpcomingTrips.map((trip) => trip._id);
+      allTrips = allTrips.filter((trip) => !userGoingTripsIds.includes(trip._id));
+      setBucketList(bucketResponse.data.me.bucketList);
+      console.log('all trips logged in:', allTrips);
+      setLatestTrips(allTrips);
+    }
   };
 
   function filterTrips() {
