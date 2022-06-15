@@ -2,6 +2,10 @@ import React from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { motion } from "framer-motion";
 
+// import context
+// ! Laura = imported ChatState
+import { ChatState } from "../../context/ChatProvider";
+
 // mutations/queries
 import {
   SAVE_COUNTRY_BADGE,
@@ -36,13 +40,22 @@ export default function CountryBadges({
   const [saveCountryBadge] = useMutation(SAVE_COUNTRY_BADGE);
   const [removeCountryBadge] = useMutation(REMOVE_COUNTRY_BADGE);
 
-  const saveCountryBadgeFunc = (event) => {
+   // state
+  //  ! Laura - imported chatState variables
+   const { upcomingTrips, setUpcomingTrips, myPosts, bucketList, setBucketList } = ChatState();
+ 
+// ! Laura - made this function asynchronous
+  const saveCountryBadgeFunc = async (event) => {
     event.preventDefault();
-    const { data } = saveCountryBadge({
+    const { data } = await saveCountryBadge({
       variables: {
         badgeId: badgeId,
       },
     });
+    
+    // ! Setting bucketList state to all of the countries in the users savedBadges
+    setBucketList(data.saveCountryBadge.savedCountryBadges.reduce((total, badge)=> [...total, ...badge.countries.map((country)=>country._id)], []))
+    
   };
 
   const removeCountryBadgeFunc = (event) => {

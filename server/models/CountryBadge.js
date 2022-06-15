@@ -6,9 +6,9 @@ const countryBadgeSchema = new Schema({
     required: true,
     unique: true,
   },
+  // ! Laura - removed unique from badgeImage
   badgeImage: {
     type: String,
-    unique: true,
   },
   countries: [
     {

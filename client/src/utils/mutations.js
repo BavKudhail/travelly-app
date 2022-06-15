@@ -246,10 +246,18 @@ export const ADD_TRIP = gql`
   }
 `;
 
+// ! Laura - added badgeName and countries {_id} fields to saveCountryBadge mutation
 export const SAVE_COUNTRY_BADGE = gql`
   mutation saveCountryBadge($badgeId: ID!) {
     saveCountryBadge(badgeId: $badgeId) {
       _id
+      savedCountryBadges {
+        _id
+        badgeName
+        countries {
+          _id
+        }
+      }
     }
   }
 `;
