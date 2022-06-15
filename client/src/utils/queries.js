@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ME = gql`
   query getLoggedInUser {
@@ -86,7 +86,7 @@ export const GET_DASHBOARD = gql`
         badgeImage
         countries {
           _id
-          countryName
+          # countryName
         }
       }
       savedActivityBadges {
