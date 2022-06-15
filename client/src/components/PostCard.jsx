@@ -1,28 +1,35 @@
-import React from "react";
+import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
 
-import {
-  Box,
-  Center,
-  Heading,
-  Text,
-  Stack,
-  Avatar,
-  Image,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Center, Heading, Text, Stack, Avatar, Image, useColorModeValue, Button } from '@chakra-ui/react';
 
-const PostCard = ({ postText, username, avatar, date, postTitle, userId }) => {
+import { DELETE_POST } from '../utils/mutations';
+import Auth from '../utils/auth';
+
+const isUserPostCreater = () => {};
+
+const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId }) => {
+  const [deletePost, { error }] = useMutation(DELETE_POST);
+
+  const isUserPostCreator = () => {
+    if (Auth.getProfile().data._id === userId) {
+      return true;
+    }
+  };
+
+  const handleDeletePost = async (e) => {
+    e.preventDefault();
+
+    console.log('postId:', postId);
+
+    const { data } = await deletePost({
+      variables: { postId },
+    });
+  };
+
   return (
     <Center py={6}>
-      <Box
-        maxW={"445px"}
-        w={"full"}
-        bg={useColorModeValue("white", "gray.900")}
-        boxShadow={"2xl"}
-        borderRadius="30px"
-        p={6}
-        overflow={"hidden"}
-      >
+      <Box maxW={'445px'} w={'full'} bg={useColorModeValue('white', 'gray.900')} boxShadow={'2xl'} borderRadius="30px" p={6} overflow={'hidden'}>
         {/* <Box
           h={"210px"}
           bg={"gray.100"}
@@ -39,15 +46,15 @@ const PostCard = ({ postText, username, avatar, date, postTitle, userId }) => {
           /> */}
         {/* </Box> */}
         <Heading>{postTitle}</Heading>
-        <Text fontSize={"2xl"}>{postText}</Text>
-        <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-          <a href={`/userprofile/${userId}`}><Avatar
-            src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-            alt={"Author"}
-          /></a>
-          <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-            <Text fontWeight={600}>Posted by:{username}</Text>
-            <Text color={"gray.500"}>{date}</Text>
+        <Text fontSize={'2xl'}>{postText}</Text>
+        <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
+          <a href={`/userprofile/${userId}`}>
+            <Avatar src={'https://avatars0.githubusercontent.com/u/1164541?v=4'} alt={'Author'} />
+          </a>
+          <Stack direction={'column'} spacing={0} fontSize={'sm'}>
+            <Text fontWeight={600}>Posted by: {username}</Text>
+            <Text color={'gray.500'}>{date}</Text>
+            <Box>{isUserPostCreator() ? <Button onClick={handleDeletePost}>Delete</Button> : <></>}</Box>
           </Stack>
         </Stack>
       </Box>
