@@ -27,7 +27,7 @@ function MobileModal() {
       >
         <FiPlus fontSize={"50px"} color="#FFF" />
       </Button>
-      ;{/* modal */}
+      {/* modal */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

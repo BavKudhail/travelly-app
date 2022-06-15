@@ -3,17 +3,20 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { CONTEXT } from "../utils/queries";
 import { useLazyQuery } from "@apollo/react-hooks";
 
-// get the logged in user
 
+// create chat context
 const ChatContext = createContext();
 
+// create chat provider
 const ChatProvider = ({ children }) => {
+  // values we want to pass into children
   const [selectedChat, setSelectedChat] = useState("");
   const [chats, setChats] = useState();
   const [loggedInUser, setLoggedInUser] = useState();
   const [getUserData] = useLazyQuery(CONTEXT);
   const [notifications, setNotifications] = useState(0);
   const [latestTrips, setLatestTrips] = useState([]);
+  const [upcomingTrips, setUpcomingTrips] = useState([]);
 
   // get information regarding the logged in user
   const getUserDataFunc = async () => {
@@ -26,6 +29,7 @@ const ChatProvider = ({ children }) => {
   }, []);
 
   return (
+    // return chat provider
     <ChatContext.Provider
       value={{
         selectedChat,
@@ -35,7 +39,9 @@ const ChatProvider = ({ children }) => {
         loggedInUser,
         setLoggedInUser,
         latestTrips,
-        setLatestTrips
+        setLatestTrips,
+        upcomingTrips,
+        setUpcomingTrips,
       }}
     >
       {children}
@@ -43,6 +49,7 @@ const ChatProvider = ({ children }) => {
   );
 };
 
+// export chat context
 export const ChatState = () => {
   return useContext(ChatContext);
 };

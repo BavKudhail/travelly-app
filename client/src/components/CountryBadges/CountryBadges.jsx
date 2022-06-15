@@ -1,13 +1,36 @@
-import React from 'react';
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { motion } from 'framer-motion';
+import React from "react";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { motion } from "framer-motion";
 
 // mutations/queries
-import { SAVE_COUNTRY_BADGE, REMOVE_COUNTRY_BADGE } from '../../utils/mutations';
+import {
+  SAVE_COUNTRY_BADGE,
+  REMOVE_COUNTRY_BADGE,
+} from "../../utils/mutations";
 
-import { Flex, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, Button, Box, Text, ButtonGroup } from '@chakra-ui/react';
+import {
+  Flex,
+  Image,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
+  Box,
+  Text,
+  ButtonGroup,
+} from "@chakra-ui/react";
 
-export default function CountryBadges({ image, badgeTitle, countries, badgeId }) {
+export default function CountryBadges({
+  image,
+  badgeTitle,
+  countries,
+  badgeId,
+}) {
   // modal logic
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [saveCountryBadge] = useMutation(SAVE_COUNTRY_BADGE);
@@ -39,11 +62,11 @@ export default function CountryBadges({ image, badgeTitle, countries, badgeId })
         h="200px"
         w="200px"
         my="20px"
-        flexDirection={'column'}
-        justifyContent={'center'}
+        flexDirection={"column"}
+        justifyContent={"center"}
         animate={{ x: [0, 100, 0] }}
         whileHover={{
-          cursor: 'pointer',
+          cursor: "pointer",
           scale: 1.2,
           transition: { duration: 1 },
         }}
@@ -59,7 +82,6 @@ export default function CountryBadges({ image, badgeTitle, countries, badgeId })
           <ModalCloseButton />
           <ModalBody>
             <Text>Countries to visit</Text>
-            {console.log('badge countries', countries)}
             <Box>
               {countries &&
                 countries.map((country) => {

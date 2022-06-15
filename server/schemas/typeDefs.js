@@ -222,7 +222,7 @@ const typeDefs = gql`
 
     userGoing(tripId: ID!): User
 
-    leaveTrip(tripId: String!): User
+    leaveTrip(tripId: String!): Trip
 
     followUser(userId: ID!): User
 

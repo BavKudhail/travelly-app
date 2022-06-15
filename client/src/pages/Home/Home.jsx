@@ -36,17 +36,16 @@ import {
 import { FiBell } from "react-icons/fi";
 // import context
 import { ChatState } from "../../context/ChatProvider";
+import { Spinner } from "@chakra-ui/react";
 // images
 import logo from "../../assets/logo_icon.png";
 
 import Auth from "../../utils/auth";
 
-// when user clicks join trip
-// setLatestTrips = latest trips - the trip that we clicked on
-
 const Home = () => {
   // states
   const { latestTrips, setLatestTrips } = ChatState();
+
   const [getLatestTrips] = useLazyQuery(GET_HOME);
   const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
 
@@ -56,7 +55,6 @@ const Home = () => {
   const getLatestTripsFunc = async () => {
     const response = await getLatestTrips();
     const { data, loading, error } = response;
-    console.log("all trips:", data.getAllTrips);
 
     let allTrips = data.getAllTrips;
     if (!Auth.loggedIn()) {
@@ -70,9 +68,15 @@ const Home = () => {
       );
       setBucketList(bucketResponse.data.me.bucketList);
       console.log("all trips logged in:", allTrips);
-      setLatestTrips(allTrips);
+      // if latest trips is an empty array then set it to that, else, don't
+
+      if (latestTrips.length === 0) {
+        setLatestTrips(allTrips);
+      }
     }
   };
+
+  console.log("lt", latestTrips);
 
   function filterTrips() {
     console.log(latestTrips[0]);
@@ -151,22 +155,32 @@ const Home = () => {
               <TabPanels>
                 <TabPanel>
                   <Box>
-                    {latestTrips
-                      .slice(0)
-                      .reverse()
-                      .map((trip) => {
-                        return (
-                          <TripCard
-                            key={trip._id}
-                            tripName={trip.tripName}
-                            tripDescription={trip.tripDescription}
-                            startDate={trip.startDate}
-                            endDate={trip.endDate}
-                            tripId={trip._id}
-                            imageUrl={trip.imageUrl}
-                          />
-                        );
-                      })}
+                    {loading ? (
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="purple.500"
+                        size="xl"
+                      />
+                    ) : (
+                      latestTrips
+                        .slice(0)
+                        .reverse()
+                        .map((trip) => {
+                          return (
+                            <TripCard
+                              key={trip._id}
+                              tripName={trip.tripName}
+                              tripDescription={trip.tripDescription}
+                              startDate={trip.startDate}
+                              endDate={trip.endDate}
+                              tripId={trip._id}
+                              imageUrl={trip.imageUrl}
+                            />
+                          );
+                        })
+                    )}
                   </Box>
                 </TabPanel>
                 <TabPanel>
@@ -207,30 +221,6 @@ const Home = () => {
         className="right_section"
       >
         <Flex alignContent="center">
-          <Flex>
-            <IconButton
-              icon={<FiBell />}
-              fontSize="sm"
-              bgColor="#fff"
-              borderRadius="50%"
-              p="10px"
-            />
-            <Flex
-              w="30px"
-              h="25px"
-              bgColor="#b57296"
-              borderRadius="50%"
-              color="#fff"
-              align="center"
-              justify="center"
-              ml="-3"
-              mt="-2"
-              zIndex="100"
-            >
-              2
-            </Flex>
-          </Flex>
-          {/*  */}
           <Flex>
             <IconButton
               icon={<FiBell />}
