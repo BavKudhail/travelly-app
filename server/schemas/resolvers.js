@@ -682,16 +682,16 @@ const resolvers = {
       console.log("trip", trip);
 
       //////////RETURN VALUE///////////////
-      return user
-        .populate({
-          path: "upcomingTrips",
-          model: "Trip",
-          populate: {
-            path: "countries",
-            model: "Country",
-          },
-        })
-        .execPopulate();
+      return trip;
+      // .populate({
+      //   path: "upcomingTrips",
+      //   model: "Trip",
+      //   populate: {
+      //     path: "countries",
+      //     model: "Country",
+      //   },
+      // })
+      // .execPopulate();
     },
 
     leaveTrip: async (parent, { tripId }, context) => {

@@ -5,7 +5,7 @@ import TripCard from "../../components/Trip/TripCard";
 import landingMountain from "../../assets/landing-mountain.png";
 import "./Home.css";
 import MobileModal from "../../components/MobileModal";
-import { GET_HOME, GET_ME } from "../../utils/queries";
+import { GET_HOME, GET_ME, GET_DASHBOARD } from "../../utils/queries";
 
 // date picker
 import DatePicker from "react-datepicker";
@@ -44,39 +44,46 @@ import Auth from "../../utils/auth";
 
 const Home = () => {
   // states
-  const { latestTrips, setLatestTrips } = ChatState();
+  const {
+    latestTrips,
+    setLatestTrips,
+    upcomingTrips,
+    setUpcomingTrips,
+    bucketList,
+    setBucketList,
+    userData,
+  } = ChatState();
 
-  const [getLatestTrips] = useLazyQuery(GET_HOME);
-  const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
+  // const [getLatestTrips] = useLazyQuery(GET_HOME);
+  // const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
+  // const [getUserData] = useLazyQuery(GET_DASHBOARD);
 
-  const [bucketList, setBucketList] = useState([]);
-  const userData = data?.me || [];
+  // const [bucketList, setBucketList] = useState([]);
+  // const userData = data?.me || [];
 
-  const getLatestTripsFunc = async () => {
-    const response = await getLatestTrips();
-    const { data, loading, error } = response;
+  // const getLatestTripsFunc = async () => {
+  //   const response = await getLatestTrips();
+  //   const { data, loading, error } = response;
 
-    let allTrips = data.getAllTrips;
-    if (!Auth.loggedIn()) {
-      setLatestTrips(allTrips);
-    } else {
-      const bucketResponse = await getBucketList();
-      const userUpcomingTrips = bucketResponse.data.me.upcomingTrips;
-      const userGoingTripsIds = userUpcomingTrips.map((trip) => trip._id);
-      allTrips = allTrips.filter(
-        (trip) => !userGoingTripsIds.includes(trip._id)
-      );
-      setBucketList(bucketResponse.data.me.bucketList);
-      console.log("all trips logged in:", allTrips);
-      // if latest trips is an empty array then set it to that, else, don't
+  //   let allTrips = data.getAllTrips;
+  //   if (!Auth.loggedIn()) {
+  //     setLatestTrips(allTrips);
+  //   } else {
+  //     const bucketResponse = await getBucketList();
+  //     const userUpcomingTrips = bucketResponse.data.me.upcomingTrips;
+  //     const userGoingTripsIds = userUpcomingTrips.map((trip) => trip._id);
+  //     allTrips = allTrips.filter(
+  //       (trip) => !userGoingTripsIds.includes(trip._id)
+  //     );
+  //     setBucketList(bucketResponse.data.me.bucketList);
+  //     console.log("all trips logged in:", allTrips);
+  //     // if latest trips is an empty array then set it to that, else, don't
 
-      if (latestTrips.length === 0) {
-        setLatestTrips(allTrips);
-      }
-    }
-  };
-
-  console.log("lt", latestTrips);
+  //     if (latestTrips.length === 0) {
+  //       setLatestTrips(allTrips);
+  //     }
+  //   }
+  // };
 
   function filterTrips() {
     console.log(latestTrips[0]);
@@ -87,13 +94,19 @@ const Home = () => {
 
     return countryIds.some((country) => bucketList.includes(country));
   });
+
+  // get users upcoming trips
+  // const getUpcomingTrips = async () => {
+  //   const { data: upcomingTripData } = await getUserData();
+  //   setUpcomingTrips([...upcomingTripData.me.futureTrips]);
+  // };
+
   console.log("recommendedTrips:", recommendedTrips);
   useEffect(() => {
-    getLatestTripsFunc();
+    // getLatestTripsFunc();
+    // getUpcomingTrips();
     // getUserBucketListFunc()
   }, []);
-
-  // filter trips based on the date - or company?
 
   const WavingHand = () => (
     <motion.div
@@ -111,6 +124,8 @@ const Home = () => {
       👋
     </motion.div>
   );
+
+  console.log("home - upcoming trips", upcomingTrips);
 
   return (
     // this is going to be the "app_container"
@@ -155,32 +170,22 @@ const Home = () => {
               <TabPanels>
                 <TabPanel>
                   <Box>
-                    {loading ? (
-                      <Spinner
-                        thickness="4px"
-                        speed="0.65s"
-                        emptyColor="gray.200"
-                        color="purple.500"
-                        size="xl"
-                      />
-                    ) : (
-                      latestTrips
-                        .slice(0)
-                        .reverse()
-                        .map((trip) => {
-                          return (
-                            <TripCard
-                              key={trip._id}
-                              tripName={trip.tripName}
-                              tripDescription={trip.tripDescription}
-                              startDate={trip.startDate}
-                              endDate={trip.endDate}
-                              tripId={trip._id}
-                              imageUrl={trip.imageUrl}
-                            />
-                          );
-                        })
-                    )}
+                    {latestTrips
+                      .slice(0)
+                      .reverse()
+                      .map((trip) => {
+                        return (
+                          <TripCard
+                            key={trip._id}
+                            tripName={trip.tripName}
+                            tripDescription={trip.tripDescription}
+                            startDate={trip.startDate}
+                            endDate={trip.endDate}
+                            tripId={trip._id}
+                            imageUrl={trip.imageUrl}
+                          />
+                        );
+                      })}
                   </Box>
                 </TabPanel>
                 <TabPanel>

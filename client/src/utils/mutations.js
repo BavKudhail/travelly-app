@@ -136,6 +136,15 @@ export const JOIN_TRIP = gql`
   mutation userGoing($tripId: ID!) {
     userGoing(tripId: $tripId) {
       _id
+      countries {
+        _id
+      }
+      imageUrl
+      endDate
+      chatId
+      startDate
+      tripDescription
+      tripName
     }
   }
 `;

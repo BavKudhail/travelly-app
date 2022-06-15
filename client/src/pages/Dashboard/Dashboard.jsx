@@ -63,10 +63,12 @@ import CountryBadges from "../../components/CountryBadges/CountryBadges";
 import SocialHeader from "../../components/Dashboard/SocialHeader";
 
 const Dashboard = () => {
+  // state
+  const { upcomingTrips, setUpcomingTrips } = ChatState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD);
-  const [getUserData] = useLazyQuery(GET_DASHBOARD);
+  // const [getUserData] = useLazyQuery(GET_DASHBOARD);
   const userData = data?.me || [];
 
   const myFollowing = userData.following;
@@ -78,17 +80,16 @@ const Dashboard = () => {
   const savedCountryBadges = data?.me.savedCountryBadges;
   const savedActivityBadges = data?.me.savedActivityBadges;
 
-  // state
-  const { upcomingTrips, setUpcomingTrips } = ChatState();
+  console.log("upcoming trips", upcomingTrips);
 
-  const getUpcomingTrips = async () => {
-    const { data } = await getUserData();
-    setUpcomingTrips([...data.me.futureTrips]);
-  };
+  // const getUpcomingTrips = async () => {
+  //   const { data } = await getUserData();
+  //   setUpcomingTrips([...data.me.futureTrips]);
+  // };
 
-  useEffect(() => {
-    getUpcomingTrips();
-  }, []);
+  // useEffect(() => {
+  //   getUpcomingTrips();
+  // }, []);
 
   if (loading) {
     return <Spinner />;
@@ -127,6 +128,8 @@ const Dashboard = () => {
     const unsavedActivityBadges = unsavedActivityBadgeIds.map((id) => {
       return allActivityBadges.find((badge) => badge._id === id);
     });
+
+    console.log("upcoming trips dash", upcomingTrips);
 
     return (
       <>
