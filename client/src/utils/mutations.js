@@ -62,6 +62,14 @@ export const ADD_POST = gql`
   }
 `;
 
+export const DELETE_POST = gql`
+  mutation deletePost($postId: String!) {
+    deletePost(postId: $postId) {
+      _id
+    }
+  }
+`;
+
 // company
 export const ADD_COMPANY = gql`
   mutation addCompany($companyUsername: String!, $email: String!, $password: String!) {
@@ -105,12 +113,20 @@ export const UPDATE_TRIP = gql`
 `;
 
 export const JOIN_TRIP = gql`
-mutation userGoing($tripId: ID!) {
-  userGoing(tripId: $tripId) {
-    _id
+  mutation userGoing($tripId: ID!) {
+    userGoing(tripId: $tripId) {
+      _id
+    }
   }
-}
-`
+`;
+
+export const LEAVE_TRIP = gql`
+  mutation leaveTrip($tripId: String!) {
+    leaveTrip(tripId: $tripId) {
+      _id
+    }
+  }
+`;
 
 export const DELETE_TRIP = gql`
   mutation deleteTrip($tripId: String!) {
@@ -137,32 +153,16 @@ export const ADD_ACTIVITY = gql`
 `;
 
 export const ADD_COUNTRY_BADGE = gql`
-  mutation AddCountryBadge(
-    $badgeName: String!
-    $badgeImage: String
-    $countries: [ID]
-  ) {
-    addCountryBadge(
-      badgeName: $badgeName
-      badgeImage: $badgeImage
-      countries: $countries
-    ) {
+  mutation AddCountryBadge($badgeName: String!, $badgeImage: String, $countries: [ID]) {
+    addCountryBadge(badgeName: $badgeName, badgeImage: $badgeImage, countries: $countries) {
       _id
     }
   }
 `;
 
 export const ADD_ACTIVITY_BADGE = gql`
-  mutation addActivityBadge(
-    $badgeName: String!
-    $badgeImage: String
-    $activities: [ID]
-  ) {
-    addActivityBadge(
-      badgeName: $badgeName
-      badgeImage: $badgeImage
-      activities: $activities
-    ) {
+  mutation addActivityBadge($badgeName: String!, $badgeImage: String, $activities: [ID]) {
+    addActivityBadge(badgeName: $badgeName, badgeImage: $badgeImage, activities: $activities) {
       _id
     }
   }
