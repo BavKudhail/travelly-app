@@ -131,7 +131,7 @@ const Posts = () => {
               </ModalContent>
             </Modal>
             <WrapItem>
-              <Avatar size="md" name="Kola Tioluwani" src="https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbc1dd99666153.5ef7dbf39ecee.jpg" />{' '}
+              <Avatar size="md" src={userData.profilePicture} />{' '}
             </WrapItem>
           </Flex>
           {/* tabs */}
