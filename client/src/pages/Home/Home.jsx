@@ -54,40 +54,7 @@ const Home = () => {
     userData,
   } = ChatState();
 
-  // const [getLatestTrips] = useLazyQuery(GET_HOME);
-  // const [getBucketList, { loading, data, error }] = useLazyQuery(GET_ME);
-  // const [getUserData] = useLazyQuery(GET_DASHBOARD);
 
-  // const [bucketList, setBucketList] = useState([]);
-  // const userData = data?.me || [];
-
-  // const getLatestTripsFunc = async () => {
-  //   const response = await getLatestTrips();
-  //   const { data, loading, error } = response;
-
-  //   let allTrips = data.getAllTrips;
-  //   if (!Auth.loggedIn()) {
-  //     setLatestTrips(allTrips);
-  //   } else {
-  //     const bucketResponse = await getBucketList();
-  //     const userUpcomingTrips = bucketResponse.data.me.upcomingTrips;
-  //     const userGoingTripsIds = userUpcomingTrips.map((trip) => trip._id);
-  //     allTrips = allTrips.filter(
-  //       (trip) => !userGoingTripsIds.includes(trip._id)
-  //     );
-  //     setBucketList(bucketResponse.data.me.bucketList);
-  //     console.log("all trips logged in:", allTrips);
-  //     // if latest trips is an empty array then set it to that, else, don't
-
-  //     if (latestTrips.length === 0) {
-  //       setLatestTrips(allTrips);
-  //     }
-  //   }
-  // };
-
-  function filterTrips() {
-    console.log(latestTrips[0]);
-  }
 
   const recommendedTrips = latestTrips.filter((trip) => {
     const countryIds = trip.countries.map((country) => country._id);
@@ -95,18 +62,6 @@ const Home = () => {
     return countryIds.some((country) => bucketList.includes(country));
   });
 
-  // get users upcoming trips
-  // const getUpcomingTrips = async () => {
-  //   const { data: upcomingTripData } = await getUserData();
-  //   setUpcomingTrips([...upcomingTripData.me.futureTrips]);
-  // };
-
-  console.log("recommendedTrips:", recommendedTrips);
-  useEffect(() => {
-    // getLatestTripsFunc();
-    // getUpcomingTrips();
-    // getUserBucketListFunc()
-  }, []);
 
   const WavingHand = () => (
     <motion.div
@@ -125,7 +80,7 @@ const Home = () => {
     </motion.div>
   );
 
-  console.log("home - upcoming trips", upcomingTrips);
+ 
 
   return (
     // this is going to be the "app_container"
@@ -255,7 +210,7 @@ const Home = () => {
 
           {/* apply filters */}
           <Button
-            onClick={filterTrips}
+            
             mt={4}
             bgColor="blackAlpha.900"
             color="#fff"

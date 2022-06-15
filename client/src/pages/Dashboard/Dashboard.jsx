@@ -64,7 +64,7 @@ import SocialHeader from "../../components/Dashboard/SocialHeader";
 
 const Dashboard = () => {
   // state
-  const { upcomingTrips, setUpcomingTrips } = ChatState();
+  const { upcomingTrips, setUpcomingTrips, myPosts } = ChatState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD);
@@ -80,16 +80,6 @@ const Dashboard = () => {
   const savedCountryBadges = data?.me.savedCountryBadges;
   const savedActivityBadges = data?.me.savedActivityBadges;
 
-  console.log("upcoming trips", upcomingTrips);
-
-  // const getUpcomingTrips = async () => {
-  //   const { data } = await getUserData();
-  //   setUpcomingTrips([...data.me.futureTrips]);
-  // };
-
-  // useEffect(() => {
-  //   getUpcomingTrips();
-  // }, []);
 
   if (loading) {
     return <Spinner />;
@@ -129,7 +119,7 @@ const Dashboard = () => {
       return allActivityBadges.find((badge) => badge._id === id);
     });
 
-    console.log("upcoming trips dash", upcomingTrips);
+
 
     return (
       <>
@@ -192,7 +182,7 @@ const Dashboard = () => {
                     </TabPanel>
                     <TabPanel>
                       <Box>
-                        {userData.posts
+                        {myPosts
                           .slice(0)
                           .reverse()
                           .map((post) => {
