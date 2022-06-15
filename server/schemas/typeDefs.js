@@ -191,6 +191,8 @@ const typeDefs = gql`
 
     userGoing(tripId: ID!): User
 
+    leaveTrip(tripId: String!): User
+
     followUser(userId: ID!): User
 
     migratePastTrips: User

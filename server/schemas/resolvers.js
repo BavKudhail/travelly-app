@@ -593,6 +593,29 @@ const resolvers = {
         .execPopulate();
     },
 
+    leaveTrip: async (parent, { tripId }, context) => {
+      //////////PROCESSING/////////////////
+      const user = await User.findByIdAndUpdate({ _id: context.user._id }, { $pull: { upcomingTrips: tripId } }, { new: true, runValidators: true });
+
+      const trip = await Trip.findByIdAndUpdate({ _id: tripId }, { $pull: { travellers: context.user._id } }, { new: true, runValidators: true });
+
+      // remove user from group chat
+      const updatedChat = await Chat.findByIdAndUpdate({ _id: trip.chatId }, { $pull: { users: user._id } });
+
+      //////////RETURN VALUE///////////////
+      return user
+        .populate({
+          path: 'upcomingTrips',
+          model: 'Trip',
+          populate: {
+            path: 'countries',
+            model: 'Country',
+          },
+        })
+
+        .execPopulate();
+    },
+
     followUser: async (parent, { userId }, context) => {
       //////////AUTH SECTION///////////////
       // TODO: add authorisation to check if user is logged in and auth to save badges (i.e not a company or admin)
