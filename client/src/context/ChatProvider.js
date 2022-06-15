@@ -13,6 +13,7 @@ const ChatProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState();
   const [getUserData] = useLazyQuery(CONTEXT);
   const [notifications, setNotifications] = useState(0);
+  const [latestTrips, setLatestTrips] = useState([]);
 
   // get information regarding the logged in user
   const getUserDataFunc = async () => {
@@ -33,6 +34,8 @@ const ChatProvider = ({ children }) => {
         setChats,
         loggedInUser,
         setLoggedInUser,
+        latestTrips,
+        setLatestTrips
       }}
     >
       {children}
