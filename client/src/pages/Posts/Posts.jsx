@@ -260,30 +260,6 @@ const Posts = () => {
               2
             </Flex>
           </Flex>
-          {/*  */}
-          <Flex>
-            <IconButton
-              icon={<FiBell />}
-              fontSize="sm"
-              bgColor="#fff"
-              borderRadius="50%"
-              p="10px"
-            />
-            <Flex
-              w="30px"
-              h="25px"
-              bgColor="#b57296"
-              borderRadius="50%"
-              color="#fff"
-              align="center"
-              justify="center"
-              ml="-3"
-              mt="-2"
-              zIndex="100"
-            >
-              2
-            </Flex>
-          </Flex>
         </Flex>
         {/* following users here */}
         <div>

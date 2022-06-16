@@ -55,6 +55,8 @@ export const ADD_POST = gql`
       _id
       postTitle
       postedBy {
+        _id
+        profilePicture
         username
       }
       postText
