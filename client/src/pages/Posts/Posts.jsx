@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { GET_POSTS, GET_ME } from "../../utils/queries";
+import { diffForHumans } from "../../utils/helpers";
+import moment from "moment";
+
 // import context
 import { ChatState } from "../../context/ChatProvider";
 
@@ -62,12 +65,20 @@ const Posts = () => {
     setLatestPosts(data.getAllPosts);
   };
 
-  console.log("latestposts", latestPosts);
   // get following posts
   const getFollowingPosts = async () => {
     const response = await getPosts();
     const { data, loading } = response;
-    setFollowingPosts(data.getFollowingPosts.following);
+
+    const posts = data.getFollowingPosts.following.reduce((total, current)=>{
+        return [...total, ...current.posts]
+    }, [])
+
+    const orderedPosts = posts.sort(function(a, b){
+
+      return b.createdAt - a.createdAt
+    })
+    setFollowingPosts(orderedPosts)
   };
 
   // get all posts of users I am following
@@ -91,7 +102,7 @@ const Posts = () => {
         postText: postText,
       },
     });
-    console.log("data.addPost", data.addPost);
+
     setMyPosts([...myPosts, data.addPost]);
 
     setLatestPosts([...latestPosts, data.addPost]);
@@ -183,24 +194,26 @@ const Posts = () => {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  {followingPosts.map((user) => {
-                    console.log(user);
-                    return user.posts
-                      .slice(0)
-                      .reverse()
-                      .map((post) => {
+                  {followingPosts.map((post) => {
+                   
+                    // return user.posts
+                    //   .slice(0)
+                    //   .reverse()
+                    //   .map((post) => {
                         return (
                           <PostCard
                             key={post._id}
-                            date={post.createdAt}
+                            
+                            date={diffForHumans(post.createdAt)}
                             postTitle={post.postTitle}
                             postText={post.postText}
-                            username={user.username}
-                            userId={user._id}
-                            profilePicture={user.profilePicture}
+                            username={post.postedBy.username}
+                            userId={post.postedBy._id}
+                            profilePicture={post.postedBy.profilePicture}
                           />
                         );
-                      });
+                      // }
+                      // );
                   })}
                 </TabPanel>
                 <TabPanel>
@@ -247,7 +260,7 @@ const Posts = () => {
               <Spinner />
             ) : (
               userData.following.map((user, index) => {
-                console.log(user);
+             
                 return (
                   <ChatUserList
                     key={index}

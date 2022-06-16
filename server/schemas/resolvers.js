@@ -63,6 +63,10 @@ const resolvers = {
           populate: {
             path: "posts",
             model: "Post",
+            populate: {
+              path: "postedBy",
+              model: "User",
+            },
           },
         });
       }

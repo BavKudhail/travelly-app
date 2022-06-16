@@ -363,6 +363,11 @@ export const GET_POSTS = gql`
           createdAt
           postTitle
           postText
+          postedBy {
+            _id
+            username
+            profilePicture
+          }
         }
       }
     }

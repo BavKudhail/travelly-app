@@ -1,12 +1,12 @@
-const { Schema, model } = require('mongoose');
-const commentSchema = require('./Comment');
-const moment = require('moment');
+const { Schema, model } = require("mongoose");
+const commentSchema = require("./Comment");
+const moment = require("moment");
 
 const postSchema = new Schema(
   {
     postedBy: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     postTitle: {
       type: String,
@@ -20,7 +20,7 @@ const postSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: (createdAt) => moment(createdAt).format('MMM DD, YYYY [at] hh:mm a'),
+      // get: (createdAt) => moment(createdAt).format('MMM DD, YYYY [at] hh:mm a'),
     },
     comments: [commentSchema],
   },
@@ -32,10 +32,10 @@ const postSchema = new Schema(
 );
 
 // comment count
-postSchema.virtual('commentCount').get(function () {
+postSchema.virtual("commentCount").get(function () {
   return this.comments.length;
 });
 
-const Post = model('Post', postSchema);
+const Post = model("Post", postSchema);
 
 module.exports = Post;
