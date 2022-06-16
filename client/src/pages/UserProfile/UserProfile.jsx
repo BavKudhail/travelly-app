@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import SocialHeader from '../../components/Dashboard/SocialHeader';
 import {
   Image,
@@ -47,14 +47,8 @@ import CountryBadges from '../../components/CountryBadges/CountryBadges';
 
 // mutations/queries
 import { GET_USER } from '../../utils/queries';
-import Auth from '../../utils/auth';
 
 function UserProfile() {
-  const navigate = useNavigate();
-
-  if (!Auth.loggedIn()) {
-    navigate('/userlogin');
-  }
   // get id from params
   const { id } = useParams();
 
