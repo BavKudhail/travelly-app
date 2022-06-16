@@ -39,14 +39,27 @@ import {
   FormLabel,
   InputGroup,
   Textarea,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
 import PostCard from "../../components/PostCard";
 import plusIcon from "../../assets/plus.png";
 import { FiBell } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import ChatUserList from "../../components/ChatBox/ChatUserList";
 
 const Posts = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: mobileIsOpen,
+    onOpen: mobileOnOpen,
+    onClose:mobileOnClose,
+  } = useDisclosure();
   // Execute the query on component load
 
   // Get the logged in user
@@ -239,6 +252,70 @@ const Posts = () => {
           </Box>
         </Flex>
       </Flex>
+      <Button
+        display={["inline-flex", "inline-flex", "none"]}
+        onClick={mobileOnOpen}
+        position={"fixed"}
+        h="70px"
+        w="70px"
+        left="40%"
+        bottom="10px"
+        borderRadius={"50%"}
+        backgroundColor="#5959BA"
+        zIndex={"100"}
+      >
+        <FiPlus fontSize={"50px"} color="#FFF" />
+      </Button>
+      <Drawer
+        display={["inline-flex", "inline-flex", "none"]}
+        size={"lg"}
+        isOpen={mobileIsOpen}
+        placement="right"
+        onClose={mobileOnClose}
+      >
+        <DrawerOverlay display={["inline-flex", "inline-flex", "none"]} />
+        <DrawerContent display={["inline-flex", "inline-flex", "none"]}>
+          <DrawerCloseButton />
+          <DrawerBody>
+            <Flex alignContent="center" flexDir={"column"}>
+              <Box>
+                <Heading>My Friends👇 </Heading>
+              </Box>
+              <Box>
+                {loading ? (
+                  <Spinner />
+                ) : (
+                  userData.following.map((user, index) => {
+                    console.log(user);
+                    return (
+                      <ChatUserList
+                        key={index}
+                        username={user.username}
+                        email={user.email}
+                        avatar={user.profilePicture}
+                        userId={user._id}
+                        earnedCountryBadges={user.earnedCountryBadges}
+                      />
+                    );
+                  })
+                )}
+              </Box>
+            </Flex>
+          </DrawerBody>
+          <DrawerFooter>
+            <Button
+              backgroundColor="#5959BA"
+              variant="outline"
+              color="white"
+              mr={3}
+              onClick={mobileOnClose}
+            >
+              Close
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+      {/* modal ends here */}
       <Flex
         display={["none", "none", "flex"]}
         //   responsive breakpooints

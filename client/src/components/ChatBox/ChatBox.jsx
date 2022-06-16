@@ -23,8 +23,9 @@ import {
 import { CHATBOX } from "../../utils/queries";
 import { SEND_MESSAGE } from "../../utils/mutations";
 
-// refactor endpoint for heroku
-const ENDPOINT = "http://localhost:3000"; //"https://xxxxxxx.herokuapp.com";
+// endpoint = heroku app if exits, or, localhost
+const ENDPOINT = "https://gentle-lowlands-70428.herokuapp.com/" || "http://localhost:3000"
+
 let socket;
 let selectedChatCompare;
 

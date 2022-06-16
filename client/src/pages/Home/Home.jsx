@@ -38,6 +38,14 @@ import {
   Checkbox,
   CheckboxGroup,
   Stack,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FiBell } from "react-icons/fi";
 // import context
@@ -45,10 +53,13 @@ import { ChatState } from "../../context/ChatProvider";
 import { Spinner } from "@chakra-ui/react";
 // images
 import logo from "../../assets/logo_icon.png";
+import { FiPlus } from "react-icons/fi";
 
 import Auth from "../../utils/auth";
 
 const Home = () => {
+  // chat drawer
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // queries/mutations
   const { loading, data } = useQuery(GET_TRIP_DATA);
   const countryData = data?.getAllCountries || [];
@@ -200,7 +211,100 @@ const Home = () => {
         </Flex>
       </Flex>
       {/* COLUMN 3 - RIGHT SECTION */}
-      <MobileModal />
+      <Button
+        display={["inline-flex", "inline-flex", "none"]}
+        onClick={onOpen}
+        position={"fixed"}
+        h="70px"
+        w="70px"
+        left="40%"
+        bottom="10px"
+        borderRadius={"50%"}
+        backgroundColor="#5959BA"
+        zIndex={"100"}
+      >
+        <FiPlus fontSize={"50px"} color="#FFF" />
+      </Button>
+      <Drawer
+        display={["inline-flex", "inline-flex", "none"]}
+        size={"lg"}
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+      >
+        <DrawerOverlay display={["inline-flex", "inline-flex", "none"]} />
+        <DrawerContent display={["inline-flex", "inline-flex", "none"]}>
+          <DrawerCloseButton />
+          <DrawerBody>
+            <Flex alignContent="center" flexDir={"column"}>
+              <Heading>Filter Trips</Heading>
+              <VStack spacing="5px" color="black">
+                <form className="signup-form">
+                  <FormControl my={"4"}>
+                    <FormLabel>Countries</FormLabel>
+                    <MultiSelect
+                      width="100%"
+                      key={countryOptions.value}
+                      options={countryOptions}
+                      value={selectedCountry}
+                      onChange={setSelectedCountry}
+                      labelledBy="Select"
+                    />
+                  </FormControl>
+                  <Button
+                    width={"full"}
+                    mt="4"
+                    type="submit"
+                    onClick={filterTripsHandler}
+                    style={{
+                      backgroundColor: "#0093e9",
+                      backgroundImage:
+                        "linear-gradient(160deg, #5959ba 0%, #a19cdb 100%)",
+                      color: "white",
+                      borderRadius: "30px",
+                      boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+                    }}
+                    my="20px"
+                  >
+                    Apply Filters
+                  </Button>
+                </form>
+              </VStack>
+              {/* filter trips modal */}
+              <Box>
+                {filteredTrips.map((trip) => {
+                  return (
+                    <TripCard
+                      key={trip._id}
+                      tripName={trip.tripName}
+                      tripDescription={trip.tripDescription}
+                      startDate={trip.startDate}
+                      endDate={trip.endDate}
+                      tripId={trip._id}
+                      imageUrl={trip.imageUrl}
+                    />
+                  );
+                })}
+              </Box>
+              <Box>
+                <Image src={landingMountain} borderRadius="30px" />
+              </Box>
+            </Flex>
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button
+              backgroundColor="#5959BA"
+              variant="outline"
+              color="white"
+              mr={3}
+              onClick={onClose}
+            >
+              Close
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
       {/* modal ends here */}
       <Flex
         display={["none", "none", "flex"]}
