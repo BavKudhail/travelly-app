@@ -40,6 +40,7 @@ import {
 import PostCard from "../../components/PostCard";
 import plusIcon from "../../assets/plus.png";
 import { FiBell } from "react-icons/fi";
+import ChatUserList from "../../components/ChatBox/ChatUserList";
 
 const Posts = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -237,46 +238,30 @@ const Posts = () => {
         justifyContent="space-between"
         className="right_section"
       >
-        <Flex alignContent="center">
-          <Flex>
-            <IconButton
-              icon={<FiBell />}
-              fontSize="sm"
-              bgColor="#fff"
-              borderRadius="50%"
-              p="10px"
-            />
-            <Flex
-              w="30px"
-              h="25px"
-              bgColor="#b57296"
-              borderRadius="50%"
-              color="#fff"
-              align="center"
-              justify="center"
-              ml="-3"
-              mt="-2"
-              zIndex="100"
-            >
-              2
-            </Flex>
-          </Flex>
+        <Flex alignContent="center" flexDir={"column"}>
+          <Box>
+            <Heading>My Friends👇 </Heading>
+          </Box>
+          <Box>
+            {loading ? (
+              <Spinner />
+            ) : (
+              userData.following.map((user, index) => {
+                console.log(user);
+                return (
+                  <ChatUserList
+                    key={index}
+                    username={user.username}
+                    email={user.email}
+                    avatar={user.profilePicture}
+                    userId={user._id}
+                    earnedCountryBadges={user.earnedCountryBadges}
+                  />
+                );
+              })
+            )}
+          </Box>
         </Flex>
-        {/* following users here */}
-        <div>
-          {/* {loading ? (
-            <Spinner />
-          ) : (
-            userData.following.map((userFollowing) => {
-              return (
-                <div key={userFollowing._id}> {userFollowing.username}</div>
-              );
-            })
-          )} */}
-        </div>
-        <Box>
-          <Heading>Level Up 💯</Heading>
-        </Box>
       </Flex>
     </>
   );
