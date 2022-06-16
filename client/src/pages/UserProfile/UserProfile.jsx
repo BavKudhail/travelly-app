@@ -119,7 +119,7 @@ function UserProfile() {
                       .slice(0)
                       .reverse()
                       .map((post) => {
-                        return <PostCard postText={post.postText} postTitle={post.postTitle} date={post.createdAt} />;
+                        return <PostCard postText={post.postText} postTitle={post.postTitle} date={post.createdAt} username={userData.username} />;
                       })}
                   </Box>
                 </TabPanel>

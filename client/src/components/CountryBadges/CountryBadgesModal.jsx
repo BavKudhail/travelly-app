@@ -11,7 +11,7 @@ import { SAVE_COUNTRY_BADGE, REMOVE_COUNTRY_BADGE } from '../../utils/mutations'
 
 import { Flex, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, Button, Box, Text, ButtonGroup } from '@chakra-ui/react';
 
-export default function CountryBadges({ image, badgeTitle, countries, badgeId }) {
+export function CountryBadgesModal({ image, badgeTitle, countries, badgeId }) {
   // modal logic
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [saveCountryBadge] = useMutation(SAVE_COUNTRY_BADGE);
@@ -69,13 +69,13 @@ export default function CountryBadges({ image, badgeTitle, countries, badgeId })
       >
         <Image src={image} />
       </Flex>
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{badgeTitle}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Image src={image}></Image>
             <Text>Countries to visit</Text>
             <Box>
               {countries &&

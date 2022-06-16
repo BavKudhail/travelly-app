@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useMutation } from "@apollo/react-hooks";
+import React, { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 // TODO - import auth here
-import Auth from "../utils/auth";
+import Auth from '../utils/auth';
 // mutations/queries
-import { LOGIN_USER } from "../utils/mutations";
+import { LOGIN_USER } from '../utils/mutations';
 
-import {
-  VStack,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Button,
-} from "@chakra-ui/react";
+import { VStack, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button } from '@chakra-ui/react';
 
-import "./SignUpForm.css"
+import './SignUpForm.css';
 
 export default function LoginForm() {
-  const [userInput, setUserInput] = useState({ email: "", password: "" });
+  const [userInput, setUserInput] = useState({ email: '', password: '' });
 
   const [loginUser, { error }] = useMutation(LOGIN_USER);
 
@@ -38,21 +30,20 @@ export default function LoginForm() {
     }
 
     try {
-      
       const { data } = await loginUser({
         variables: { ...userInput },
       });
-      console.log(data)
+      console.log(data);
       Auth.login(data.loginUser.token);
-      console.log("Logged in!");
+      console.log('Logged in!');
     } catch (err) {
-      console.error(err);
+      alert(err);
     }
 
     setUserInput({
-      username: "",
-      email: "",
-      password: "",
+      username: '',
+      email: '',
+      password: '',
     });
   };
 
@@ -63,31 +54,17 @@ export default function LoginForm() {
         <VStack spacing="5px" color="black">
           <form onSubmit={handleFormSubmit} className="signup-form">
             {/* email */}
-            <FormControl my={"4"}>
+            <FormControl my={'4'}>
               <FormLabel>Email</FormLabel>
-              <Input
-                value={userInput.email}
-                placeholder="email"
-                name="email"
-                type="email"
-                required
-                onChange={handleUserInput}
-              />
+              <Input value={userInput.email} placeholder="email" name="email" type="email" required onChange={handleUserInput} />
             </FormControl>
-            <FormControl my={"4"}>
+            <FormControl my={'4'}>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input
-                  value={userInput.password}
-                  placeholder="password"
-                  name="password"
-                  type="password"
-                  required
-                  onChange={handleUserInput}
-                />
+                <Input value={userInput.password} placeholder="password" name="password" type="password" required onChange={handleUserInput} />
               </InputGroup>
             </FormControl>
-            <Button width={"full"} mt="4" type="submit">
+            <Button width={'full'} mt="4" type="submit">
               Submit
             </Button>
           </form>
