@@ -41,7 +41,7 @@ const SignUpForm = () => {
       });
       Auth.login(data.addUser.token);
     } catch (err) {
-      console.error(err);
+      alert(err);
     }
 
     setUserFormData({
