@@ -69,12 +69,6 @@ const UserSignUpForm = () => {
               <Input onChange={handleUserInput} placeholder="password" name="password" type="password" required />
             </InputGroup>
           </FormControl>
-          <FormControl my={'4'}>
-            <FormLabel>Image Upload</FormLabel>
-            <InputGroup>
-              <input type="file" />
-            </InputGroup>
-          </FormControl>
           <Button width={'full'} mt="4" type="submit">
             Submit
           </Button>
