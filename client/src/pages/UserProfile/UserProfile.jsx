@@ -108,7 +108,9 @@ function UserProfile() {
                   <Flex justifyContent={'center'}>
                     <Box my="10">
                       {userData.pastTrips.map((trip) => {
-                        return <TripCard image={trip.imageUrl} tripName={trip.tripName} startDate={trip.startDate} endDate={trip.endDate} tripDescription={trip.tripDescription} />;
+                        return (
+                          <TripCard image={trip.imageUrl} tripName={trip.tripName} startDate={trip.startDate} endDate={trip.endDate} tripDescription={trip.tripDescription} tripUser={userData._id} />
+                        );
                       })}
                     </Box>
                   </Flex>
