@@ -24,16 +24,23 @@ function ChatUserList({
       borderRadius="10px"
       border={"1px solid white"}
       p="5px"
+      maxWidth={"400px"}
     >
-      <Flex p="5px" flexDir={"column"} justifyContent="center">
+      <Flex p="5px" justifyContent="center">
         <a href={`/userprofile/${userId}`}>
-          <Avatar name="Oshigaki Kisame" size="md" src={avatar} />
+          <Avatar
+            name="Oshigaki Kisame"
+            size="md"
+            src={avatar}
+            border="1px solid white"
+          />
         </a>
       </Flex>
       <Flex
         p="10px"
         flexDir={"column"}
         backgroundColor="white"
+        w={"100%"}
         borderRadius={"30px"}
         boxShadow="md"
       >

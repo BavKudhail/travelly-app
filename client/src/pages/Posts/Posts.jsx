@@ -238,7 +238,7 @@ const Posts = () => {
         justifyContent="space-between"
         className="right_section"
       >
-        <Flex alignContent="center">
+        <Flex alignContent="center" flexDir={"column"}>
           <Box>
             <Heading>My Friends👇 </Heading>
           </Box>
