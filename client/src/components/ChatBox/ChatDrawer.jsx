@@ -70,18 +70,14 @@ export const ChatDrawer = () => {
                         key={index}
                         username={user.username}
                         email={user.email}
+                        avatar={user.profilePicture}
+                        userId={user._id}
+                        earnedCountryBadges={user.earnedCountryBadges}
                       />
                     );
                   })}
                 </div>
               )}
-              <Box>
-                {/* trip info here :-) */}
-                <Image
-                  borderRadius={"30px"}
-                  src="https://i1.trekearth.com/photos/2920/goldentemple.jpg"
-                />
-              </Box>
             </div>
           </DrawerBody>
         </DrawerContent>

@@ -65,7 +65,7 @@ import SocialHeader from "../../components/Dashboard/SocialHeader";
 const Dashboard = () => {
   // state
   const { upcomingTrips, setUpcomingTrips, myPosts } = ChatState();
-  console.log("myPosts",myPosts)
+  console.log("myPosts", myPosts);
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Execute the query on component load
   const { loading, data, error } = useQuery(GET_DASHBOARD);
@@ -80,7 +80,6 @@ const Dashboard = () => {
 
   const savedCountryBadges = data?.me.savedCountryBadges;
   const savedActivityBadges = data?.me.savedActivityBadges;
-
 
   if (loading) {
     return <Spinner />;
@@ -119,8 +118,6 @@ const Dashboard = () => {
     const unsavedActivityBadges = unsavedActivityBadgeIds.map((id) => {
       return allActivityBadges.find((badge) => badge._id === id);
     });
-
-
 
     return (
       <>
@@ -187,7 +184,7 @@ const Dashboard = () => {
                           .slice(0)
                           .reverse()
                           .map((post) => {
-                            console.log("postId",post._id)
+                            console.log("postId", post._id);
                             return (
                               <PostCard
                                 postText={post.postText}

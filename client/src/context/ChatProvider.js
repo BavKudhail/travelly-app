@@ -11,6 +11,7 @@ const ChatContext = createContext();
 const ChatProvider = ({ children }) => {
   // state
   const [selectedChat, setSelectedChat] = useState("");
+  // chats
   const [chats, setChats] = useState();
   const [loggedInUser, setLoggedInUser] = useState();
   // const [getUserData] = useLazyQuery(CONTEXT);
@@ -38,10 +39,10 @@ const ChatProvider = ({ children }) => {
   };
 
   // get information regarding the logged in user
-  // const getUserDataFunc = async () => {
-  //   const { data } = await getUserData();
-  //   setLoggedInUser(data.me);
-  // };
+  const getUserDataFunc = async () => {
+    const { data } = await getUserData();
+    setLoggedInUser(data.me);
+  };
 
   // set latest trips
   const getLatestTripsFunc = async () => {
@@ -71,7 +72,7 @@ const ChatProvider = ({ children }) => {
     getUpcomingTrips();
     getLatestTripsFunc();
     getMyPosts();
-    // getUserDataFunc();
+    getUserDataFunc();
   }, []);
 
   return (

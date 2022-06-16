@@ -40,8 +40,15 @@ export const GET_GROUP_CHATS = gql`
       _id
       chatName
       users {
+        _id
         username
+        profilePicture
         email
+        earnedCountryBadges {
+          _id
+          badgeImage
+          badgeName
+        }
       }
       latestMessage {
         content

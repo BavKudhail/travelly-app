@@ -34,13 +34,23 @@ const Chat = () => {
     setLoggedInUser,
     notifications,
     setNotifications,
+    chats,
+    setChats,
   } = ChatState();
 
   // Execute the query on component load
   const { loading, data } = useQuery(GET_GROUP_CHATS);
   const chatData = data?.getGroupChats || [];
 
+  // useEffect(() => {
+  //   setChats([...chatData]);
+  // }, [chats]);
+
+  // console.log("chats variable", chats);
+
   console.log(chatData);
+
+  console.log(loggedInUser);
 
   return (
     <>

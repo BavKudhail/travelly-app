@@ -54,14 +54,11 @@ const Home = () => {
     userData,
   } = ChatState();
 
-
-
   const recommendedTrips = latestTrips.filter((trip) => {
     const countryIds = trip.countries.map((country) => country._id);
 
     return countryIds.some((country) => bucketList.includes(country));
   });
-
 
   const WavingHand = () => (
     <motion.div
@@ -79,8 +76,6 @@ const Home = () => {
       👋
     </motion.div>
   );
-
- 
 
   return (
     // this is going to be the "app_container"
@@ -206,10 +201,10 @@ const Home = () => {
           </Flex>
         </Flex>
         <Box>
-          <Heading>Filter Trips</Heading>
+          {/* <Heading>Filter Trips</Heading> */}
 
           {/* apply filters */}
-          <Button
+          {/* <Button
             
             mt={4}
             bgColor="blackAlpha.900"
@@ -218,7 +213,7 @@ const Home = () => {
             borderRadius={15}
           >
             Apply Filters
-          </Button>
+          </Button> */}
         </Box>
         <Box>
           <Image src={landingMountain} borderRadius="30px" />

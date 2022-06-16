@@ -714,6 +714,9 @@ const resolvers = {
         { $pull: { users: user._id } }
       );
 
+      console.log("user id", user._id);
+      console.log("updated chat:", updatedChat);
+
       //////////RETURN VALUE///////////////
       return trip;
     },

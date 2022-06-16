@@ -40,11 +40,17 @@ export default function CountryBadges({
   const [saveCountryBadge] = useMutation(SAVE_COUNTRY_BADGE);
   const [removeCountryBadge] = useMutation(REMOVE_COUNTRY_BADGE);
 
-   // state
+  // state
   //  ! Laura - imported chatState variables
-   const { upcomingTrips, setUpcomingTrips, myPosts, bucketList, setBucketList } = ChatState();
- 
-// ! Laura - made this function asynchronous
+  const {
+    upcomingTrips,
+    setUpcomingTrips,
+    myPosts,
+    bucketList,
+    setBucketList,
+  } = ChatState();
+
+  // ! Laura - made this function asynchronous
   const saveCountryBadgeFunc = async (event) => {
     event.preventDefault();
     const { data } = await saveCountryBadge({
@@ -52,10 +58,19 @@ export default function CountryBadges({
         badgeId: badgeId,
       },
     });
-    
+
+    console.log("save badge", data);
+
     // ! Setting bucketList state to all of the countries in the users savedBadges
-    setBucketList(data.saveCountryBadge.savedCountryBadges.reduce((total, badge)=> [...total, ...badge.countries.map((country)=>country._id)], []))
-    
+    setBucketList(
+      data.saveCountryBadge.savedCountryBadges.reduce(
+        (total, badge) => [
+          ...total,
+          ...badge.countries.map((country) => country._id),
+        ],
+        []
+      )
+    );
   };
 
   const removeCountryBadgeFunc = (event) => {
@@ -65,6 +80,10 @@ export default function CountryBadges({
         badgeId: badgeId,
       },
     });
+    // update saved country badges to remove the country badge selected
+    console.log("remove badge data", data);
+
+    // update countrybadges to include the country badge selected
   };
 
   return (

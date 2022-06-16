@@ -35,6 +35,7 @@ export const SEND_MESSAGE = gql`
     sendMessage(content: $content, chatId: $chatId) {
       _id
       sender {
+        _id
         username
       }
       content
@@ -55,6 +56,8 @@ export const ADD_POST = gql`
       _id
       postTitle
       postedBy {
+        _id
+        profilePicture
         username
       }
       postText
@@ -266,6 +269,13 @@ export const REMOVE_COUNTRY_BADGE = gql`
   mutation removeCountryBadge($badgeId: ID!) {
     removeCountryBadge(badgeId: $badgeId) {
       _id
+      savedCountryBadges {
+        _id
+        badgeName
+        countries {
+          _id
+        }
+      }
     }
   }
 `;
