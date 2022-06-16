@@ -226,8 +226,9 @@ const Posts = () => {
         </Flex>
       </Flex>
       <Flex
+        display={["none", "none", "flex"]}
         //   responsive breakpooints
-        w={["100%", "100%", "30%"]}
+        w={["100%", "100%", "25%", "30%"]}
         // bgColor="#F5F5F5"
         p="3%"
         flexDir="column"

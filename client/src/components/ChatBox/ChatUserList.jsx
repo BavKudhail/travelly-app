@@ -1,17 +1,57 @@
 import React from "react";
-import { Button, Text, Box, Avatar, Flex, HStack } from "@chakra-ui/react";
+import {
+  Button,
+  Text,
+  Box,
+  Avatar,
+  Flex,
+  HStack,
+  Stack,
+  Tooltip,
+} from "@chakra-ui/react";
 
-function ChatUserList({ username, avatar, email }) {
+function ChatUserList({
+  username,
+  avatar,
+  email,
+  userId,
+  earnedCountryBadges,
+}) {
   return (
-    <Flex my="5" backgroundColor={"#fff"} borderRadius="30px">
-      <Avatar
-        name="Oshigaki Kisame"
-        size="md"
-        src="https://bit.ly/broken-link"
-      />
-      <Flex flexDir={"column"}>
-        <Text>{username}</Text>
-        <Text>{email}</Text>
+    <Flex
+      my="5"
+      className="glassmorphic"
+      borderRadius="10px"
+      border={"1px solid white"}
+      p="5px"
+    >
+      <Flex p="5px" flexDir={"column"} justifyContent="center">
+        <a href={`/userprofile/${userId}`}>
+          <Avatar name="Oshigaki Kisame" size="md" src={avatar} />
+        </a>
+      </Flex>
+      <Flex
+        p="10px"
+        flexDir={"column"}
+        backgroundColor="white"
+        borderRadius={"30px"}
+        boxShadow="md"
+      >
+        <Text fontWeight={"bold"}>{username}</Text>
+        <Text fontSize={"sm"} color={"grey"}>
+          {email}
+        </Text>
+        <Stack direction={"row"}>
+          {earnedCountryBadges.map((badge) => {
+            return (
+              <Tooltip label={badge.badgeName} aria-label="A tooltip">
+                <Box w="30px">
+                  <img src={badge.badgeImage} />
+                </Box>
+              </Tooltip>
+            );
+          })}
+        </Stack>
       </Flex>
     </Flex>
   );

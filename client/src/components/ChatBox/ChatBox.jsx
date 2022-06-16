@@ -16,6 +16,7 @@ import {
   Flex,
   WrapItem,
   Avatar,
+  AvatarGroup,
 } from "@chakra-ui/react";
 
 // mutations / queries
@@ -87,6 +88,7 @@ const ChatBox = () => {
         // emit this message to all users within the chat
         socket.emit("new message", data.sendMessage);
         setMessages([...messages, data.sendMessage]);
+        console.log("sender:", data.sendMessage.sender);
         if (!data) {
           throw new Error("oops something went wrong!");
         }
@@ -132,10 +134,12 @@ const ChatBox = () => {
     // set the new message to the value of the user input
     setNewMessage(e.target.value);
   };
+  console.log(selectedChat);
 
   return (
     <>
       <Flex
+        my="10px"
         width={"100%"}
         flexDir="column"
         flexDirection={"column"}
@@ -143,20 +147,12 @@ const ChatBox = () => {
         alignItems="center"
       >
         <Heading textAlign={"center"}>{selectedChat.chatName}</Heading>
-        <WrapItem my="10px">
-          <Avatar
-            as={motion.div}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 10 }}
-            border={"1px solid white"}
-            size="lg"
-            name="Dan Abrahmov"
-            src="https://bit.ly/dan-abramov"
-          />
-        </WrapItem>
         <Flex justifyContent={"center"} alignItems="center">
-          <Text color={"gray.500"}>Group Admin:</Text>
-
+          <AvatarGroup my="10px" size="md" max={2}>
+            {selectedChat.users.map((user) => {
+              return <Avatar name={user.username} src={user.profilePicture} />;
+            })}
+          </AvatarGroup>
         </Flex>
       </Flex>
       <Box
@@ -173,7 +169,7 @@ const ChatBox = () => {
       >
         <Box borderRadius="30px">
           {messages.map((message, index) => {
-            return message.sender._id == loggedInUser._id ? (
+            return message.sender._id === loggedInUser._id ? (
               <Flex flexDir={"column"} alignItems={"flex-end"}>
                 <Flex
                   flexDir={"column"}

@@ -42,6 +42,8 @@ const Chat = () => {
 
   console.log(chatData);
 
+  console.log(loggedInUser);
+
   return (
     <>
       <Flex

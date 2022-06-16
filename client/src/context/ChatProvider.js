@@ -38,10 +38,10 @@ const ChatProvider = ({ children }) => {
   };
 
   // get information regarding the logged in user
-  // const getUserDataFunc = async () => {
-  //   const { data } = await getUserData();
-  //   setLoggedInUser(data.me);
-  // };
+  const getUserDataFunc = async () => {
+    const { data } = await getUserData();
+    setLoggedInUser(data.me);
+  };
 
   // set latest trips
   const getLatestTripsFunc = async () => {
@@ -71,7 +71,7 @@ const ChatProvider = ({ children }) => {
     getUpcomingTrips();
     getLatestTripsFunc();
     getMyPosts();
-    // getUserDataFunc();
+    getUserDataFunc();
   }, []);
 
   return (
