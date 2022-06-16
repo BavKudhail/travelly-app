@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import SocialHeader from '../../components/Dashboard/SocialHeader';
 import {
   Image,
@@ -47,8 +47,14 @@ import CountryBadges from '../../components/CountryBadges/CountryBadges';
 
 // mutations/queries
 import { GET_USER } from '../../utils/queries';
+import Auth from '../../utils/auth';
 
 function UserProfile() {
+  const navigate = useNavigate();
+
+  if (!Auth.loggedIn()) {
+    navigate('/userlogin');
+  }
   // get id from params
   const { id } = useParams();
 
@@ -58,13 +64,10 @@ function UserProfile() {
       userId: id,
     },
   });
- 
-  const userData = data?.getUser || [];
-  const me = data?.me || []
-  const myFollowing = me.following
-  console.log("myFollowing", myFollowing)
 
-  console.log(userData);
+  const userData = data?.getUser || [];
+  const me = data?.me || [];
+  const myFollowing = me.following;
 
   if (!loading) {
     return (
@@ -83,7 +86,6 @@ function UserProfile() {
             <SocialHeader
               profilePicture={userData.profilePicture}
               username={userData.username}
-              bio={userData.bio}
               followerCount={userData.followerCount}
               followingCount={userData.followingCount}
               visitedCountries={userData.visitedCountries}
