@@ -224,7 +224,7 @@ const Posts = () => {
                       return (
                         <PostCard
                           key={post._id}
-                          date={post.createdAt}
+                          date={diffForHumans(post.createdAt)}
                           postTitle={post.postTitle}
                           postText={post.postText}
                           username={post.postedBy.username}

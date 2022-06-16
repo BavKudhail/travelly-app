@@ -4,6 +4,7 @@ import UpcomingTrips from '../../components/Dashboard/UpcomingTrips';
 import { FiPlus } from 'react-icons/fi';
 import MobileModal from '../../components/MobileModal';
 import { TbPokeball } from 'react-icons/tb';
+import { diffForHumans } from "../../utils/helpers";
 
 import profileBadge from '../../assets/badge.png';
 import ProfileImageForm from '../../components/Dashboard/ProfileImageForm';
@@ -175,7 +176,7 @@ const Dashboard = () => {
                               <PostCard
                                 postText={post.postText}
                                 postTitle={post.postTitle}
-                                date={post.createdAt}
+                                date={diffForHumans(post.createdAt)}
                                 postId={post._id}
                                 username={userData.username}
                                 userId={userData._id}
