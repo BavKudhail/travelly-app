@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import SocialHeader from '../../components/Dashboard/SocialHeader';
 import {
   Image,
@@ -50,6 +50,9 @@ import { GET_USER } from '../../utils/queries';
 
 function UserProfile() {
   // get id from params
+
+  const navigate = useNavigate();
+
   const { id } = useParams();
 
   // Execute the query on component load
@@ -62,6 +65,13 @@ function UserProfile() {
   const userData = data?.getUser || [];
   const me = data?.me || [];
   const myFollowing = me.following;
+
+  const loggedInUserId = me._id;
+  console.log(loggedInUserId);
+
+  if (loggedInUserId === id) {
+    navigate('/dashboard');
+  }
 
   if (!loading) {
     return (
