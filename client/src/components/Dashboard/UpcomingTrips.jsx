@@ -1,34 +1,30 @@
-import React from "react";
-import { useMutation } from "@apollo/react-hooks";
+import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
 
-import { motion } from "framer-motion";
-import { Box, Image, Badge, Button } from "@chakra-ui/react";
-import { MotionConfig } from "framer-motion";
+import { motion } from 'framer-motion';
+import { Box, Image, Badge, Button } from '@chakra-ui/react';
+import { MotionConfig } from 'framer-motion';
 
-import chatIcon from "../../assets/chat-box.png";
+import chatIcon from '../../assets/chat-box.png';
+import Auth from '../../utils/auth';
 
 // import context
-import { ChatState } from "../../context/ChatProvider";
+import { ChatState } from '../../context/ChatProvider';
 
-import { LEAVE_TRIP } from "../../utils/mutations";
+import { LEAVE_TRIP } from '../../utils/mutations';
 
-const TripCard = ({
-  tripName,
-  tripDescription,
-  startDate,
-  endDate,
-  countries,
-  image,
-  tripId,
-}) => {
+const TripCard = ({ tripName, tripDescription, startDate, endDate, countries, image, tripId, tripUser }) => {
   // state
-  const { upcomingTrips, setUpcomingTrips, latestTrips, setLatestTrips } =
-    ChatState();
+  const { upcomingTrips, setUpcomingTrips, latestTrips, setLatestTrips } = ChatState();
 
   const [leaveTrip, { error }] = useMutation(LEAVE_TRIP);
 
+  // Does the trip belong to the logged in user
+  const isLoggedInUserTripUser = () => {
+    if (Auth.getProfile() === tripUser) return true;
+  };
+
   const handleLeaveTrip = async (e) => {
-    console.log("latest trips before", latestTrips)
     e.preventDefault();
     const { data } = await leaveTrip({
       variables: { tripId },
@@ -44,28 +40,12 @@ const TripCard = ({
     setLatestTrips([...latestTrips, data.leaveTrip]);
   };
 
-  console.log("latest trips after", latestTrips);
-
   return (
-    <Box
-      maxW="lg"
-      borderWidth="1px"
-      borderRadius="30px"
-      overflow="hidden"
-      boxShadow={"2xl"}
-      my="10"
-      backgroundColor={"#fff"}
-    >
+    <Box maxW="lg" borderWidth="1px" borderRadius="30px" overflow="hidden" boxShadow={'2xl'} my="10" backgroundColor={'#fff'}>
       <Image src={image} borderRadius="30px" />
 
       <Box p="6">
-        <Box
-          mt="1"
-          fontWeight="semibold"
-          as="h4"
-          lineHeight="tight"
-          noOfLines={1}
-        >
+        <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
           {tripName}
         </Box>
         <Box>{tripDescription}</Box>
@@ -75,9 +55,7 @@ const TripCard = ({
             {startDate} <span> - </span> {endDate}
           </Box>
         </Box>
-        <Box>
-          <Button onClick={handleLeaveTrip}>Leave Trip</Button>
-        </Box>
+        <Box>{isLoggedInUserTripUser() ? <Button onClick={handleLeaveTrip}>Leave Trip</Button> : <></>}</Box>
         {/* <Box
           w="50px"
           backgroundColor="white"
