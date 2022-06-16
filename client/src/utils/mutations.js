@@ -52,6 +52,7 @@ export const SEND_MESSAGE = gql`
 export const ADD_POST = gql`
   mutation ($postText: String!, $postTitle: String) {
     addPost(postText: $postText, postTitle: $postTitle) {
+      _id
       postTitle
       postedBy {
         username
@@ -245,10 +246,18 @@ export const ADD_TRIP = gql`
   }
 `;
 
+// ! Laura - added badgeName and countries {_id} fields to saveCountryBadge mutation
 export const SAVE_COUNTRY_BADGE = gql`
   mutation saveCountryBadge($badgeId: ID!) {
     saveCountryBadge(badgeId: $badgeId) {
       _id
+      savedCountryBadges {
+        _id
+        badgeName
+        countries {
+          _id
+        }
+      }
     }
   }
 `;
