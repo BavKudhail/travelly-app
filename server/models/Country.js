@@ -1,10 +1,11 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const countrySchema = new Schema(
   {
     countryName: {
       type: String,
       required: true,
+      unique: true,
     },
   },
   {
@@ -14,6 +15,6 @@ const countrySchema = new Schema(
   }
 );
 
-const Country = model('Country', countrySchema);
+const Country = model("Country", countrySchema);
 
 module.exports = Country;
