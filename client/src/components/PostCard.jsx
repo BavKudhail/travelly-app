@@ -1,13 +1,11 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 // import context
-import { ChatState } from "../context/ChatProvider";
+import { ChatState } from '../context/ChatProvider';
 import { Box, Center, Heading, Text, Stack, Avatar, Image, useColorModeValue, Button } from '@chakra-ui/react';
 
 import { DELETE_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
-
-
 
 const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId, profilePicture }) => {
   const [deletePost, { error }] = useMutation(DELETE_POST);
@@ -29,9 +27,11 @@ const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId,
       variables: { postId },
     });
 
-    setMyPosts(myPosts.filter((post)=>{
-      return post._id !== postId
-    }))
+    setMyPosts(
+      myPosts.filter((post) => {
+        return post._id !== postId;
+      })
+    );
   };
 
   return (
@@ -55,7 +55,7 @@ const PostCard = ({ postText, username, avatar, date, postTitle, userId, postId,
         <Heading>{postTitle}</Heading>
         <Text fontSize={'2xl'}>{postText}</Text>
         <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
-          <a href={`/userprofile/${userId}`}>
+          <a href={`/#/userprofile/${userId}`}>
             <Avatar src={profilePicture} alt={'Author'} />
           </a>
           <Stack direction={'column'} spacing={0} fontSize={'sm'}>
