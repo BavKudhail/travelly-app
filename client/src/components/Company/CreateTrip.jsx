@@ -58,6 +58,7 @@ function CreateTrip() {
     return reformattedDate;
   };
 
+  // form handler
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 

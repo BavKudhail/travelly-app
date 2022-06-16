@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ME = gql`
   query getLoggedInUser {
@@ -7,8 +7,15 @@ export const GET_ME = gql`
       username
       profilePicture
       following {
-        username
         _id
+        username
+        profilePicture
+        email
+        earnedCountryBadges {
+          _id
+          badgeImage
+          badgeName
+        }
       }
       bucketList
       upcomingTrips {

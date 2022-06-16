@@ -6,12 +6,18 @@ import landingMountain from "../../assets/landing-mountain.png";
 import "./Home.css";
 import MobileModal from "../../components/MobileModal";
 import { GET_HOME, GET_ME, GET_DASHBOARD } from "../../utils/queries";
+import { GET_TRIP_DATA } from "../../utils/queries";
+import { MultiSelect } from "react-multi-select-component";
 
 // date picker
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import {
+  VStack,
+  FormControl,
+  FormLabel,
+  Textarea,
   Image,
   Flex,
   Heading,
@@ -43,6 +49,10 @@ import logo from "../../assets/logo_icon.png";
 import Auth from "../../utils/auth";
 
 const Home = () => {
+  // queries/mutations
+  const { loading, data } = useQuery(GET_TRIP_DATA);
+  const countryData = data?.getAllCountries || [];
+
   // states
   const {
     latestTrips,
@@ -54,11 +64,41 @@ const Home = () => {
     userData,
   } = ChatState();
 
+  const [selectedCountry, setSelectedCountry] = useState([]);
+  const [filteredTrips, setFilteredTrips] = useState([]);
+
   const recommendedTrips = latestTrips.filter((trip) => {
     const countryIds = trip.countries.map((country) => country._id);
 
     return countryIds.some((country) => bucketList.includes(country));
   });
+
+  //   options for multi-select countries
+  const countryOptions = countryData.map((country) => {
+    return {
+      label: country.countryName,
+      value: country._id,
+    };
+  });
+
+  // filter trips
+  const filterTripsHandler = (e) => {
+    e.preventDefault();
+
+    // handle country data
+    const countriesData = selectedCountry.map((country) => {
+      return country.value;
+    });
+
+    const filterTrips = latestTrips.filter((trip) => {
+      const countryIds = trip.countries.map((country) => country._id);
+      return countryIds.some((country) => countriesData.includes(country));
+    });
+
+    // set filtered trips variable
+    setFilteredTrips([...filterTrips]);
+    console.log(filteredTrips);
+  };
 
   const WavingHand = () => (
     <motion.div
@@ -78,7 +118,6 @@ const Home = () => {
   );
 
   return (
-    // this is going to be the "app_container"
     <>
       <Flex
         //   gain extra 5% from the first col shrinking into just icons
@@ -175,49 +214,60 @@ const Home = () => {
         justifyContent="space-between"
         className="right_section"
       >
-        <Flex alignContent="center">
-          <Flex>
-            <IconButton
-              icon={<FiBell />}
-              fontSize="sm"
-              bgColor="#fff"
-              borderRadius="50%"
-              p="10px"
-            />
-            <Flex
-              w="30px"
-              h="25px"
-              bgColor="#b57296"
-              borderRadius="50%"
-              color="#fff"
-              align="center"
-              justify="center"
-              ml="-3"
-              mt="-2"
-              zIndex="100"
-            >
-              2
-            </Flex>
-          </Flex>
+        <Flex alignContent="center" flexDir={"column"}>
+          <Heading>Filter Trips</Heading>
+          <VStack spacing="5px" color="black">
+            <form className="signup-form">
+              <FormControl my={"4"}>
+                <FormLabel>Countries</FormLabel>
+                <MultiSelect
+                  width="100%"
+                  key={countryOptions.value}
+                  options={countryOptions}
+                  value={selectedCountry}
+                  onChange={setSelectedCountry}
+                  labelledBy="Select"
+                />
+              </FormControl>
+              <Button
+                width={"full"}
+                mt="4"
+                type="submit"
+                onClick={filterTripsHandler}
+                style={{
+                  backgroundColor: "#0093e9",
+                  backgroundImage:
+                    "linear-gradient(160deg, #5959ba 0%, #a19cdb 100%)",
+                  color: "white",
+                  borderRadius: "30px",
+                  boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+                }}
+                my="20px"
+              >
+                Apply Filters
+              </Button>
+            </form>
+          </VStack>
+          {/* filter trips modal */}
+          <Box>
+            {filteredTrips.map((trip) => {
+              return (
+                <TripCard
+                  key={trip._id}
+                  tripName={trip.tripName}
+                  tripDescription={trip.tripDescription}
+                  startDate={trip.startDate}
+                  endDate={trip.endDate}
+                  tripId={trip._id}
+                  imageUrl={trip.imageUrl}
+                />
+              );
+            })}
+          </Box>
+          <Box>
+            <Image src={landingMountain} borderRadius="30px" />
+          </Box>
         </Flex>
-        <Box>
-          {/* <Heading>Filter Trips</Heading> */}
-
-          {/* apply filters */}
-          {/* <Button
-            
-            mt={4}
-            bgColor="blackAlpha.900"
-            color="#fff"
-            p={7}
-            borderRadius={15}
-          >
-            Apply Filters
-          </Button> */}
-        </Box>
-        <Box>
-          <Image src={landingMountain} borderRadius="30px" />
-        </Box>
       </Flex>
     </>
   );
