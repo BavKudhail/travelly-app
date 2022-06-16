@@ -62,6 +62,8 @@ const Posts = () => {
   } = useDisclosure();
   // Execute the query on component load
 
+  // random test comment
+
   // Get the logged in user
   const { data, error, loading } = useQuery(GET_ME);
   const userData = data?.me || [];
