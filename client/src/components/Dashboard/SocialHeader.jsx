@@ -50,7 +50,7 @@ function SocialHeader({ profilePicture, username, followingCount, followerCount,
   const { isOpen, onOpen, onClose } = useDisclosure();
   const loggedInUserId = Auth.getProfile().data._id;
   const [followUser] = useMutation(FOLLOW_USER);
-
+  console.log(earnedCountryBadges);
   const followUserFunc = async () => {
     const { data } = await followUser({
       variables: {
@@ -91,7 +91,6 @@ function SocialHeader({ profilePicture, username, followingCount, followerCount,
                     <Button colorScheme="blue" mr={3} onClick={onClose}>
                       Close
                     </Button>
-                    <Button variant="ghost">Secondary Action</Button>
                   </ModalFooter>
                 </ModalContent>
               </Modal>
