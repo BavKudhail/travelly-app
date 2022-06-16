@@ -11,6 +11,7 @@ const ChatContext = createContext();
 const ChatProvider = ({ children }) => {
   // state
   const [selectedChat, setSelectedChat] = useState("");
+  // chats
   const [chats, setChats] = useState();
   const [loggedInUser, setLoggedInUser] = useState();
   // const [getUserData] = useLazyQuery(CONTEXT);
