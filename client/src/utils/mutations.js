@@ -266,6 +266,13 @@ export const REMOVE_COUNTRY_BADGE = gql`
   mutation removeCountryBadge($badgeId: ID!) {
     removeCountryBadge(badgeId: $badgeId) {
       _id
+      savedCountryBadges {
+        _id
+        badgeName
+        countries {
+          _id
+        }
+      }
     }
   }
 `;
