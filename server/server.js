@@ -58,7 +58,7 @@ app.post("/images/:id", upload.single("image"), async (req, res) => {
 
   //   res.send({ imagePath: `/images/${result.Key}` });
   // test
-  res.redirect("/#/companydashboard");
+  res.redirect("/companydashboard");
 });
 
 app.post("/user/:id/image", upload.single("image"), async (req, res) => {
