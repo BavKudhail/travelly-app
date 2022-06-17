@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { useParams } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
 import { Box, Image, Badge, Button } from '@chakra-ui/react';
@@ -20,9 +21,13 @@ const TripCard = ({ tripName, tripDescription, startDate, endDate, countries, im
   const [leaveTrip, { error }] = useMutation(LEAVE_TRIP);
 
   // Does the trip belong to the logged in user
-  const isLoggedInUserTripUser = () => {
-    if (Auth.getProfile() === tripUser) return true;
-  };
+  // const isLoggedInUserTripUser = () => {
+  //   if (Auth.getProfile().data._id === tripUser) return true;
+  //   console.log(Auth.getProfile().data._id, tripUser);
+  // };
+
+  const { id } = useParams();
+  console.log('id', id);
 
   const handleLeaveTrip = async (e) => {
     e.preventDefault();
@@ -55,7 +60,7 @@ const TripCard = ({ tripName, tripDescription, startDate, endDate, countries, im
             {startDate} <span> - </span> {endDate}
           </Box>
         </Box>
-        <Box>{isLoggedInUserTripUser() ? <Button onClick={handleLeaveTrip}>Leave Trip</Button> : <></>}</Box>
+        <Box>{!id ? <Button onClick={handleLeaveTrip}>Leave Trip</Button> : <></>}</Box>
         {/* <Box
           w="50px"
           backgroundColor="white"
