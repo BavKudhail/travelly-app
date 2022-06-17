@@ -57,6 +57,8 @@ import {
 // images
 import logo from "../../assets/logo_icon.png";
 
+// comment
+
 const Navbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
