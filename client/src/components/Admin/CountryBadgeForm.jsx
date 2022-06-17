@@ -39,7 +39,7 @@ function CountryBadgeForm() {
 
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
      // handle country data
      const countriesData = selectedCountry.map((country) => {
