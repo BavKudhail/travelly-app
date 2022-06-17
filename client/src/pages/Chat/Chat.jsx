@@ -55,15 +55,15 @@ const Chat = () => {
   return (
     <>
       <Flex
-        w={["100%", "100%", "50%", "30%", "30%"]}
+        w={["100%", "100%", "100%", "70%", "70%"]}
         p="3%"
-        // flexDir="column"
+        flexDir={["column", "column", "row", "row", "row"]}
         overflow="auto"
       >
         {loading ? (
           <Spinner />
         ) : (
-          <Box w="100%">
+          <Box w={["100%", "100%", "50%", "50%", "20%"]}>
             <ChatDrawer />
             <Box>
               {chatData.map((chat) => {
@@ -84,31 +84,31 @@ const Chat = () => {
             </Box>
           </Box>
         )}
+        <Box mx="30px" width={"100%"}>
+          <Image />
+          {selectedChat ? (
+            <div>
+              <ChatBox />
+            </div>
+          ) : (
+            <Box
+              width={"100%"}
+              height="100%"
+              className="glassmorphic"
+              display={"flex"}
+              alignContent="center"
+              justifyContent={"center"}
+              alignItems="center"
+              p="50px"
+            >
+              <Text fontSize={"3xl"} fontWeight="600">
+                Select a chat to start talking
+              </Text>
+              <Image src={chatBubble} />
+            </Box>
+          )}
+        </Box>
       </Flex>
-      <Box p="30px" mx="30px" width={"100%"}>
-        <Image />
-        {selectedChat ? (
-          <div>
-            <ChatBox />
-          </div>
-        ) : (
-          <Box
-            width={"100%"}
-            height="100%"
-            className="glassmorphic"
-            display={"flex"}
-            alignContent="center"
-            justifyContent={"center"}
-            alignItems="center"
-            p="50px"
-          >
-            <Text fontSize={"3xl"} fontWeight="600">
-              Select a chat to start talking
-            </Text>
-            <Image src={chatBubble} />
-          </Box>
-        )}
-      </Box>
     </>
   );
 };
