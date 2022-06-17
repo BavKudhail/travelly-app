@@ -31,7 +31,7 @@ function CountryForm() {
   const [countryName, setCountryName] = useState("");
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     // network request
     const { data } = await addCountry({

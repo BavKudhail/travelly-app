@@ -91,6 +91,9 @@ function CreateTrip() {
     console.log("endDate", endDate);
     console.log("countries", countriesData);
     console.log("activities", activitiesData);
+
+    // reload document
+    document.location.reload();
   };
 
   //   options for multi-select countries
