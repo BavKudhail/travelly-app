@@ -56,7 +56,7 @@ function ActivityForm() {
       <VStack spacing="5px" color="black">
         <form className="signup-form">
           <FormControl my={"4"}>
-            <FormLabel>Trip Name</FormLabel>
+            <FormLabel>Activity Name</FormLabel>
             <Input
               placeholder="Activity name"
               name="activityName"

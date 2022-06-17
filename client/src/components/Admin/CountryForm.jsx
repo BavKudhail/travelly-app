@@ -28,35 +28,25 @@ function CountryForm() {
 
   const [addCountry] = useMutation(ADD_COUNTRY);
 
-
   const [countryName, setCountryName] = useState("");
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-
-
     // network request
     const { data } = await addCountry({
       variables: {
-      countryName
-
+        countryName,
       },
     });
-    
   };
-
-  
 
   return (
     <>
-
-    
       <VStack spacing="5px" color="black">
         <form className="signup-form">
           <FormControl my={"4"}>
-            <FormLabel>Trip Name</FormLabel>
+            <FormLabel>Country Name</FormLabel>
             <Input
               placeholder="country name"
               name="countryName"
@@ -65,21 +55,20 @@ function CountryForm() {
               onChange={(e) => setCountryName(e.target.value)}
               required
             />
-          
-          <Button
-            width={"full"}
-            mt="4"
-            type="submit"
-            onClick={handleFormSubmit}
-          >
-            Submit
-          </Button>
+
+            <Button
+              width={"full"}
+              mt="4"
+              type="submit"
+              onClick={handleFormSubmit}
+            >
+              Submit
+            </Button>
           </FormControl>
         </form>
       </VStack>
     </>
   );
 }
-
 
 export default CountryForm;
