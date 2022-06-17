@@ -55,18 +55,17 @@ const Chat = () => {
   return (
     <>
       <Flex
-        w={["100%", "100%", "100%", "70%", "70%"]}
+        w={["100%", "100%", "50%", "30%", "30%"]}
         p="3%"
         // flexDir="column"
         overflow="auto"
-        minH="100vh"
       >
         {loading ? (
           <Spinner />
         ) : (
-          <Box>
+          <Box w="100%">
             <ChatDrawer />
-            <div>
+            <Box>
               {chatData.map((chat) => {
                 return (
                   <Box key={chat._id} m={"3"} w="full">
@@ -82,36 +81,34 @@ const Chat = () => {
                   </Box>
                 );
               })}
-            </div>
-            <Box>{/* message box */}</Box>
+            </Box>
           </Box>
         )}
-
-        <Box mx="20px" width={"100%"}>
-          <Image />
-          {selectedChat ? (
-            <div>
-              <ChatBox />
-            </div>
-          ) : (
-            <Box
-              width={"100%"}
-              height="100%"
-              className="glassmorphic"
-              display={"flex"}
-              alignContent="center"
-              justifyContent={"center"}
-              alignItems="center"
-              p="50px"
-            >
-              <Text fontSize={"3xl"} fontWeight="600">
-                Select a chat to start talking
-              </Text>
-              <Image src={chatBubble} />
-            </Box>
-          )}
-        </Box>
       </Flex>
+      <Box p="30px" mx="30px" width={"100%"}>
+        <Image />
+        {selectedChat ? (
+          <div>
+            <ChatBox />
+          </div>
+        ) : (
+          <Box
+            width={"100%"}
+            height="100%"
+            className="glassmorphic"
+            display={"flex"}
+            alignContent="center"
+            justifyContent={"center"}
+            alignItems="center"
+            p="50px"
+          >
+            <Text fontSize={"3xl"} fontWeight="600">
+              Select a chat to start talking
+            </Text>
+            <Image src={chatBubble} />
+          </Box>
+        )}
+      </Box>
     </>
   );
 };
