@@ -1,43 +1,20 @@
-import React from "react";
-import { useMutation } from "@apollo/react-hooks";
-import { motion } from "framer-motion";
+import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import { motion } from 'framer-motion';
 
-import ImageUpload from "../../pages/ImageUpload/ImageUpload";
+import ImageUpload from '../../pages/ImageUpload/ImageUpload';
 
-import EditTrip from "../../components/Company/EditTrip";
+import EditTrip from '../../components/Company/EditTrip';
 
-import {
-  Box,
-  Image,
-  Badge,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from "@chakra-ui/react";
-import { MotionConfig } from "framer-motion";
+import { Box, Image, Badge, Button, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import { MotionConfig } from 'framer-motion';
 
-import { DELETE_TRIP } from "../../utils/mutations";
+import { DELETE_TRIP } from '../../utils/mutations';
 
-const CompanyTripCard = ({
-  tripId,
-  tripName,
-  tripDescription,
-  startDate,
-  endDate,
-  countries,
-  activities,
-  image,
-}) => {
+const CompanyTripCard = ({ tripId, tripName, tripDescription, startDate, endDate, countries, activities, image }) => {
   const property = {
-    imageUrl:
-      "https://static.seeker.io/media/img/1/9f2de8cd-b9b1-4165-a23d-39353fb68f93-1400.jpg?placeid=6342&name=Lavender%20Field,%20Valensole&lat=43.833843&lng=6.026507",
-    imageAlt: "Rear view of modern home with pool",
+    imageUrl: 'https://static.seeker.io/media/img/1/9f2de8cd-b9b1-4165-a23d-39353fb68f93-1400.jpg?placeid=6342&name=Lavender%20Field,%20Valensole&lat=43.833843&lng=6.026507',
+    imageAlt: 'Rear view of modern home with pool',
   };
 
   const [deleteTrip, { error }] = useMutation(DELETE_TRIP);
@@ -52,21 +29,10 @@ const CompanyTripCard = ({
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isEditOpen,
-    onOpen: onEditOpen,
-    onClose: onEditClose,
-  } = useDisclosure();
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
 
   return (
-    <Box
-      maxW="lg"
-      borderWidth="1px"
-      borderRadius="30px"
-      overflow="hidden"
-      boxShadow={"2xl"}
-      my="10"
-    >
+    <Box maxW="lg" borderWidth="1px" borderRadius="30px" overflow="hidden" boxShadow={'2xl'} my="10">
       <Image src={image} alt={property.imageAlt} borderRadius="30px" />
 
       <Box p="6">
@@ -75,13 +41,7 @@ const CompanyTripCard = ({
             New Trip!
           </Badge>
         </Box>
-        <Box
-          mt="1"
-          fontWeight="semibold"
-          as="h4"
-          lineHeight="tight"
-          noOfLines={1}
-        >
+        <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
           {tripName}
         </Box>
         <Box>{tripDescription}</Box>
@@ -101,22 +61,13 @@ const CompanyTripCard = ({
             <ModalHeader>Modal Title</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <EditTrip
-                tripId={tripId}
-                tripName={tripName}
-                tripDescription={tripDescription}
-                countries={countries}
-                activities={activities}
-                startDate={startDate}
-                endDate={endDate}
-              />
+              <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} countries={countries} activities={activities} startDate={startDate} endDate={endDate} />
             </ModalBody>
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} onClick={onEditClose}>
                 Close
               </Button>
-              <Button variant="ghost">Secondary Action</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
@@ -139,7 +90,6 @@ const CompanyTripCard = ({
               <Button colorScheme="blue" mr={3} onClick={onClose}>
                 Close
               </Button>
-              <Button variant="ghost">Secondary Action</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>

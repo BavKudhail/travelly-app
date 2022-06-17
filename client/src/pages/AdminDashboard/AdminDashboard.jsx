@@ -1,29 +1,15 @@
-import React from "react";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import React from 'react';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 // mutations/queries
-import { ADMIN_DASHBOARD } from "../../utils/queries";
+import { ADMIN_DASHBOARD } from '../../utils/queries';
 
-import CountryForm from "../../components/Admin/CountryForm";
-import ActivityForm from "../../components/Admin/ActivityForm";
-import CountryBadgeForm from "../../components/Admin/CountryBadgeForm";
-import ActivityBadgeForm from "../../components/Admin/ActivityBadgeForm";
-import BadgeCard from "../../components/Admin/BadgeCard";
+import CountryForm from '../../components/Admin/CountryForm';
+import ActivityForm from '../../components/Admin/ActivityForm';
+import CountryBadgeForm from '../../components/Admin/CountryBadgeForm';
+import ActivityBadgeForm from '../../components/Admin/ActivityBadgeForm';
+import BadgeCard from '../../components/Admin/BadgeCard';
 
-import {
-  Box,
-  Image,
-  Badge,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Image, Badge, Button, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Flex } from '@chakra-ui/react';
 
 function AdminDashboard() {
   const { data, error, loading } = useQuery(ADMIN_DASHBOARD);
@@ -32,29 +18,17 @@ function AdminDashboard() {
   const activityBadges = data?.getAllActivityBadges;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isActivityOpen,
-    onOpen: onActivityOpen,
-    onClose: onActivityClose,
-  } = useDisclosure();
-  const {
-    isOpen: isCountryBadgeOpen,
-    onOpen: onCountryBadgeOpen,
-    onClose: onCountryBadgeClose,
-  } = useDisclosure();
-  const {
-    isOpen: isActivityBadgeOpen,
-    onOpen: onActivityBadgeOpen,
-    onClose: onActivityBadgeClose,
-  } = useDisclosure();
+  const { isOpen: isActivityOpen, onOpen: onActivityOpen, onClose: onActivityClose } = useDisclosure();
+  const { isOpen: isCountryBadgeOpen, onOpen: onCountryBadgeOpen, onClose: onCountryBadgeClose } = useDisclosure();
+  const { isOpen: isActivityBadgeOpen, onOpen: onActivityBadgeOpen, onClose: onActivityBadgeClose } = useDisclosure();
 
   console.log(data);
 
   if (!loading) {
     return (
       <>
-        <Flex flexDir={"column"} w="100%" overflow={"auto"}>
-          <Flex mt="10" justifyContent={"center"} w="100%">
+        <Flex flexDir={'column'} w="100%" overflow={'auto'}>
+          <Flex mt="10" justifyContent={'center'} w="100%">
             <Button onClick={onOpen}>Add country</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
@@ -68,7 +42,6 @@ function AdminDashboard() {
                   <Button colorScheme="blue" mr={3} onClick={onClose}>
                     Close
                   </Button>
-                  <Button variant="ghost">Secondary Action</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
@@ -86,7 +59,6 @@ function AdminDashboard() {
                   <Button colorScheme="blue" mr={3} onClick={onActivityClose}>
                     Close
                   </Button>
-                  <Button variant="ghost">Secondary Action</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
@@ -101,14 +73,9 @@ function AdminDashboard() {
                   <CountryBadgeForm />
                 </ModalBody>
                 <ModalFooter>
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onCountryBadgeClose}
-                  >
+                  <Button colorScheme="blue" mr={3} onClick={onCountryBadgeClose}>
                     Close
                   </Button>
-                  <Button variant="ghost">Secondary Action</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
@@ -123,46 +90,25 @@ function AdminDashboard() {
                   <ActivityBadgeForm />
                 </ModalBody>
                 <ModalFooter>
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onActivityBadgeClose}
-                  >
+                  <Button colorScheme="blue" mr={3} onClick={onActivityBadgeClose}>
                     Close
                   </Button>
-                  <Button variant="ghost">Secondary Action</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
           </Flex>
-          <Flex w="100%" justifyContent={"center"}>
+          <Flex w="100%" justifyContent={'center'}>
             <Flex mx="20px">
-              <Flex flexDir={"column"}>
+              <Flex flexDir={'column'}>
                 {countryBadges.map((badge) => {
-                  return (
-                    <BadgeCard
-                      key={badge._id}
-                      badgeName={badge.badgeName}
-                      badgeId={badge._id}
-                      model="CountryBadge"
-                      badgeImage={badge.badgeImage}
-                    />
-                  );
+                  return <BadgeCard key={badge._id} badgeName={badge.badgeName} badgeId={badge._id} model="CountryBadge" badgeImage={badge.badgeImage} />;
                 })}
               </Flex>
             </Flex>
             <Flex mx="20px">
-              <Flex flexDir={"column"}>
+              <Flex flexDir={'column'}>
                 {activityBadges.map((badge) => {
-                  return (
-                    <BadgeCard
-                      key={badge._id}
-                      badgeName={badge.badgeName}
-                      badgeId={badge._id}
-                      model="ActivityBadge"
-                      badgeImage={badge.badgeImage}
-                    />
-                  );
+                  return <BadgeCard key={badge._id} badgeName={badge.badgeName} badgeId={badge._id} model="ActivityBadge" badgeImage={badge.badgeImage} />;
                 })}
               </Flex>
             </Flex>
