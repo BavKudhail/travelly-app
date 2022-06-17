@@ -23,9 +23,8 @@ const BadgeCard = ({ badgeName, badgeImage, array, model, badgeId }) => {
   const property = {
     imageUrl:
       "https://static.seeker.io/media/img/1/9f2de8cd-b9b1-4165-a23d-39353fb68f93-1400.jpg?placeid=6342&name=Lavender%20Field,%20Valensole&lat=43.833843&lng=6.026507",
-    imageAlt: "Rear view of modern home with pool",
+    imageAlt: "badge-image",
   };
-  console.log(badgeImage);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

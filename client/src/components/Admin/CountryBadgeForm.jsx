@@ -77,9 +77,9 @@ function CountryBadgeForm() {
       <VStack spacing="5px" color="black">
         <form className="signup-form">
           <FormControl my={"4"}>
-            <FormLabel>Trip Name</FormLabel>
+            <FormLabel>Country Badge Name</FormLabel>
             <Input
-              placeholder="country name"
+              placeholder="country badge name"
               name="countryName"
               type="text"
               value={badgeName}
