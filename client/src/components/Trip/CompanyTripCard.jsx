@@ -58,7 +58,7 @@ const CompanyTripCard = ({ tripId, tripName, tripDescription, startDate, endDate
         <Modal isOpen={isEditOpen} onClose={onEditClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
+            <ModalHeader></ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <EditTrip tripId={tripId} tripName={tripName} tripDescription={tripDescription} countries={countries} activities={activities} startDate={startDate} endDate={endDate} />
@@ -80,7 +80,7 @@ const CompanyTripCard = ({ tripId, tripName, tripDescription, startDate, endDate
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
+            <ModalHeader></ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <ImageUpload tripId={tripId} />

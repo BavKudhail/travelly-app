@@ -13,7 +13,7 @@ function MobileModal() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader></ModalHeader>
           <ModalCloseButton />
           <ModalBody>{/* insert content inside of here - how can I do this? */}</ModalBody>
           <ModalFooter>

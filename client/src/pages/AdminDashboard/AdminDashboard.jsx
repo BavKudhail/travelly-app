@@ -33,7 +33,7 @@ function AdminDashboard() {
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
+                <ModalHeader></ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <CountryForm />
@@ -50,7 +50,7 @@ function AdminDashboard() {
             <Modal isOpen={isActivityOpen} onClose={onActivityClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
+                <ModalHeader></ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <ActivityForm />
@@ -67,7 +67,7 @@ function AdminDashboard() {
             <Modal isOpen={isCountryBadgeOpen} onClose={onCountryBadgeClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
+                <ModalHeader></ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <CountryBadgeForm />
@@ -84,7 +84,7 @@ function AdminDashboard() {
             <Modal isOpen={isActivityBadgeOpen} onClose={onActivityBadgeClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
+                <ModalHeader></ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <ActivityBadgeForm />
